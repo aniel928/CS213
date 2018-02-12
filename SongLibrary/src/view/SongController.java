@@ -108,7 +108,6 @@ public class SongController {
 	//when song is clicked, display details
 	@FXML protected void songDetails() {
     		int index = listView.getSelectionModel().getSelectedIndex();
-    		System.out.println(index);
     		if(index == -1) {
     			editButton.setVisible(false);
     			deleteButton.setVisible(false);
@@ -230,7 +229,6 @@ public class SongController {
 		int index = 0;
 		while(index < obsList.size()) {
 			int compare = (obsList.get(index).toLowerCase()).compareTo((song + " - " + artist).toLowerCase()); 
-			System.out.println(compare);
 			if(compare == 0){
 				errorText.setText("This song already exists");
 				errorText.setVisible(true);
@@ -331,7 +329,6 @@ public class SongController {
 				return;
 			}
 			else if(obsList.size() == index) {
-				System.out.println("last item " + index + ", size: " + (obsList.size()-1));
 				index--;
 			}
 
@@ -349,7 +346,6 @@ public class SongController {
 			
 			for(List<String> song : allSongs) {
 				for(String detail : song) {
-					System.out.println(detail);
 					out.println(detail);
 				}	
 			}

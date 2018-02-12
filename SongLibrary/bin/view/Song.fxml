@@ -1,7 +1,6 @@
-<!-- Anne Whitman (alh220) -->
-<!-- Jason Muccino (jmuccino) -->
-
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Anne Whitman (alh220), Jay Muccino (jmuccino)-->
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
