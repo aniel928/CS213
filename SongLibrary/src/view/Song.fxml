@@ -1,3 +1,6 @@
+<!-- Anne Whitman (alh220) -->
+<!-- Jason Muccino (jmuccino) -->
+
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
@@ -19,7 +22,7 @@
    <center>
       <BorderPane prefHeight="500.0" prefWidth="250.0" BorderPane.alignment="CENTER">
          <center>
-            <TextFlow prefHeight="400.0" prefWidth="322.0" style="-fx-background-color: papayawhip;" BorderPane.alignment="CENTER">
+            <TextFlow prefHeight="400.0" prefWidth="322.0" style="-fx-background-color: aliceblue" BorderPane.alignment="CENTER">
                <children>
                   <GridPane hgap="20.0" prefHeight="417.0" prefWidth="517.0" style="-fx-font-family: AppleGothic Regular; -fx-font-size: 18;" vgap="20.0">
                      <columnConstraints>
@@ -63,14 +66,14 @@
             </TextFlow>
          </center>
          <top>
-            <ButtonBar prefHeight="50.0" prefWidth="250.0" style="-fx-padding: 10; -fx-background-color: papayawhip;" BorderPane.alignment="CENTER">
+            <ButtonBar prefHeight="50.0" prefWidth="250.0" style="-fx-padding: 10; -fx-background-color: aliceblue" BorderPane.alignment="CENTER">
                <buttons>
                   <Button fx:id="addButton" mnemonicParsing="false" onAction="#createScreen" style="-fx-background-color: #5cb85c; -fx-text-fill: white;" text="Add song" />
                </buttons>
             </ButtonBar>
          </top>
          <bottom>
-            <ButtonBar prefHeight="50.0" prefWidth="250.0" style="-fx-padding: 10; -fx-background-color: papayawhip;" BorderPane.alignment="CENTER">
+            <ButtonBar prefHeight="50.0" prefWidth="250.0" style="-fx-padding: 10; -fx-background-color: aliceblue" BorderPane.alignment="CENTER">
                <buttons>
                   <Button fx:id="saveAddButton" mnemonicParsing="false" onAction="#add" style="-fx-background-color: #428bca; -fx-text-fill: white;" text="Save" />
                   <Button fx:id="saveEditButton" mnemonicParsing="false" onAction="#edit" style="-fx-background-color: #428bca; -fx-text-fill: white;" text="Save" />

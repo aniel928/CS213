@@ -1,3 +1,6 @@
+//Anne Whitman (alh220)
+//Jason Muccino (jmuccino)
+
 package view;
 
 
@@ -29,6 +32,7 @@ public class SongController {
 	private List<List<String>> allSongs = new ArrayList<List<String>>();
 	
 	@FXML private ListView<String> listView;
+	
 	@FXML private Button cancelButton;
 	@FXML private Button saveAddButton;
 	@FXML private Button saveEditButton;
@@ -93,12 +97,9 @@ public class SongController {
 		cancelButton.setVisible(true);
 		deleteButton.setVisible(false);
 		editButton.setVisible(false);
-
-		
 		if(type.equals("add") || type.equals("both")){
 			saveAddButton.setVisible(true);
 		}
-		
 		if(type.equals("edit") || type.equals("both")){
 			saveEditButton.setVisible(true);
 		}
@@ -134,7 +135,6 @@ public class SongController {
     }
 	
 	//show add song fields/buttons
-	//show all add Fields
 	@FXML
 	private void createScreen(ActionEvent event) throws IOException{
 		show("add");
@@ -142,8 +142,6 @@ public class SongController {
 	}
 	
 	//show all edit fields and prefill text boxes.
-	
-	//show edit song fields/buttons
 	@FXML 
 	private void editScreen(ActionEvent event) throws IOException{
 		show("edit");
@@ -156,9 +154,7 @@ public class SongController {
 		newYear.setText(allSongs.get(index).get(3));
 	}
 	
-	//first method to run, hide all add/edit fields and populate listView
-	
-	//initialize screen 
+	//first method to run, hide all add/edit fields and populate listView, read from file.
 	public void start(Stage mainStage) throws IOException {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader("songLib.txt"));
@@ -248,9 +244,8 @@ public class SongController {
 		}
 		return index;
 	}
-	//save edited changes.
 	
-	//take current song and edit
+	//save edited changes.
 	@FXML 
 	private void edit(ActionEvent event) throws IOException {
 		int index = listView.getSelectionModel().getSelectedIndex();
@@ -302,7 +297,7 @@ public class SongController {
 		}
 	}
 	
-	//hide the fields/buttons
+	//hide the fields/buttons and go back to songDetails
 	@FXML 
 	private void cancel(ActionEvent event) throws IOException {
 		hide("both");
