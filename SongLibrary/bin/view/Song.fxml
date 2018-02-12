@@ -38,10 +38,10 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Song Name:" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Artist Name:" GridPane.rowIndex="1" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Album Name:" GridPane.rowIndex="2" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Album Year:" GridPane.rowIndex="3" />
+                        <Text fx:id="songName" strokeType="OUTSIDE" strokeWidth="0.0" text="Song Name:" />
+                        <Text fx:id="artistName" strokeType="OUTSIDE" strokeWidth="0.0" text="Artist Name:" GridPane.rowIndex="1" />
+                        <Text fx:id="albumName" strokeType="OUTSIDE" strokeWidth="0.0" text="Album Name:" GridPane.rowIndex="2" />
+                        <Text fx:id="yearName" strokeType="OUTSIDE" strokeWidth="0.0" text="Album Year:" GridPane.rowIndex="3" />
                         
                         <Text fx:id="songText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                         <Text fx:id="artistText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />

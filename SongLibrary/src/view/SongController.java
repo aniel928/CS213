@@ -39,6 +39,10 @@ public class SongController {
 	@FXML private Text albumText;
 	@FXML private Text yearText;
 	@FXML private Text errorText;
+	@FXML private Text songName;
+	@FXML private Text artistName;
+	@FXML private Text albumName;
+	@FXML private Text yearName;
 	@FXML private TextField newSong;
 	@FXML private TextField newArtist;
 	@FXML private TextField newAlbum;
@@ -52,6 +56,10 @@ public class SongController {
 		newYear.setVisible(false);
 		cancelButton.setVisible(false);
 		errorText.setText("");
+		songName.setVisible(true);
+		artistName.setVisible(true);
+		albumName.setVisible(true);
+		yearName.setVisible(true);
 		
 		if(type.equals("add") || type.equals("both")){
 			saveAddButton.setVisible(false);
@@ -65,6 +73,15 @@ public class SongController {
 		newArtist.clear();
 		newAlbum.clear();
 		newYear.clear();
+		
+		if(obsList.size() == 0) {
+			errorText.setText("There are no songs yet.  Add a song now to get started!");
+			errorText.setVisible(true);
+			songName.setVisible(false);
+			artistName.setVisible(false);
+			albumName.setVisible(false);
+			yearName.setVisible(false);
+		}
 	}
 	
 	//show all add/edit fields
@@ -160,7 +177,7 @@ public class SongController {
 				obsList.add(song.get(0) + " - " + song.get(1));
 			}
 		}catch(Exception e) {
-			System.err.println(e.getMessage());
+
 		}
 		hide("both");
 		editButton.setVisible(false);
@@ -216,7 +233,7 @@ public class SongController {
 	public int getIndex(String song, String artist) {
 		int index = 0;
 		while(index < obsList.size()) {
-			int compare = obsList.get(index).compareTo(song + " - " + artist); 
+			int compare = (obsList.get(index).toLowerCase()).compareTo((song + " - " + artist).toLowerCase()); 
 			System.out.println(compare);
 			if(compare == 0){
 				errorText.setText("This song already exists");
@@ -310,15 +327,22 @@ public class SongController {
 				artistText.setText("");
 				albumText.setText("");
 				yearText.setText("");
+				errorText.setText("There are no songs yet.  Add a song now to get started!");
+				errorText.setVisible(true);
+				songName.setVisible(false);
+				artistName.setVisible(false);
+				albumName.setVisible(false);
+				yearName.setVisible(false);
 				return;
 			}
 			else if(obsList.size() == index) {
 				System.out.println("last item " + index + ", size: " + (obsList.size()-1));
 				index--;
 			}
-			
+
 			listView.getSelectionModel().select(index);
 			songDetails();
+			
 		}
 	}
 
@@ -335,6 +359,10 @@ public class SongController {
 				}	
 			}
 			out.flush();
+			out.close();
+		}
+		else {
+			PrintWriter out = new PrintWriter(new FileOutputStream("songlib.txt"));
 			out.close();
 		}
 		System.exit(0);
