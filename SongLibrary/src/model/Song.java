@@ -1,6 +1,6 @@
 package model;
 
-public class Song implements Comparable<Song>{
+public class Song{
 	private String title;
 	private String artist;
 	private String album;
@@ -49,12 +49,5 @@ public class Song implements Comparable<Song>{
 	public String toString(){
 		return this.title + " - " + this.artist;
 	}
-
-	@Override
-	public int compareTo(Song arg0) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
 
 }
