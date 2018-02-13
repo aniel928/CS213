@@ -24,12 +24,14 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import model.Song;
 
 public class SongController {
 	
 	private ObservableList<String> obsList = FXCollections.observableArrayList();
 	
-	private List<List<String>> allSongs = new ArrayList<List<String>>();
+	private List<Song> allSongs = new ArrayList<Song>();
+//	private List<List<String>> allSongs = new ArrayList<List<String>>();
 	
 	@FXML private ListView<String> listView;
 	
@@ -113,17 +115,17 @@ public class SongController {
     			deleteButton.setVisible(false);
     		}
     		else {
-    			songText.setText(allSongs.get(index).get(0));
-    			artistText.setText(allSongs.get(index).get(1));
-    			if(allSongs.get(index).get(2).equals("")) {
+    			songText.setText(allSongs.get(index).getTitle());
+    			artistText.setText(allSongs.get(index).getArtist());
+    			if(allSongs.get(index).getAlbum().equals("")) {
     				albumText.setText("(empty)");
     			}else {
-    				albumText.setText(allSongs.get(index).get(2));
+    				albumText.setText(allSongs.get(index).getAlbum());
     			}
-    			if(allSongs.get(index).get(3).equals("")) {
+    			if(allSongs.get(index).getYear().equals("")) {
     				yearText.setText("(empty)");
     			}else {
-    				yearText.setText(allSongs.get(index).get(3));
+    				yearText.setText(allSongs.get(index).getYear());
     			}
     		
     			hide("both");
@@ -147,10 +149,10 @@ public class SongController {
 		
 		int index = listView.getSelectionModel().getSelectedIndex();
 		
-		newSong.setText(allSongs.get(index).get(0));
-		newArtist.setText(allSongs.get(index).get(1));
-		newAlbum.setText(allSongs.get(index).get(2));
-		newYear.setText(allSongs.get(index).get(3));
+		newSong.setText(allSongs.get(index).getTitle());
+		newArtist.setText(allSongs.get(index).getArtist());
+		newAlbum.setText(allSongs.get(index).getAlbum());
+		newYear.setText(allSongs.get(index).getYear());
 	}
 	
 	//first method to run, hide all add/edit fields and populate listView, read from file.
@@ -160,16 +162,22 @@ public class SongController {
 			String line = br.readLine();
 			
 			while(line != null) {
-				ArrayList<String> song = new ArrayList<String>();
-				for(int j = 0; j<4;j++) {
-					song.add(line);
-					line = br.readLine();
-				}
+				String title = line;
+				line = br.readLine();
+				String artist = line;
+				line = br.readLine();
+				String album = line;
+				line = br.readLine();
+				String year = line;
+				line = br.readLine();
+
+				Song song = new Song(title, artist, album, year);
+				
 				allSongs.add(song);
 			}
 			br.close();
-			for(List<String> song : allSongs) {
-				obsList.add(song.get(0) + " - " + song.get(1));
+			for(Song song : allSongs) {
+				obsList.add(song.toString());
 			}
 		}catch(Exception e) {
 
@@ -203,20 +211,14 @@ public class SongController {
 			errorText.setVisible(true);
 		}
 		else {
-			ArrayList<String> song = new ArrayList<String>();
-			
-			//get details from screen
-			song.add(newSong.getText());
-			song.add(newArtist.getText());
-			song.add(newAlbum.getText());
-			song.add(newYear.getText());
-			
+			Song song = new Song(newSong.getText(), newArtist.getText(), newAlbum.getText(), newYear.getText());
+						
 			//add to obsList
-			int index = getIndex(newSong.getText(), newArtist.getText());
+			int index = getIndex(song.toString());
 			
 			if(index != -1) {
 				allSongs.add(index, song);
-				obsList.add(index, newSong.getText() + " - " + newArtist.getText());
+				obsList.add(index, song.toString());
 				hide("add");
 				listView.getSelectionModel().select(index);
 				songDetails();
@@ -225,10 +227,10 @@ public class SongController {
 	}
 	
 	//find where to insert
-	public int getIndex(String song, String artist) {
+	public int getIndex(String songString) {
 		int index = 0;
 		while(index < obsList.size()) {
-			int compare = (obsList.get(index).toLowerCase()).compareTo((song + " - " + artist).toLowerCase()); 
+			int compare = (obsList.get(index).toLowerCase()).compareTo((songString).toLowerCase()); 
 			if(compare == 0){
 				errorText.setText("This song already exists");
 				errorText.setVisible(true);
@@ -253,43 +255,32 @@ public class SongController {
 			errorText.setText("Artist name is required.");
 		}
 		else {
-			ArrayList<String> song = new ArrayList<String>();
-			
-			String songName = newSong.getText();
-			String artistName = newArtist.getText();
-			String albumName = newAlbum.getText();
-			String yearName = newYear.getText();
-			
-			//get details from screen
-			song.add(songName);
-			song.add(artistName);
-			song.add(albumName);
-			song.add(yearName);
-			
+			Song song = new Song(newSong.getText(), newArtist.getText(), newAlbum.getText(), newYear.getText());
+						
 			//add to obsList
-			ArrayList<String> oldSong = (ArrayList<String>) allSongs.get(index);
+			Song oldSong = allSongs.get(index);
 			allSongs.remove(index);
 			obsList.remove(index);
 			
-			int newIndex = getIndex(songName, artistName);
+			int newIndex = getIndex(song.toString());
 			
 			if(newIndex != -1) {
 				allSongs.add(newIndex, song);
-				obsList.add(newIndex, songName + " - " + artistName);
+				obsList.add(newIndex, song.toString());
 				listView.getSelectionModel().select(newIndex);
 				hide("edit");
 				songDetails();
 			}else {
 				allSongs.add(index, oldSong);
-				obsList.add(index, oldSong.get(0) + " - " + oldSong.get(1));
+				obsList.add(index, oldSong.toString());
 				listView.getSelectionModel().select(index);
 				errorText.setText("That song already exists");
 				errorText.setVisible(true);
 				show("edit");
-				newSong.setText(allSongs.get(index).get(0));
-				newArtist.setText(allSongs.get(index).get(1));
-				newAlbum.setText(allSongs.get(index).get(2));
-				newYear.setText(allSongs.get(index).get(3));
+				newSong.setText(allSongs.get(index).getTitle());
+				newArtist.setText(allSongs.get(index).getArtist());
+				newAlbum.setText(allSongs.get(index).getAlbum());
+				newYear.setText(allSongs.get(index).getYear());
 			}
 						
 		}
@@ -305,13 +296,16 @@ public class SongController {
 	//remove from lists
 	@FXML 
 	private void delete(ActionEvent event) throws IOException{
-		Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure you want to delete?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+		int index = listView.getSelectionModel().getSelectedIndex();
+		String song = allSongs.get(index).getTitle();
+		String artist = allSongs.get(index).getArtist();
+		Alert alert = new Alert(AlertType.WARNING, "You are about to delete "+ song +" by " + artist + ".  This action cannot be undone.  Would you like to continue?", ButtonType.YES, ButtonType.CANCEL);
 		alert.showAndWait();
 
 		if (alert.getResult() == ButtonType.YES) {
 		    //do stuff
 		
-			int index = listView.getSelectionModel().getSelectedIndex();
+			
 			allSongs.remove(index);
 			obsList.remove(index);
 	
@@ -340,14 +334,14 @@ public class SongController {
 
 	//save list out to file
 	public void saveFile() throws FileNotFoundException {
-		
 		if(obsList.size() > 0) {
 			PrintWriter out = new PrintWriter(new FileOutputStream("songlib.txt"));
 			
-			for(List<String> song : allSongs) {
-				for(String detail : song) {
-					out.println(detail);
-				}	
+			for(Song song : allSongs) {
+					out.println(song.getTitle());
+					out.println(song.getArtist());
+					out.println(song.getAlbum());
+					out.println(song.getYear());
 			}
 			out.flush();
 			out.close();
