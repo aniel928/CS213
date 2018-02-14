@@ -31,7 +31,6 @@ public class SongController {
 	private ObservableList<String> obsList = FXCollections.observableArrayList();
 	
 	private List<Song> allSongs = new ArrayList<Song>();
-//	private List<List<String>> allSongs = new ArrayList<List<String>>();
 	
 	@FXML private ListView<String> listView;
 	
@@ -158,7 +157,7 @@ public class SongController {
 	//first method to run, hide all add/edit fields and populate listView, read from file.
 	public void start(Stage mainStage) throws IOException {
 		try {
-			BufferedReader br = new BufferedReader(new FileReader("songLib.txt"));
+			BufferedReader br = new BufferedReader(new FileReader("resources/songLib.txt"));
 			String line = br.readLine();
 			
 			while(line != null) {
@@ -335,7 +334,7 @@ public class SongController {
 	//save list out to file
 	public void saveFile() throws FileNotFoundException {
 		if(obsList.size() > 0) {
-			PrintWriter out = new PrintWriter(new FileOutputStream("songlib.txt"));
+			PrintWriter out = new PrintWriter(new FileOutputStream("resources/songlib.txt"));
 			
 			for(Song song : allSongs) {
 					out.println(song.getTitle());
@@ -347,7 +346,7 @@ public class SongController {
 			out.close();
 		}
 		else {
-			PrintWriter out = new PrintWriter(new FileOutputStream("songlib.txt"));
+			PrintWriter out = new PrintWriter(new FileOutputStream("resources/songlib.txt"));
 			out.close();
 		}
 		System.exit(0);

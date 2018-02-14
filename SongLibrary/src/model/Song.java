@@ -1,3 +1,6 @@
+//Anne Whitman (alh220)
+//Jason Muccino (jmuccino)
+
 package model;
 
 public class Song{

@@ -8,20 +8,12 @@ import java.io.IOException;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
-//import javafx.event.ActionEvent;
-//import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-//import javafx.fxml.JavaFXBuilderFactory;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import view.SongController;
-//import javafx.scene.Parent;
 import javafx.scene.Scene;
-//import javafx.scene.control.Button;
-//import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
-//import javafx.scene.layout.BorderPane;
-//import javafx.scene.layout.StackPane;
 
 
 
@@ -45,6 +37,7 @@ public class SongLib extends Application {
 			
 			stage.setScene(scene);
 			
+			//set listener for window closing
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				public void handle(WindowEvent we) {
 					try {
