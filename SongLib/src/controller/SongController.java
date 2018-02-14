@@ -1,7 +1,7 @@
 //Anne Whitman (alh220)
 //Jason Muccino (jmuccino)
 
-package view;
+package controller;
 
 
 import java.io.BufferedReader;

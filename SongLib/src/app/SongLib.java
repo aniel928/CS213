@@ -6,12 +6,12 @@ package app;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import controller.SongController;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import view.SongController;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 

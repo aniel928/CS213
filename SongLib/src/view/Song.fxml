@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<BorderPane prefHeight="530.0" prefWidth="885.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.SongController">
+<BorderPane prefHeight="530.0" prefWidth="885.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SongController">
    <left>
       <ListView fx:id="listView" onMouseClicked="#songDetails" prefHeight="493.0" prefWidth="269.0" BorderPane.alignment="CENTER" />
    </left>
