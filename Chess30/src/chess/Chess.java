@@ -1,7 +1,7 @@
 package chess;
-
+//TEST 123
 import java.util.Scanner;
-
+test 123123
 public class Chess {
 	static boolean gameOver = false;
 	static String gameBoard;
