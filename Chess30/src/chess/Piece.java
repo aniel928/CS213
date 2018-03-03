@@ -6,5 +6,5 @@ public abstract class Piece {
 	//get color
 	protected abstract String getColor();
 	//find out if current move is legal.
-	protected abstract boolean isLegalMove();
+	protected abstract boolean isLegalMove(int startRow, int startCol, int endRow, int endCol);
 }

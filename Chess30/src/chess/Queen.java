@@ -12,7 +12,7 @@ public class Queen extends Piece {
 	}
 
 	@Override
-	protected boolean isLegalMove() {
+	protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol) {
 		// TODO Auto-generated method stub
 		return false;
 	}
