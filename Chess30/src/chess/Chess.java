@@ -60,7 +60,10 @@ public class Chess implements ChessBoard{
 				continue;
 			}
 			
-			draw = false;
+			
+			if(!(moves.length == 3 || moves[2].equals("draw"))) {
+				draw = false;
+			}
 			
 			//do some real work
 				
