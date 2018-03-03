@@ -160,7 +160,15 @@ public class Chess implements ChessBoard{
 					continue;
 				}
 			}
+			
 			//if yes, check for valid moves (function in piece)
+			if(positions[startRow][startCol].isLegalMove(8-startRow, startCol, 8-finishRow, finishCol)) {
+				System.out.println("GOOD MOVE");
+			}
+			else {
+				System.out.println("SHITTY MOVE");
+				continue;
+			}
 			
 			//if valid ,check for pieces in the way (except for knight)
 			
