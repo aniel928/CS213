@@ -5,10 +5,10 @@ public class King extends Piece {
 	public King(String color) {
 		this.color = color;
 	}
+
 	@Override
 	protected String getColor() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.color;
 	}
 
 	@Override

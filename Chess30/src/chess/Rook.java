@@ -8,8 +8,7 @@ public class Rook extends Piece {
 	
 	@Override
 	protected String getColor() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.color;
 	}
 
 	@Override
