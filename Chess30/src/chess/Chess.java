@@ -178,9 +178,6 @@ public class Chess implements ChessBoard{
 			
 			//move current to new and remove current position
 			
-		
-			
-			
 			
 			
 			//do some work here to actually move
