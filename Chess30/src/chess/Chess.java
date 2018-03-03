@@ -170,8 +170,6 @@ public class Chess implements ChessBoard{
 				continue;
 			}
 			
-			//if valid ,check for pieces in the way (except for knight)
-			
 			//check if another piece occupies destination (opposite color)
 			if(positions[finishRow][finishCol] != null) {
 				if(!positions[finishRow][finishCol].getColor().equals(turn)) {
@@ -184,8 +182,12 @@ public class Chess implements ChessBoard{
 				System.out.println(positions[finishRow][finishCol]);
 			}
 			
-			//move current to new and remove current position
+			//if valid ,check for pieces in the way (except for knight)
 			
+			
+			//move current to new and remove current position
+			positions[finishRow][finishCol] = positions[startRow][startCol];
+			positions[startRow][startCol] = null;
 			
 			
 			//do some work here to actually move
