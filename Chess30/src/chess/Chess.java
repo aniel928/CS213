@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class Chess implements ChessBoard{
 	private static boolean gameOver = false;
 	private static String gameBoard;
-	private static String turn = "White";
+	protected static String turn = "White";
 	private static boolean draw = false;
 	
 	public static void main(String[] args){
