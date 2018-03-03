@@ -3,8 +3,11 @@ package chess;
 import java.util.HashMap;
 import java.util.Map;
 
-interface ChessBoard {
-	Piece[][] positions = new Piece[8][8];
+public interface ChessBoard {
+	final int ROWS = 8;
+	final int COLS = 8;
+	Piece[][] positions = new Piece[ROWS][COLS];
+	
 	static void initializeBoard() {
 		positions[0][0] = new Rook("Black");
 		positions[0][1] = new Knight("Black");
@@ -46,8 +49,8 @@ interface ChessBoard {
 	static String getBoard() {
 		// TODO Auto-generated method stub
 		String board = "";
-		for(int i = 0; i< 8; i++) {
-			for(int j = 0; j< 8; j++) {
+		for(int i = 0; i< ROWS; i++) {
+			for(int j = 0; j< COLS; j++) {
 				if(positions[i][j] != null) {
 					board += positions[i][j].toString()+ " ";
 				}
@@ -59,9 +62,9 @@ interface ChessBoard {
 						board += "## ";
 					}
 				}
-				if(j == 7) {
-					board += (8 - i) + "\n";
-					if(i == 7) {
+				if(j == (COLS - 1)) {
+					board += (COLS - i) + "\n";
+					if(i == (ROWS - 1)) {
 						board += " a  b  c  d  e  f  g  h\n";
 					}
 				}

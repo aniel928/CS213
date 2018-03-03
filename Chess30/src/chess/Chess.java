@@ -69,7 +69,7 @@ public class Chess implements ChessBoard{
 			
 			int startRow;
 			try{
-				startRow = 8-Integer.parseInt(String.valueOf(moves[0].charAt(1)));
+				startRow = ROWS-Integer.parseInt(String.valueOf(moves[0].charAt(1)));
 			}
 			catch(Exception e){
 				System.out.println("\nInvalid move, please try again\n");
@@ -110,7 +110,7 @@ public class Chess implements ChessBoard{
 			
 			int finishRow;
 			try{
-				finishRow = 8-Integer.parseInt(String.valueOf(moves[1].charAt(1)));
+				finishRow = ROWS-Integer.parseInt(String.valueOf(moves[1].charAt(1)));
 			}
 			catch(Exception e){
 				System.out.println("\nInvalid move, please try again\n");
@@ -162,7 +162,7 @@ public class Chess implements ChessBoard{
 			}
 			
 			//if yes, check for valid moves (function in piece)
-			if(positions[startRow][startCol].isLegalMove(8-startRow, startCol, 8-finishRow, finishCol)) {
+			if(positions[startRow][startCol].isLegalMove(ROWS-startRow, startCol, ROWS-finishRow, finishCol)) {
 				System.out.println("GOOD MOVE");
 			}
 			else {
