@@ -2,32 +2,18 @@ package chess;
 //TEST 123
 import java.util.Scanner;
 
-public class Chess {
-	static boolean gameOver = false;
-	static String gameBoard;
-	static String turn = "White";
-	static boolean draw = false;
+public class Chess implements ChessBoard{
+	private static boolean gameOver = false;
+	private static String gameBoard;
+	private static String turn = "White";
+	private static boolean draw = false;
 	
-	private static String getBoard() {
-		// TODO Auto-generated method stub
-		return 	"bR bN bB bQ bK bB bN bR 8\n" + 
-				"bp bp bp bp bp bp bp bp 7\n" + 
-				"   ##    ##    ##    ## 6\n" + 
-				"##    ##    ##    ##    5\n" + 
-				"   ##    ##    ##    ## 4\n" + 
-				"##    ##    ##    ##    3 \n" + 
-				"wp wp wp wp wp wp wp wp 2\n" + 
-				"wR wN wB wQ wK wB wN wR 1\n" + 
-				" a  b  c  d  e  f  g  h\n";
-	}
-	
-	public static void main(String[] args) {
+	public static void main(String[] args){
 		Scanner scanner = new Scanner(System.in);
-
+		ChessBoard.initializeBoard();
 		while(!gameOver) {
-			
-			System.out.println(getBoard());
-		
+			System.out.println(ChessBoard.getBoard());
+
 			System.out.print(turn + "'s move: ");
 			
 			String move = scanner.nextLine();
@@ -44,6 +30,10 @@ public class Chess {
 				if(moves[2].equals("draw")) {
 					draw = true; //now figure out what to do with this
 				}
+				else if(moves[2].equals("knight") || moves[2].equals("rook") || moves[2].equals("bishop") || moves[2].equals("queen")){
+					System.out.println("Promotion");
+					//flag for promotion
+				}
 				else {
 					System.out.println("\nInvalid move please try again\n");
 					continue;
@@ -58,6 +48,7 @@ public class Chess {
 					else {
 						System.out.println("White wins");
 					}
+					continue;
 				}
 				else {
 					System.out.println("\nInvalid move please try again\n");
@@ -68,11 +59,24 @@ public class Chess {
 				System.out.println("\nInvalid move, please try again\n");
 				continue;
 			}
-			else {
+			
+			draw = false;
+			
+			//do some real work
 				
-				//do some real work
-				
-			}
+			//validate input in format of letternumber letter number i.e. e2 e5
+			
+			//check if there is currently a piece on e2 that belongs to current color.
+			//if yes, check for valid moves (function in piece)
+			
+			//if valid ,check for pieces in the way (except for knight)
+			
+			//check if another piece occupies destination (opposite color)
+			
+			//move current to new and remove current position
+			
+		
+			
 			
 			
 			
