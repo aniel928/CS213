@@ -1,3 +1,4 @@
 /.metadata/
+/.recommenders/
 .classpath
-Chess30/bin/
+/Chess30/bin/
