@@ -157,6 +157,7 @@ public class Chess implements ChessBoard{
 				}
 				else {
 					System.out.println("Does not have piece of correct color!");
+					continue;
 				}
 			}
 			//if yes, check for valid moves (function in piece)
