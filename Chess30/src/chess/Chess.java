@@ -165,6 +165,16 @@ public class Chess implements ChessBoard{
 			//if valid ,check for pieces in the way (except for knight)
 			
 			//check if another piece occupies destination (opposite color)
+			if(positions[finishRow][finishCol] != null) {
+				if(!positions[finishRow][finishCol].getColor().equals(turn)) {
+					System.out.println("Valid");
+				}
+				else {
+					System.out.println("Does not have piece of correct color!");
+					continue;
+				}
+				System.out.println(positions[finishRow][finishCol]);
+			}
 			
 			//move current to new and remove current position
 			
