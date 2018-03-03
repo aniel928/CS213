@@ -13,8 +13,7 @@ public class Rook extends Piece {
 
 	@Override
 	protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol) {
-		// TODO Auto-generated method stub
-		return false;
+		return ((startRow == endRow) || (startCol == endCol));			
 	}
 	
 	@Override
