@@ -4,6 +4,7 @@ public class Queen extends Piece {
 
 	public Queen(String color) {
 		this.color = color;
+		this.piece = "Queen";
 	}
 	
 	@Override
@@ -12,9 +13,12 @@ public class Queen extends Piece {
 	}
 
 	@Override
+	protected String getPiece() {
+		return this.piece;
+	}
+	@Override
 	protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol) {
-		// TODO Auto-generated method stub
-		return false;
+		return (Math.abs(startRow - endRow) == Math.abs(startCol - endCol)) || ((startRow == endRow) || (startCol == endCol));
 	}
 	
 	@Override

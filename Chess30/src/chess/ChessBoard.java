@@ -1,12 +1,9 @@
 package chess;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public interface ChessBoard {
 	final int ROWS = 8;
 	final int COLS = 8;
-	Piece[][] positions = new Piece[ROWS][COLS];
+	static Piece[][] positions = new Piece[ROWS][COLS];
 	
 	static void initializeBoard() {
 		positions[0][0] = new Rook("Black");
@@ -74,5 +71,11 @@ public interface ChessBoard {
 		return board;
 	}
 	
+	static Piece getPiece(int row, int col) {
+		return positions[row][col];
+	}
 	
+	static void setPiece(int row, int col, Piece piece) {
+		positions[row][col] = piece;
+	}
 }

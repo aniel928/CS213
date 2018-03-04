@@ -7,6 +7,7 @@ public class Chess implements ChessBoard{
 	protected static String turn = "White";
 	private static boolean draw = false;
 	private static boolean promote = false;
+	private static boolean goAgain = false;
 	
 	//Checks the format of the input and makes sure the user is giving good commands
 	private static boolean checkMoves(String[] moves) {
@@ -75,19 +76,22 @@ public class Chess implements ChessBoard{
 	
 	//handle promotion of piece.
 	private static void promote(String piece, int col, int row) {
-		if(!(row == 0 && positions[row][col] instanceof Pawn)) {
+		if(!(row == 0 && ChessBoard.getPiece(row,col).piece.equals("Pawn"))) {
 			System.out.println("fuck");
+			//throw invalid move
 		}
 		System.out.println("Promote pawn to "+piece+" at array["+row+"]["+col+"].");
 	}
 	
 	//This just prints out that the move is invalid.
 	private static void invalidMove() {
+		goAgain = true;
 		System.out.println("\n\nInvalid move, please try again\n");
 	}
 	
 	private static void illegalMove() {
 		System.out.println("\n\n Illegal move\n");
+		goAgain = true;
 	}
 	
 	//takes input of board position (i.e. a1 or e5) and returns where that is in the array
@@ -143,7 +147,12 @@ public class Chess implements ChessBoard{
 	private static void playGame(Scanner scanner) {
 		while(!gameOver) {
 			//get the current board.
-			System.out.println(ChessBoard.getBoard());
+			if(goAgain) {
+				goAgain = false;
+			}
+			else{
+				System.out.println(ChessBoard.getBoard());
+			}
 			
 			//Prompt user for move and parse input
 			System.out.print(turn + "'s move: ");
@@ -180,38 +189,41 @@ public class Chess implements ChessBoard{
 				continue;
 			}
 			
+			//Store this piece in a variable
+			Piece piece = ChessBoard.getPiece(startRow,  startCol);
 			//check if there is currently a piece on e2 that belongs to current color.
-			if(positions[startRow][startCol] != null) {
+			if(piece != null) {
 				
-				if(positions[startRow][startCol].getColor().equals(turn)) {
+				if(piece.getColor().equals(turn)) {
 					System.out.println("Valid");
 				}
 				else {
 					System.out.println("That's not your piece!");
 					invalidMove();
+					continue;
 				}
 			}else {
 				System.out.println("There is no piece!");
 				invalidMove();
+				continue;
 			}
 			
 			//if yes, check for valid moves (function in piece)
-			if(!(positions[startRow][startCol].isLegalMove(ROWS-startRow, startCol, ROWS-endRow, endCol))) {
+			if(!(piece.isLegalMove(ROWS-startRow, startCol, ROWS-endRow, endCol))) {
 				System.out.println("SHITTY MOVE");
 				illegalMove();
 				continue;
 			}
 			
 			//check if another piece occupies destination (opposite color)
-			if(positions[endRow][endCol] != null) {
-				if(!positions[endRow][endCol].getColor().equals(turn)) {
+			if(ChessBoard.getPiece(endRow,  endCol) != null) {
+				if(!ChessBoard.getPiece(endRow, endCol).getColor().equals(turn)) {
 					System.out.println("Valid");
 				}
 				else {
 					System.out.println("Does not have piece of correct color!");
 					continue;
 				}
-				System.out.println(positions[endRow][endCol]);
 			}
 			
 			//if valid ,check for pieces in the way (except for knight)
@@ -221,8 +233,8 @@ public class Chess implements ChessBoard{
 				promote(moves[2], startRow, startCol);
 			}
 			//move current to new and remove current position
-			positions[endRow][endCol] = positions[startRow][startCol];
-			positions[startRow][startCol] = null;
+			ChessBoard.setPiece(endRow, endCol, piece);
+			ChessBoard.setPiece(startRow, startCol, null);
 			
 			//do some work here to actually move
 			

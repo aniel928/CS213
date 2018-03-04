@@ -1,9 +1,10 @@
 package chess;
 
 public class Rook extends Piece {
-
+	
 	public Rook(String color) {
 		this.color = color;
+		this.piece = "Rook";
 	}
 	
 	@Override
@@ -11,6 +12,11 @@ public class Rook extends Piece {
 		return this.color;
 	}
 
+	@Override
+	protected String getPiece() {
+		return this.piece;
+	}
+	
 	@Override
 	protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol) {
 		return ((startRow == endRow) || (startCol == endCol));			
