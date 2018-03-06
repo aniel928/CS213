@@ -215,6 +215,12 @@ public class Chess implements ChessBoard{
 				continue;
 			}
 			
+			if(!(piece.coastClear(startRow, startCol, endRow, endCol))){
+				System.out.println("Coast not clear");
+				illegalMove();
+				continue;
+			}
+			
 			//check if another piece occupies destination (opposite color)
 			if(ChessBoard.getPiece(endRow,  endCol) != null) {
 				if(!ChessBoard.getPiece(endRow, endCol).getColor().equals(turn)) {

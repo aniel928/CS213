@@ -74,9 +74,9 @@ public class Pawn extends Piece {
 	}
 	
 	@Override
-	protected boolean coastClear(int startRpw, int startCol, int endRow, int endCol) {
+	protected boolean coastClear(int startRow, int startCol, int endRow, int endCol) {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 	
 	@Override

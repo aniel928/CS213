@@ -23,9 +23,49 @@ public class Rook extends Piece {
 	}
 	
 	@Override
-	protected boolean coastClear(int startRpw, int startCol, int endRow, int endCol) {
-		// TODO Auto-generated method stub
-		return false;
+	protected boolean coastClear(int startRow, int startCol, int endRow, int endCol) {
+		System.out.println("SR" + startRow + "SC" + startCol + "ER" +  endRow + "EC"+ endCol);
+		if(startRow == endRow) {
+			if(startCol > endCol) {
+				int temp = --startCol;
+				startCol = ++endCol;
+				endCol = temp;
+			}
+			else {
+				startCol++;
+				endCol--;
+			}
+			int i = startCol;
+			while(i <= endCol) {
+				if(ChessBoard.getPiece(startRow, i) != null) {
+					return false;
+				}
+				i++;
+			}
+		}
+		else if(startCol == endCol){
+			System.out.println("else");
+			if(startRow > endRow) {
+				int temp = --startRow;
+				startRow = ++endRow;
+				endRow = temp;
+				System.out.println("sr"+startRow+"er" +endRow);
+			}
+			else {
+				startRow++;
+				endRow--;
+			}
+			int i = startRow;
+			while(i <= endRow) {
+				System.out.println(i);
+				if(ChessBoard.getPiece(i, startCol) != null) {
+					return false;
+				}
+				i++;
+			}
+				
+		}
+		return true;
 	}
 	
 	@Override

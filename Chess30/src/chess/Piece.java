@@ -12,5 +12,5 @@ public abstract class Piece {
 	//find out if current move is legal.
 	protected abstract boolean isLegalMove(int startRow, int startCol, int endRow, int endCol);
 	//check if anyone is in my way
-	protected abstract boolean coastClear(int startRpw, int startCol, int endRow, int endCol);
+	protected abstract boolean coastClear(int startRow, int startCol, int endRow, int endCol);
 }
