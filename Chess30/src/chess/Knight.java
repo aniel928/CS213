@@ -23,6 +23,12 @@ public class Knight extends Piece {
 	}
 	
 	@Override
+	protected boolean coastClear(int startRpw, int startCol, int endRow, int endCol) {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	
+	@Override
 	public String toString() {
 		if(this.color == "White") {
 			return "wN";

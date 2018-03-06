@@ -70,9 +70,12 @@ public class Pawn extends Piece {
 				return true;
 			}
 		}
-		
-		
-		
+		return false;
+	}
+	
+	@Override
+	protected boolean coastClear(int startRpw, int startCol, int endRow, int endCol) {
+		// TODO Auto-generated method stub
 		return false;
 	}
 	

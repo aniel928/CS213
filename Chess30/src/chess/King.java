@@ -42,6 +42,12 @@ public class King extends Piece {
 	}
 	
 	@Override
+	protected boolean coastClear(int startRpw, int startCol, int endRow, int endCol) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	@Override
 	public String toString() {
 		if(this.color == "White") {
 			return "wK";
