@@ -2,7 +2,7 @@ package chess;
 //TEST 123
 import java.util.Scanner;
 
-public class Chess implements ChessBoard{
+public class Chess{
 	private static boolean gameOver = false;
 	protected static String turn = "White";
 	private static boolean draw = false;
@@ -75,11 +75,11 @@ public class Chess implements ChessBoard{
 	}
 	
 	//handle promotion of piece.
-	private static void promote(String piece, int col, int row) {
-		if(!(row == 0 && ChessBoard.getPiece(row,col).piece.equals("Pawn"))) {
-			System.out.println("fuck");
-			//throw invalid move
-		}
+	private static void promote(ChessBoard board, String piece, int col, int row) {
+//		if(!(row == 0 && board.getPiece(row,col).piece.equals("Pawn"))) {
+//			System.out.println("fuck");
+//			//throw invalid move
+//		}
 		System.out.println("Promote pawn to "+piece+" at array["+row+"]["+col+"].");
 	}
 	
@@ -95,11 +95,11 @@ public class Chess implements ChessBoard{
 	}
 	
 	//takes input of board position (i.e. a1 or e5) and returns where that is in the array
-	private static int[] getArrayVals(String move) {
+	private static int[] getArrayVals(String move, ChessBoard board) {
 		int row;
 		try{
 			//row 8 is at top of board, so we need to reverse the input row #
-			row = ROWS-Integer.parseInt(String.valueOf(move.charAt(1)));
+			row = board.ROWS-Integer.parseInt(String.valueOf(move.charAt(1)));
 		}
 		catch(Exception e){
 			//if not a valid row number (1-8), return -1's so we flag as error.
@@ -144,14 +144,14 @@ public class Chess implements ChessBoard{
 		
 	}
 	
-	private static void playGame(Scanner scanner) {
+	private static void playGame(Scanner scanner, ChessBoard board) {
 		while(!gameOver) {
 			//get the current board.
 			if(goAgain) {
 				goAgain = false;
 			}
 			else{
-				System.out.println(ChessBoard.getBoard());
+				System.out.println(board.getBoard());
 			}
 			
 			//Prompt user for move and parse input
@@ -173,12 +173,12 @@ public class Chess implements ChessBoard{
 			}
 			
 			//get positions of starting spot
-			int[] pos = getArrayVals(moves[0]);
+			int[] pos = getArrayVals(moves[0], board);
 			int startRow = pos[0];
 			int startCol = pos[1];
 			
 			//get position of ending spot
-			pos = getArrayVals(moves[1]);
+			pos = getArrayVals(moves[1], board);
 			int endRow = pos[0];
 			int endCol = pos[1];
 			
@@ -190,7 +190,7 @@ public class Chess implements ChessBoard{
 			}
 			
 			//Store this piece in a variable
-			Piece piece = ChessBoard.getPiece(startRow,  startCol);
+			Piece piece = board.getPiece(startRow,  startCol);
 			//check if there is currently a piece on e2 that belongs to current color.
 			if(piece != null) {
 				
@@ -209,21 +209,21 @@ public class Chess implements ChessBoard{
 			}
 			
 			//if yes, check for valid moves (function in piece)
-			if(!(piece.isLegalMove(ROWS-startRow, startCol, ROWS-endRow, endCol))) {
+			if(!(piece.isLegalMove(board.ROWS-startRow, startCol, board.ROWS-endRow, endCol, board))) {
 				System.out.println("SHITTY MOVE");
 				illegalMove();
 				continue;
 			}
 			
-			if(!(piece.coastClear(startRow, startCol, endRow, endCol))){
+			if(!(piece.coastClear(startRow, startCol, endRow, endCol, board))){
 				System.out.println("Coast not clear");
 				illegalMove();
 				continue;
 			}
 			
 			//check if another piece occupies destination (opposite color)
-			if(ChessBoard.getPiece(endRow,  endCol) != null) {
-				if(!ChessBoard.getPiece(endRow, endCol).getColor().equals(turn)) {
+			if(board.getPiece(endRow,  endCol) != null) {
+				if(!board.getPiece(endRow, endCol).getColor().equals(turn)) {
 					System.out.println("Valid");
 				}
 				else {
@@ -236,14 +236,23 @@ public class Chess implements ChessBoard{
 			
 			
 			if(promote) {
-				promote(moves[2], startRow, startCol);
+				promote(board, moves[2], startRow, startCol);
 			}
+			
+			//store in case issue with check and need to revert
+//			Piece oldPiece = board.getPiece(endRow, endCol);
+			
 			//move current to new and remove current position
-			ChessBoard.setPiece(endRow, endCol, piece);
-			ChessBoard.setPiece(startRow, startCol, null);
+			board.setPiece(endRow, endCol, piece);
+			board.setPiece(startRow, startCol, null);
 			
-			//do some work here to actually move
 			
+			//Check both Kings in Check/CheckMate
+				//if current color in check, return error and revert cahnge
+				//if current color in check, return "Check"
+			
+			
+			//Change turns			
 			if(turn.equals("White")) {
 				turn = "Black";
 			}
@@ -258,12 +267,12 @@ public class Chess implements ChessBoard{
 	public static void main(String[] args){
 		//set up scanner
 		Scanner scanner = new Scanner(System.in);
-
+		ChessBoard board = new ChessBoard();
 		//initialize chessboard - put all pieces in starting positions
-		ChessBoard.initializeBoard();
+		board.initializeBoard();
 		
 		//play the game!
-		playGame(scanner);
+		playGame(scanner, board);
 		
 		//game is over, so close up shop.
 		scanner.close();

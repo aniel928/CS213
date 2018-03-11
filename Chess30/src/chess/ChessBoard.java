@@ -1,11 +1,12 @@
 package chess;
 
-public interface ChessBoard {
+public class ChessBoard {
 	final int ROWS = 8;
 	final int COLS = 8;
-	static Piece[][] positions = new Piece[ROWS][COLS];
+	Piece[][] positions = new Piece[ROWS][COLS];
 	
-	static void initializeBoard() {
+	
+	void initializeBoard() {
 		positions[0][0] = new Rook("Black");
 		positions[0][1] = new Knight("Black");
 		positions[0][2] = new Bishop("Black");
@@ -43,7 +44,7 @@ public interface ChessBoard {
 		positions[7][7] = new Rook("White");
 	}
 	
-	static String getBoard() {
+	String getBoard() {
 		// TODO Auto-generated method stub
 		String board = "";
 		for(int i = 0; i< ROWS; i++) {
@@ -71,11 +72,11 @@ public interface ChessBoard {
 		return board;
 	}
 	
-	static Piece getPiece(int row, int col) {
+	Piece getPiece(int row, int col) {
 		return positions[row][col];
 	}
 	
-	static void setPiece(int row, int col, Piece piece) {
+	void setPiece(int row, int col, Piece piece) {
 		positions[row][col] = piece;
 	}
 }

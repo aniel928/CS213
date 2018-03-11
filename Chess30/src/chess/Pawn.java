@@ -1,5 +1,8 @@
 package chess;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Pawn extends Piece {
 	
 	
@@ -19,7 +22,7 @@ public class Pawn extends Piece {
 	}
 	
 	@Override
-	protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol) {
+	protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
 		
 		//if White pawn
 		if(this.color.equals("White")) {
@@ -28,7 +31,7 @@ public class Pawn extends Piece {
 				return true;
 			}
 			if(startCol == endCol && (startRow == (endRow - 1))){
-				if(ChessBoard.getPiece(ChessBoard.ROWS - endRow, endCol) != null && ChessBoard.getPiece(ChessBoard.ROWS - endRow,  endCol).color.equals("Black")) {
+				if(board.getPiece(board.ROWS - endRow, endCol) != null && board.getPiece(board.ROWS - endRow,  endCol).color.equals("Black")) {
 					return false;
 				}
 				return true;
@@ -36,10 +39,10 @@ public class Pawn extends Piece {
 			System.out.println("sc"+startCol + "ec"+endCol +"sr"+ startRow + "er"+endRow);
 			if(((startCol == (endCol - 1)) || (startCol == endCol + 1)) && (startRow == (endRow - 1))) {
 				System.out.println("one");
-				if(ChessBoard.getPiece(ChessBoard.ROWS - endRow, endCol) == null) {
+				if(board.getPiece(board.ROWS - endRow, endCol) == null) {
 					System.out.println("NULL");
 					return false;
-				}if(ChessBoard.getPiece(ChessBoard.ROWS - endRow, endCol).color.equals("White")) {
+				}if(board.getPiece(board.ROWS - endRow, endCol).color.equals("White")) {
 					System.out.println("White");
 					return false;
 				}
@@ -54,7 +57,7 @@ public class Pawn extends Piece {
 				return true;
 			}
 			if(startCol == endCol && (startRow == (endRow + 1))){
-				if(ChessBoard.getPiece(ChessBoard.ROWS - endRow, endCol) != null && ChessBoard.getPiece(ChessBoard.ROWS - endRow, endCol).color.equals("White")) {
+				if(board.getPiece(board.ROWS - endRow, endCol) != null && board.getPiece(board.ROWS - endRow, endCol).color.equals("White")) {
 					return false;
 				}
 				return true;
@@ -62,7 +65,7 @@ public class Pawn extends Piece {
 			System.out.println("sc"+startCol + "ec"+endCol +"sr"+ startRow + "er"+endRow);
 			if(((startCol == (endCol - 1)) || (startCol == endCol + 1)) && (startRow == (endRow + 1))) {
 				System.out.println("four");
-				if(ChessBoard.getPiece(ChessBoard.ROWS - endRow, endCol) == null || ChessBoard.getPiece(ChessBoard.ROWS - endRow, endCol).color.equals("Black")) {
+				if(board.getPiece(board.ROWS - endRow, endCol) == null || board.getPiece(board.ROWS - endRow, endCol).color.equals("Black")) {
 					System.out.println("five");
 					return false;
 				}
@@ -74,7 +77,7 @@ public class Pawn extends Piece {
 	}
 	
 	@Override
-	protected boolean coastClear(int startRow, int startCol, int endRow, int endCol) {
+	protected boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
 		// TODO Auto-generated method stub
 		return true;
 	}
@@ -87,6 +90,26 @@ public class Pawn extends Piece {
 		else {
 			return "bp";
 		}
+	}
+
+	@Override
+	protected List<Integer[]> validMoves(int startRow, int startCol) {
+		
+		List<Integer[]> valid = new ArrayList<>();
+		
+		if(this.color.equals("White") && startRow > 0){
+			Integer[] arr = {--startRow, startCol};
+			valid.add(arr);
+		}
+		
+		if(this.color.equals("White") && startRow < 7){
+			Integer[] arr = {++startRow, startCol};
+			valid.add(arr);
+		}
+		
+		//find a way to check for kill move
+		
+		return null;
 	}
 
 

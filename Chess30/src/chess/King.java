@@ -1,5 +1,7 @@
 package chess;
 
+import java.util.List;
+
 public class King extends Piece {
 	
 	public King(String color) {
@@ -18,21 +20,21 @@ public class King extends Piece {
 	}
 	
 	@Override
-	protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol) {
+	protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
 		//if piece hasn't moved and king is trying to move two spaces to the left or right, then look for castle
 		if(!moved && startRow == endRow) {
 			//right side of board
 			if(endCol == 6) {
-				if(ChessBoard.getPiece(ChessBoard.ROWS - startRow,  7) != null) {
-					if(ChessBoard.getPiece(ChessBoard.ROWS - startRow,7).piece == "Rook" &&! ChessBoard.getPiece(ChessBoard.ROWS - startRow, 7).moved) {
+				if(board.getPiece(board.ROWS - startRow,  7) != null) {
+					if(board.getPiece(board.ROWS - startRow,7).piece == "Rook" &&! board.getPiece(board.ROWS - startRow, 7).moved) {
 						return true;
 					}
 				}
 			}
 			//left side of board.
 			if(endCol == 2) {
-				if(ChessBoard.getPiece(ChessBoard.ROWS - startRow,  1) != null) {
-					if(ChessBoard.getPiece(ChessBoard.ROWS - startRow,  1).piece == "Rook" &&! ChessBoard.getPiece(ChessBoard.ROWS - startRow,  1).moved) {
+				if(board.getPiece(board.ROWS - startRow,  1) != null) {
+					if(board.getPiece(board.ROWS - startRow,  1).piece == "Rook" &&! board.getPiece(board.ROWS - startRow,  1).moved) {
 						return true;
 					}
 				}
@@ -42,8 +44,8 @@ public class King extends Piece {
 	}
 	
 	@Override
-	protected boolean coastClear(int startRow, int startCol, int endRow, int endCol) {
-		// TODO Auto-generated method stub
+	protected boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
+		//only need to check for castling
 		return false;
 	}
 	
@@ -55,6 +57,12 @@ public class King extends Piece {
 		else {
 			return "bK";
 		}
+	}
+
+	@Override
+	protected List<Integer[]> validMoves(int startRow, int startCol) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

@@ -1,5 +1,7 @@
 package chess;
 
+import java.util.List;
+
 public class Knight extends Piece {
 
 	public Knight(String color) {
@@ -18,12 +20,12 @@ public class Knight extends Piece {
 	}
 	
 	@Override
-	protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol) {
+	protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
 		return (Math.abs(startRow - endRow) == 1 && Math.abs(startCol - endCol) == 2) || (Math.abs(startRow - endRow) == 2 && Math.abs(startCol - endCol) == 1);
 	}
 	
 	@Override
-	protected boolean coastClear(int startRow, int startCol, int endRow, int endCol) {
+	protected boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
 		// TODO Auto-generated method stub
 		return true;
 	}
@@ -36,6 +38,12 @@ public class Knight extends Piece {
 		else {
 			return "bN";
 		}
+	}
+
+	@Override
+	protected List<Integer[]> validMoves(int startRow, int startCol) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 
