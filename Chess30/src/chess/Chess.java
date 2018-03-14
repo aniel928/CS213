@@ -214,7 +214,7 @@ public class Chess{
 				illegalMove();
 				continue;
 			}
-			
+			//if valid ,check for pieces in the way (except for knight)
 			if(!(piece.coastClear(startRow, startCol, endRow, endCol, board))){
 				System.out.println("Coast not clear");
 				illegalMove();
@@ -231,9 +231,6 @@ public class Chess{
 					continue;
 				}
 			}
-			
-			//if valid ,check for pieces in the way (except for knight)
-			
 			
 			if(promote) {
 				promote(board, moves[2], startRow, startCol);

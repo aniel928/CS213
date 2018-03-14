@@ -26,7 +26,48 @@ public class Bishop extends Piece {
 	
 	@Override
 	protected boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
-		// TODO Auto-generated method stub
+		boolean properOrder = true;
+		if(startRow > endRow && startCol > endCol) {
+			int temp = --startRow;
+			startRow = ++endRow;
+			endRow = temp;
+			temp = --startCol;
+			startCol = ++endCol;
+			endCol = temp;
+			System.out.println("sr"+startRow+"er" +endRow);
+		}
+		else if(startRow < endRow && startCol < endCol) {
+			startRow++;
+			endRow--;
+			startCol++;
+			endCol--;
+		}
+		else if(startRow < endRow && startCol > endCol) {
+			properOrder = false;
+			int temp = --startRow;
+			startRow = ++endRow;
+			endRow = temp;
+			temp = --startCol;
+			startCol = ++endCol;
+			endCol = temp;
+			System.out.println("sr"+startRow+"er" +endRow);
+			
+		}
+		else if(startRow > endRow && startCol < endCol) {
+			properOrder = false;
+			startRow++;
+			endRow--;
+			startCol++;
+			endCol--;
+		}
+		else {
+			System.out.println("this should never happen");
+		}
+		
+		for(int i = startRow; i <= endRow; i++) {
+			
+		}
+		
 		return false;
 	}
 	
