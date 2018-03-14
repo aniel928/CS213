@@ -28,6 +28,9 @@ public class Pawn extends Piece {
 		if(this.color.equals("White")) {
 			//cover first move - white
 			if(startCol == endCol && startRow == 2 && endRow == 4) {
+				if(board.getPiece(endRow, endCol) != null) {
+					return false;
+				}
 				return true;
 			}
 			if(startCol == endCol && (startRow == (endRow - 1))){
@@ -54,6 +57,9 @@ public class Pawn extends Piece {
 		else {
 			//cover first move - black
 			if(startCol == endCol && startRow == 7 && endRow == 5) {
+				if(board.getPiece(endRow, endCol) != null) {
+					return false;
+				}
 				return true;
 			}
 			if(startCol == endCol && (startRow == (endRow + 1))){
@@ -78,7 +84,20 @@ public class Pawn extends Piece {
 	
 	@Override
 	protected boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
-		// TODO Auto-generated method stub
+		if(this.color.equals("White")){
+			if(startRow == 6 && endRow == 4) {
+				if(board.getPiece(5, startCol) != null) {
+					return false;
+				}
+			}
+		}
+		else{
+			if(startRow == 1 && endRow == 3) {
+				if(board.getPiece(2, startCol) != null) {
+					return false;
+				}
+			}
+		}
 		return true;
 	}
 	
