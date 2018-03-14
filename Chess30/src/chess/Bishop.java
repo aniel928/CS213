@@ -27,48 +27,62 @@ public class Bishop extends Piece {
 	@Override
 	protected boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
 		boolean properOrder = true;
+		System.out.println("sr"+startRow+"er" +endRow+"sc"+startCol+"ec"+endCol);
+		
+		//move is up/left, make it the same as down/right (eliminate endpoints)
 		if(startRow > endRow && startCol > endCol) {
-			int temp = --startRow;
-			startRow = ++endRow;
-			endRow = temp;
-			temp = --startCol;
-			startCol = ++endCol;
-			endCol = temp;
-			System.out.println("sr"+startRow+"er" +endRow);
+			int temp = --startRow;   //6
+			startRow = ++endRow;     //6
+			endRow = temp;			//6
+			temp = --startCol;      
+			startCol = ++endCol;    
+			endCol = temp;          
+
 		}
+		//move is down/right, eliminate endpoints
 		else if(startRow < endRow && startCol < endCol) {
 			startRow++;
 			endRow--;
 			startCol++;
 			endCol--;
 		}
-		else if(startRow < endRow && startCol > endCol) {
+		//move is up/right, make sme as down/left (elminate endpoints)
+		else if(startRow > endRow && startCol < endCol) {
 			properOrder = false;
-			int temp = --startRow;
+			int temp = --startRow;	
 			startRow = ++endRow;
 			endRow = temp;
-			temp = --startCol;
-			startCol = ++endCol;
+			temp = ++startCol;				
+			startCol = --endCol;
 			endCol = temp;
 			System.out.println("sr"+startRow+"er" +endRow);
-			
 		}
-		else if(startRow > endRow && startCol < endCol) {
+		//move is down/left, eliminate endpoints
+		else if(startRow < endRow && startCol > endCol) {
 			properOrder = false;
 			startRow++;
 			endRow--;
-			startCol++;
-			endCol--;
-		}
-		else {
+			startCol--;
+			endCol++;
+		}else {
 			System.out.println("this should never happen");
 		}
+		int i = startRow;
+		int j = startCol;
 		
-		for(int i = startRow; i <= endRow; i++) {
-			
-		}
+			while(i <= endRow) {
+				if(board.getPiece(i, j) != null) {
+					return false;
+				}
+				i++;
+				if(properOrder) {
+					j++;
+				}else {
+					j--;
+				}
+			}
 		
-		return false;
+		return true;
 	}
 	
 	@Override
