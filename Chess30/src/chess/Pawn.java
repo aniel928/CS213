@@ -31,6 +31,8 @@ public class Pawn extends Piece {
 				if(board.getPiece(endRow, endCol) != null) {
 					return false;
 				}
+				Piece ghostPawn = new GhostPawn();
+				board.setPiece(3, startCol, ghostPawn);
 				return true;
 			}
 			if(startCol == endCol && (startRow == (endRow - 1))){
@@ -60,6 +62,8 @@ public class Pawn extends Piece {
 				if(board.getPiece(endRow, endCol) != null) {
 					return false;
 				}
+				Piece ghostPawn = new GhostPawn();
+				board.setPiece(3, startCol, ghostPawn);
 				return true;
 			}
 			if(startCol == endCol && (startRow == (endRow + 1))){
