@@ -1,5 +1,4 @@
 package chess;
-//TEST 123
 import java.util.Scanner;
 
 public class Chess{
@@ -9,6 +8,7 @@ public class Chess{
 	private static boolean promote = false;
 	private static boolean goAgain = false;
 	private static ChessBoard board;
+	private static boolean castle = false;
 
 	//Checks the format of the input and makes sure the user is giving good commands
 	private static boolean checkMoves(String[] moves) {
@@ -248,10 +248,18 @@ public class Chess{
 			//Store this piece in a variable
 			Piece piece = board.getPiece(startRow,  startCol);
 			
+			//if promotion got flagged and this piece is not a pawn, illegal move
 			if(promote && !piece.getPiece().equals("Pawn")){
 				System.out.println("Promotion not on pawn");
+				promote = false;
 				illegalMove();
 				continue;
+			}
+			if(promote && ((piece.getColor().equals("White") && endRow != 0) || (piece.getColor().equals("Black") && endRow != 7))) {
+				System.out.println("Promotion not valid except last row");
+				promote = false;
+				illegalMove();
+				continue;				
 			}
 			
 			//check if there is currently a piece on e2 that belongs to current color.
@@ -294,11 +302,14 @@ public class Chess{
 				}
 			}
 			
+			if(piece.getPiece().equals("King") && Math.abs(startCol - endCol) == 2) {
+				castle = true;
+			}
+			
 			if(piece.getPiece().equals("Pawn")) {
 				checkForPromotion(piece, startRow);
 
-			}
-			
+			}			
 			
 			if(promote) {
 				String promoteTo = "";
@@ -315,19 +326,38 @@ public class Chess{
 				}
 			}
 			
-			
-			
 			//store in case issue with check and need to revert
 			Piece oldPiece = board.getPiece(endRow, endCol);
 			
-			//move current to new and remove current position
-			board.setPiece(endRow, endCol, piece);
-			board.setPiece(startRow, startCol, null);
-			
-			if(oldPiece != null && oldPiece.getPiece().equals("ghost")) {
-				enforceEnpassant(endCol);
+			if(castle) {
+				if(startCol - endCol == 2) {
+					board.setPiece(endRow,  endCol, piece);
+					Piece rook = board.getPiece(endRow, 0);
+					board.setPiece(endRow, 3, rook);
+					board.setPiece(startRow, startCol, null);
+					board.setPiece(endRow, 0, null);
+				}
+				else if(startCol - endCol == -2) {
+					board.setPiece(endRow,  endCol, piece);
+					Piece rook = board.getPiece(endRow, 0);
+					board.setPiece(endRow, 5, rook);
+					board.setPiece(startRow, startCol, null);
+					board.setPiece(endRow, 7, null);
+				}
+				castle = false;
 			}
-			//Check both Kings in Check/CheckMate
+			else {
+				
+				//move current to new and remove current position
+				board.setPiece(endRow, endCol, piece);
+				piece.moved = true;
+				board.setPiece(startRow, startCol, null);
+				
+				if(oldPiece != null && oldPiece.getPiece().equals("ghost")) {
+					enforceEnpassant(endCol);
+				}
+			}
+				//Check both Kings in Check/CheckMate
 				//if current color in check, return error and revert cahnge
 				//if current color in check, return "Check"
 			

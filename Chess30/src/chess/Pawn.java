@@ -22,13 +22,12 @@ public class Pawn extends Piece {
 	}
 	
 	@Override
-	protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
-		
+	protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {	
 		//if White pawn
 		if(this.color.equals("White")) {
 			//cover first move - white
 			if(startCol == endCol && startRow == 2 && endRow == 4) {
-				if(board.getPiece(endRow, endCol) != null) {
+				if(board.getPiece(board.ROWS - endRow, endCol) != null) {
 					return false;
 				}
 				return true;
@@ -57,7 +56,7 @@ public class Pawn extends Piece {
 		else {
 			//cover first move - black
 			if(startCol == endCol && startRow == 7 && endRow == 5) {
-				if(board.getPiece(endRow, endCol) != null) {
+				if(board.getPiece(board.ROWS - endRow, endCol) != null) {
 					return false;
 				}
 				return true;

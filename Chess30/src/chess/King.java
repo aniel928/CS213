@@ -22,19 +22,19 @@ public class King extends Piece {
 	@Override
 	protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
 		//if piece hasn't moved and king is trying to move two spaces to the left or right, then look for castle
-		if(!moved && startRow == endRow) {
+		if(!this.moved && startRow == endRow) {
 			//right side of board
 			if(endCol == 6) {
 				if(board.getPiece(board.ROWS - startRow,  7) != null) {
-					if(board.getPiece(board.ROWS - startRow,7).piece == "Rook" &&! board.getPiece(board.ROWS - startRow, 7).moved) {
+					if(board.getPiece(board.ROWS - startRow,7).getPiece().equals("Rook") && !board.getPiece(board.ROWS - startRow, 7).moved) {
 						return true;
 					}
 				}
 			}
 			//left side of board.
 			if(endCol == 2) {
-				if(board.getPiece(board.ROWS - startRow,  1) != null) {
-					if(board.getPiece(board.ROWS - startRow,  1).piece == "Rook" &&! board.getPiece(board.ROWS - startRow,  1).moved) {
+				if(board.getPiece(board.ROWS - startRow,  0) != null) {
+					if(board.getPiece(board.ROWS - startRow,  0).getPiece().equals("Rook") && !board.getPiece(board.ROWS - startRow,  0).moved) {
 						return true;
 					}
 				}
@@ -45,8 +45,18 @@ public class King extends Piece {
 	
 	@Override
 	protected boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
-		//only need to check for castling
-		return false;
+		if(startCol - endCol == 2) {
+			//Queen Side Castling
+			if(board.getPiece(startRow, startCol-1) != null || board.getPiece(startRow, startCol-2) != null || board.getPiece(startRow, startCol-3) != null) {
+				return false;
+			}
+		}else if(endCol - startCol == 2) {
+			//Regular Castling
+			if(board.getPiece(startRow, startCol+1) != null || board.getPiece(startRow, startCol+2) != null) {
+				return false;
+			}
+		}
+		return true;	
 	}
 	
 	@Override
