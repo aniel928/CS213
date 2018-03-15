@@ -47,12 +47,11 @@ public class Queen extends Piece {
 			}
 		}
 		else if(startCol == endCol){
-			System.out.println("else");
 			if(startRow > endRow) {
 				int temp = --startRow;
 				startRow = ++endRow;
 				endRow = temp;
-				System.out.println("sr"+startRow+"er" +endRow);
+				
 			}
 			else {
 				startRow++;
@@ -60,7 +59,6 @@ public class Queen extends Piece {
 			}
 			int i = startRow;
 			while(i <= endRow) {
-				System.out.println(i);
 				if(board.getPiece(i, startCol) != null) {
 					return false;
 				}
@@ -68,7 +66,8 @@ public class Queen extends Piece {
 			}
 				
 		}
-		else //move is up/left, make it the same as down/right (eliminate endpoints)
+		 //move is up/left, make it the same as down/right (eliminate endpoints)
+		else {
 			if(startRow > endRow && startCol > endCol) {
 				int temp = --startRow;
 				startRow = ++endRow;
@@ -93,7 +92,6 @@ public class Queen extends Piece {
 				temp = ++startCol;				
 				startCol = --endCol;
 				endCol = temp;
-				System.out.println("sr"+startRow+"er" +endRow);
 			}
 			//move is down/left, eliminate endpoints
 			else if(startRow < endRow && startCol > endCol) {
@@ -108,18 +106,18 @@ public class Queen extends Piece {
 			int i = startRow;
 			int j = startCol;
 			
-				while(i <= endRow) {
-					if(board.getPiece(i, j) != null) {
-						return false;
-					}
-					i++;
-					if(properOrder) {
-						j++;
-					}else {
-						j--;
-					}
+			while(i <= endRow) {
+				if(board.getPiece(i, j) != null) {
+					return false;
 				}
-		
+				i++;
+				if(properOrder) {
+					j++;
+				}else {
+					j--;
+				}
+			}
+		}	
 		return true;
 	}
 	

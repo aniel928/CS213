@@ -9,7 +9,7 @@ public class Chess{
 	private static boolean goAgain = false;
 	private static ChessBoard board;
 	private static boolean castle = false;
-
+	private static int[] WhiteKing, BlackKing;
 	//Checks the format of the input and makes sure the user is giving good commands
 	private static boolean checkMoves(String[] moves) {
 
@@ -47,7 +47,7 @@ public class Chess{
 			//if draw, make sure variable is set then announce draw.
 			if(draw == true && moves[0].equals("draw")){
 				gameOver = true;
-				System.out.println("\n\nDraw");
+				System.out.println("Draw");
 				return true;
 			}
 			//otherwise bad format
@@ -108,7 +108,7 @@ public class Chess{
 	
 	//This just prints out that the move is illegal.	
 	private static void illegalMove() {
-		System.out.println("\n\n Illegal move\n");
+		System.out.println("Illegal move, try again");
 		goAgain = true;
 	}
 
@@ -196,6 +196,37 @@ public class Chess{
 		
 	}
 	
+	//see if White is in check
+	private static boolean whiteCheck() {
+		System.out.println("Checking for check for white");
+		for(int i = 0; i < board.ROWS; i++) {
+			for(int j = 0; j < board.COLS; j++) {
+				Piece piece = board.getPiece(i, j);
+				if(piece != null && piece.getColor().equals("Black")) {
+					if(piece.isLegalMove(i, j, WhiteKing[0], WhiteKing[1], board) && piece.coastClear(i, j, WhiteKing[0], WhiteKing[1], board)) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	//see if Black is in check
+	private static boolean blackCheck() {
+		System.out.println("Checking for check for black");
+		for(int i = 0; i < board.ROWS; i++) {
+			for(int j = 0; j < board.COLS; j++) {
+				Piece piece = board.getPiece(i, j);
+				if(piece != null && piece.getColor().equals("White")) {
+					if(piece.isLegalMove(i, j, BlackKing[0], BlackKing[1], board) && piece.coastClear(i, j, BlackKing[0], BlackKing[1], board)) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
 	//the actual game
 	private static void playGame(Scanner scanner) {
 		while(!gameOver) {
@@ -203,15 +234,16 @@ public class Chess{
 			removeEnpassant();
 			
 			//print the current board, unless there was an invalid move.
-			if(goAgain) {
-				goAgain = false;
-			}
-			else{
+//			if(goAgain) {
+//				goAgain = false;
+//			}
+//			else{
 				System.out.println(board.getBoard());
-			}
+				//Prompt user for move and parse input
+				System.out.print(turn + "'s move: ");
+//			}
 			
-			//Prompt user for move and parse input
-			System.out.print(turn + "'s move: ");
+			
 			String move = scanner.nextLine();
 			String moves[] = move.split(" ");
 			boolean validInput = checkMoves(moves);
@@ -302,6 +334,8 @@ public class Chess{
 				}
 			}
 			
+			
+			
 			if(piece.getPiece().equals("King") && Math.abs(startCol - endCol) == 2) {
 				castle = true;
 			}
@@ -332,19 +366,18 @@ public class Chess{
 			if(castle) {
 				if(startCol - endCol == 2) {
 					board.setPiece(endRow,  endCol, piece);
-					Piece rook = board.getPiece(endRow, 0);
-					board.setPiece(endRow, 3, rook);
+					oldPiece = board.getPiece(endRow, 0);
+					board.setPiece(endRow, 3, oldPiece);
 					board.setPiece(startRow, startCol, null);
 					board.setPiece(endRow, 0, null);
 				}
 				else if(startCol - endCol == -2) {
 					board.setPiece(endRow,  endCol, piece);
-					Piece rook = board.getPiece(endRow, 0);
-					board.setPiece(endRow, 5, rook);
+					oldPiece = board.getPiece(endRow, 0);
+					board.setPiece(endRow, 5, oldPiece);
 					board.setPiece(startRow, startCol, null);
 					board.setPiece(endRow, 7, null);
 				}
-				castle = false;
 			}
 			else {
 				
@@ -357,9 +390,65 @@ public class Chess{
 					enforceEnpassant(endCol);
 				}
 			}
-				//Check both Kings in Check/CheckMate
-				//if current color in check, return error and revert cahnge
-				//if current color in check, return "Check"
+
+			if(piece.getPiece().equals("King")) {
+				if(turn.equals("White")) {
+					WhiteKing[0] = endRow;
+					WhiteKing[1] = endCol;
+				}
+				else {
+					BlackKing[0] = endRow;
+					BlackKing[1] = endCol;
+				}
+			}
+
+			//Check both Kings in Check/CheckMate
+			boolean whiteCheck = whiteCheck();
+			boolean blackCheck = blackCheck();
+
+			//if current color in check, return error and revert cahnge
+			if((turn.equals("White") && whiteCheck) || (turn.equals("Black") && blackCheck)) {
+				illegalMove();
+				if(castle) {
+					if(startCol - endCol == 2) {
+						board.setPiece(startRow, startCol, piece);
+						board.setPiece(startRow,  0, oldPiece);
+						board.setPiece(endRow, endCol, null);
+						board.setPiece(endRow, 3, null);
+					}
+					else if(startCol - endCol == -2) {
+						board.setPiece(startRow, startCol, piece);
+						board.setPiece(startRow,  7, oldPiece);
+						board.setPiece(endRow, endCol, null);
+						board.setPiece(endRow, 5, null);
+					}
+					if(turn.equals("White")) {
+						WhiteKing[0] = 7;
+						WhiteKing[1] = 4;
+					}
+					if(turn.equals("Black")) {
+						BlackKing[0] = 0;
+						BlackKing[1] = 4;
+					}
+					
+				}else {
+					board.setPiece(startRow,  startCol,  piece);
+					board.setPiece(endRow,  endCol, oldPiece);
+				}
+				continue;
+			}
+			//if other color in check, check for checkmate, then return either "Check" or "Checkmate"
+			else if((turn.equals("White") && blackCheck) || (turn.equals("Black") && whiteCheck)) {
+				//check for checkmate
+				boolean checkMate = false;
+				if(checkMate) {
+					System.out.println("Checkmate\n"+turn+" wins");
+				}else {
+					System.out.println("Check");
+				}
+				
+			}
+			castle = false;
 			
 			
 			//Change turns			
@@ -380,6 +469,12 @@ public class Chess{
 		board = new ChessBoard();
 		//initialize chessboard - put all pieces in starting positions
 		board.initializeBoard();
+		WhiteKing = new int[2];
+		WhiteKing[0] = 7;
+		WhiteKing[1] = 4;
+		BlackKing = new int[2];
+		BlackKing[0] = 0;
+		BlackKing[1] = 4;
 		
 		//play the game!
 		playGame(scanner);

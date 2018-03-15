@@ -46,7 +46,7 @@ public class ChessBoard {
 	
 	String getBoard() {
 		// TODO Auto-generated method stub
-		String board = "";
+		String board = "\n";
 		for(int i = 0; i< ROWS; i++) {
 			for(int j = 0; j< COLS; j++) {
 				if(positions[i][j] != null && !positions[i][j].getPiece().equals("ghost")) {

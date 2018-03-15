@@ -27,7 +27,6 @@ public class Bishop extends Piece {
 	@Override
 	protected boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
 		boolean properOrder = true;
-		System.out.println("sr"+startRow+"er" +endRow+"sc"+startCol+"ec"+endCol);
 		
 		//move is up/left, make it the same as down/right (eliminate endpoints)
 		if(startRow > endRow && startCol > endCol) {
@@ -55,7 +54,6 @@ public class Bishop extends Piece {
 			temp = ++startCol;				
 			startCol = --endCol;
 			endCol = temp;
-			System.out.println("sr"+startRow+"er" +endRow);
 		}
 		//move is down/left, eliminate endpoints
 		else if(startRow < endRow && startCol > endCol) {

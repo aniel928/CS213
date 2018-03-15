@@ -38,17 +38,13 @@ public class Pawn extends Piece {
 				}
 				return true;
 			}
-			System.out.println("sc"+startCol + "ec"+endCol +"sr"+ startRow + "er"+endRow);
+			
 			if(((startCol == (endCol - 1)) || (startCol == endCol + 1)) && (startRow == (endRow - 1))) {
-				System.out.println("one");
 				if(board.getPiece(board.ROWS - endRow, endCol) == null) {
-					System.out.println("NULL");
 					return false;
 				}if(board.getPiece(board.ROWS - endRow, endCol).color.equals("White")) {
-					System.out.println("White");
 					return false;
 				}
-				System.out.println("three");
 				return true;
 			}
 		}
@@ -67,14 +63,10 @@ public class Pawn extends Piece {
 				}
 				return true;
 			}
-			System.out.println("sc"+startCol + "ec"+endCol +"sr"+ startRow + "er"+endRow);
 			if(((startCol == (endCol - 1)) || (startCol == endCol + 1)) && (startRow == (endRow + 1))) {
-				System.out.println("four");
 				if(board.getPiece(board.ROWS - endRow, endCol) == null || board.getPiece(board.ROWS - endRow, endCol).color.equals("Black")) {
-					System.out.println("five");
 					return false;
 				}
-				System.out.println("six");
 				return true;
 			}
 		}
