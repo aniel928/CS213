@@ -40,7 +40,9 @@ public class Rook extends Piece {
 			int i = startCol;
 			while(i <= endCol) {
 				if(board.getPiece(startRow, i) != null) {
-					return false;
+					if(!board.getPiece(startRow, i).getPiece().equals("ghost")) {
+						return false;
+					}
 				}
 				i++;
 			}
@@ -58,7 +60,9 @@ public class Rook extends Piece {
 			int i = startRow;
 			while(i <= endRow) {
 				if(board.getPiece(i, startCol) != null) {
-					return false;
+					if(!board.getPiece(i, startCol).getPiece().equals("ghost")) {
+						return false;
+					}
 				}
 				i++;
 			}

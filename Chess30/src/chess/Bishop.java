@@ -70,7 +70,9 @@ public class Bishop extends Piece {
 		
 			while(i <= endRow) {
 				if(board.getPiece(i, j) != null) {
-					return false;
+					if(!board.getPiece(i, j).getPiece().equals("ghost")) {
+						return false;
+					}
 				}
 				i++;
 				if(properOrder) {

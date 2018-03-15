@@ -234,15 +234,14 @@ public class Chess{
 			removeEnpassant();
 			
 			//print the current board, unless there was an invalid move.
-//			if(goAgain) {
-//				goAgain = false;
-//			}
-//			else{
+			if(goAgain) {
+				goAgain = false;
+			}
+			else{
 				System.out.println(board.getBoard());
 				//Prompt user for move and parse input
 				System.out.print(turn + "'s move: ");
-//			}
-			
+			}			
 			
 			String move = scanner.nextLine();
 			String moves[] = move.split(" ");
@@ -328,6 +327,9 @@ public class Chess{
 				if(!board.getPiece(endRow, endCol).getColor().equals(turn)) {
 					System.out.println("Valid");
 				}
+				else if(board.getPiece(endRow,  endCol).getPiece().equals("ghost")) {
+					System.out.println("Ok, just a ghost pawn");
+				}
 				else {
 					System.out.println("You can't kill yourself!");
 					continue;
@@ -386,7 +388,7 @@ public class Chess{
 				piece.moved = true;
 				board.setPiece(startRow, startCol, null);
 				
-				if(oldPiece != null && oldPiece.getPiece().equals("ghost")) {
+				if(piece.getPiece().equals("Pawn") && oldPiece != null && oldPiece.getPiece().equals("ghost")) {
 					enforceEnpassant(endCol);
 				}
 			}
