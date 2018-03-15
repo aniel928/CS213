@@ -339,7 +339,24 @@ public class Chess{
 			
 			
 			if(piece.getPiece().equals("King") && Math.abs(startCol - endCol) == 2) {
-				castle = true;
+				//if Black and not in check, then you're good.
+				if(turn.equals("Black") && !blackCheck()) {
+					castle = true;
+				}
+				//if Black and in check, not so good.
+				else if(turn.equals("Black")) {
+					illegalMove();
+					continue;
+				}
+				//if White and not in check, good
+				else if(turn.equals("White") && !whiteCheck()) {
+					castle = true;
+				}
+				//if White and in check, not so good.
+				else if(turn.equals("White")) {
+					illegalMove();
+					continue;
+				}
 			}
 			
 			if(piece.getPiece().equals("Pawn")) {
