@@ -4,33 +4,23 @@ import java.util.List;
 
 public class GhostPawn extends Piece {
 
+	public GhostPawn(String color) {
+		this.piece = "ghost";
+		this.color = color;
+	}
+	
 	@Override
 	protected String getColor() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.color;
 	}
 
 	@Override
 	protected String getPiece() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.piece;
 	}
 
 	@Override
 	protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
-		if(startCol == endCol && startRow == 2 && endRow == 4) {
-			if(board.getPiece(endRow, endCol) != null) {
-				return false;
-			}
-			return false;
-		}
-		
-		if(startCol == endCol && startRow == 7 && endRow == 5) {
-			if(board.getPiece(endRow, endCol) != null) {
-				return false;
-			}
-			return false;
-		}
 		return false;
 	}
 
@@ -44,6 +34,10 @@ public class GhostPawn extends Piece {
 	protected List<Integer[]> validMoves(int startRow, int startCol) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public String toString() {
+		return "gp ";
 	}
 
 }

@@ -31,8 +31,6 @@ public class Pawn extends Piece {
 				if(board.getPiece(endRow, endCol) != null) {
 					return false;
 				}
-				Piece ghostPawn = new GhostPawn();
-				board.setPiece(3, startCol, ghostPawn);
 				return true;
 			}
 			if(startCol == endCol && (startRow == (endRow - 1))){
@@ -62,8 +60,6 @@ public class Pawn extends Piece {
 				if(board.getPiece(endRow, endCol) != null) {
 					return false;
 				}
-				Piece ghostPawn = new GhostPawn();
-				board.setPiece(3, startCol, ghostPawn);
 				return true;
 			}
 			if(startCol == endCol && (startRow == (endRow + 1))){
@@ -93,6 +89,8 @@ public class Pawn extends Piece {
 				if(board.getPiece(5, startCol) != null) {
 					return false;
 				}
+				Piece ghostPawn = new GhostPawn(this.color);
+				board.setPiece(5, startCol, ghostPawn);
 			}
 		}
 		else{
@@ -100,6 +98,8 @@ public class Pawn extends Piece {
 				if(board.getPiece(2, startCol) != null) {
 					return false;
 				}
+				Piece ghostPawn = new GhostPawn(this.color);
+				board.setPiece(2, startCol, ghostPawn);
 			}
 		}
 		return true;

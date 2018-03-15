@@ -49,7 +49,7 @@ public class ChessBoard {
 		String board = "";
 		for(int i = 0; i< ROWS; i++) {
 			for(int j = 0; j< COLS; j++) {
-				if(positions[i][j] != null) {
+				if(positions[i][j] != null && !positions[i][j].getPiece().equals("ghost")) {
 					board += positions[i][j].toString()+ " ";
 				}
 				else {

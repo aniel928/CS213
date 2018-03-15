@@ -94,6 +94,39 @@ public class Chess{
 		goAgain = true;
 	}
 	
+	private static void removeEnpassant(ChessBoard board) {
+		int i = 0;
+		if(turn.equals("White")) {
+			while(i < 8) {
+				if(board.getPiece(5, i) != null && board.getPiece(5, i).getPiece().equals("ghost")) {
+					board.setPiece(5, i, null);
+					break;
+				}
+				i++;
+			}
+		}
+		else {
+			while(i < 8) {
+				if(board.getPiece(2,  i) != null && board.getPiece(2, i).getPiece().equals("ghost")) {
+					board.setPiece(2, i, null);
+					break;
+				}
+				i++;
+			}
+		
+		}
+	}
+	
+	private static void enforceEnpassant(int endCol, ChessBoard board) {
+		if(turn.equals("White")) {
+			board.setPiece(3, endCol, null);
+		}
+		else {
+			board.setPiece(4,  endCol,  null);
+		}
+	}
+
+	
 	//takes input of board position (i.e. a1 or e5) and returns where that is in the array
 	private static int[] getArrayVals(String move, ChessBoard board) {
 		int row;
@@ -146,6 +179,9 @@ public class Chess{
 	
 	private static void playGame(Scanner scanner, ChessBoard board) {
 		while(!gameOver) {
+			
+			removeEnpassant(board);
+			
 			//get the current board.
 			if(goAgain) {
 				goAgain = false;
@@ -237,13 +273,15 @@ public class Chess{
 			}
 			
 			//store in case issue with check and need to revert
-//			Piece oldPiece = board.getPiece(endRow, endCol);
+			Piece oldPiece = board.getPiece(endRow, endCol);
 			
 			//move current to new and remove current position
 			board.setPiece(endRow, endCol, piece);
 			board.setPiece(startRow, startCol, null);
 			
-			
+			if(oldPiece != null && oldPiece.getPiece().equals("ghost")) {
+				enforceEnpassant(endCol, board);
+			}
 			//Check both Kings in Check/CheckMate
 				//if current color in check, return error and revert cahnge
 				//if current color in check, return "Check"
