@@ -8,7 +8,8 @@ public class Chess{
 	private static boolean draw = false;
 	private static boolean promote = false;
 	private static boolean goAgain = false;
-	
+	private static ChessBoard board;
+
 	//Checks the format of the input and makes sure the user is giving good commands
 	private static boolean checkMoves(String[] moves) {
 
@@ -23,7 +24,7 @@ public class Chess{
 				draw = true;;
 			}
 			//request to promote flags a variable for when we're ready to promote.  
-			else if(moves[2].equals("knight") || moves[2].equals("rook") || moves[2].equals("bishop") || moves[2].equals("queen")){
+			else if(moves[2].equals("N") || moves[2].equals("R") || moves[2].equals("B") || moves[2].equals("Q")){
 				promote = true;
 			}
 			//otherwise, invalid input
@@ -74,27 +75,45 @@ public class Chess{
 		return true;
 	}
 	
-	//handle promotion of piece.
-	private static void promote(ChessBoard board, String piece, int col, int row) {
-//		if(!(row == 0 && board.getPiece(row,col).piece.equals("Pawn"))) {
-//			System.out.println("fuck");
-//			//throw invalid move
-//		}
-		System.out.println("Promote pawn to "+piece+" at array["+row+"]["+col+"].");
+	private static void checkForPromotion(Piece piece, int row) {
+		if((turn.equals("White") && row == 1) || (turn.equals("Black") && row == 6)) {
+			promote = true;
+		}
 	}
 	
-	//This just prints out that the move is invalid.
-	private static void invalidMove() {
-		goAgain = true;
-		System.out.println("\n\nInvalid move, please try again\n");
+	//handle promotion of piece.	
+	private static Piece promote(String strPiece, int row) {
+		Piece piece = null;
+		switch(strPiece) {
+			case "R":	
+				piece = new Rook(turn);
+				break;
+			case "N":
+				piece = new Knight(turn);
+				break;
+			case "B": 
+				piece = new Bishop(turn);
+				break;
+			case "Q":
+				piece = new Queen(turn);
+				break;
+			default:
+				piece = null;
+				System.out.println("Not valid promotion");
+		}
+	//	System.out.println("Promote pawn to "+piece+" at array["+row+"]["+col+"].");
+		promote = false;
+		return piece;
 	}
 	
+	//This just prints out that the move is illegal.	
 	private static void illegalMove() {
 		System.out.println("\n\n Illegal move\n");
 		goAgain = true;
 	}
-	
-	private static void removeEnpassant(ChessBoard board) {
+
+	//En passant valid for only one move, so remove any ghost pawn at beginning of each turn.
+	private static void removeEnpassant() {
 		int i = 0;
 		if(turn.equals("White")) {
 			while(i < 8) {
@@ -116,8 +135,9 @@ public class Chess{
 		
 		}
 	}
-	
-	private static void enforceEnpassant(int endCol, ChessBoard board) {
+
+	//if ghost pawn taken, remove pawn
+	private static void enforceEnpassant(int endCol) {
 		if(turn.equals("White")) {
 			board.setPiece(3, endCol, null);
 		}
@@ -125,10 +145,9 @@ public class Chess{
 			board.setPiece(4,  endCol,  null);
 		}
 	}
-
 	
 	//takes input of board position (i.e. a1 or e5) and returns where that is in the array
-	private static int[] getArrayVals(String move, ChessBoard board) {
+	private static int[] getArrayVals(String move) {
 		int row;
 		try{
 			//row 8 is at top of board, so we need to reverse the input row #
@@ -177,12 +196,13 @@ public class Chess{
 		
 	}
 	
-	private static void playGame(Scanner scanner, ChessBoard board) {
+	//the actual game
+	private static void playGame(Scanner scanner) {
 		while(!gameOver) {
+			//if pawn double moved last time, remove enpassant.
+			removeEnpassant();
 			
-			removeEnpassant(board);
-			
-			//get the current board.
+			//print the current board, unless there was an invalid move.
 			if(goAgain) {
 				goAgain = false;
 			}
@@ -199,7 +219,7 @@ public class Chess{
 			//check for errors in parsing.
 			if(!validInput) {
 				System.out.println("You fucked up your paramters");
-				invalidMove();
+				illegalMove();
 				continue;
 			}
 			
@@ -209,38 +229,44 @@ public class Chess{
 			}
 			
 			//get positions of starting spot
-			int[] pos = getArrayVals(moves[0], board);
+			int[] pos = getArrayVals(moves[0]);
 			int startRow = pos[0];
 			int startCol = pos[1];
 			
 			//get position of ending spot
-			pos = getArrayVals(moves[1], board);
+			pos = getArrayVals(moves[1]);
 			int endRow = pos[0];
 			int endCol = pos[1];
 			
 			//check to see if something went wrong when getting positions
 			if(startRow == -1 || startCol == -1 || endRow == -1 || endCol == -1) {
 				System.out.println("You fucked up board positions");
-				invalidMove();
+				illegalMove();
 				continue;
 			}
 			
 			//Store this piece in a variable
 			Piece piece = board.getPiece(startRow,  startCol);
+			
+			if(promote && !piece.getPiece().equals("Pawn")){
+				System.out.println("Promotion not on pawn");
+				illegalMove();
+				continue;
+			}
+			
 			//check if there is currently a piece on e2 that belongs to current color.
 			if(piece != null) {
-				
 				if(piece.getColor().equals(turn)) {
 					System.out.println("Valid");
 				}
 				else {
 					System.out.println("That's not your piece!");
-					invalidMove();
+					illegalMove();
 					continue;
 				}
 			}else {
 				System.out.println("There is no piece!");
-				invalidMove();
+				illegalMove();
 				continue;
 			}
 			
@@ -252,7 +278,7 @@ public class Chess{
 			}
 			//if valid ,check for pieces in the way (except for knight)
 			if(!(piece.coastClear(startRow, startCol, endRow, endCol, board))){
-				System.out.println("Coast not clear");
+				System.out.println("Coast not clear!");
 				illegalMove();
 				continue;
 			}
@@ -263,14 +289,33 @@ public class Chess{
 					System.out.println("Valid");
 				}
 				else {
-					System.out.println("Does not have piece of correct color!");
+					System.out.println("You can't kill yourself!");
 					continue;
 				}
 			}
 			
-			if(promote) {
-				promote(board, moves[2], startRow, startCol);
+			if(piece.getPiece().equals("Pawn")) {
+				checkForPromotion(piece, startRow);
+
 			}
+			
+			
+			if(promote) {
+				String promoteTo = "";
+				if(moves.length < 3) {
+					promoteTo = "Q";
+				}
+				else {
+					promoteTo = moves[2];
+				}
+				piece = promote(promoteTo, startCol);
+				if(piece == null) {
+					illegalMove();
+					continue;
+				}
+			}
+			
+			
 			
 			//store in case issue with check and need to revert
 			Piece oldPiece = board.getPiece(endRow, endCol);
@@ -280,7 +325,7 @@ public class Chess{
 			board.setPiece(startRow, startCol, null);
 			
 			if(oldPiece != null && oldPiece.getPiece().equals("ghost")) {
-				enforceEnpassant(endCol, board);
+				enforceEnpassant(endCol);
 			}
 			//Check both Kings in Check/CheckMate
 				//if current color in check, return error and revert cahnge
@@ -302,12 +347,12 @@ public class Chess{
 	public static void main(String[] args){
 		//set up scanner
 		Scanner scanner = new Scanner(System.in);
-		ChessBoard board = new ChessBoard();
+		board = new ChessBoard();
 		//initialize chessboard - put all pieces in starting positions
 		board.initializeBoard();
 		
 		//play the game!
-		playGame(scanner, board);
+		playGame(scanner);
 		
 		//game is over, so close up shop.
 		scanner.close();
