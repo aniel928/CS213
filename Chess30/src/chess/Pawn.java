@@ -107,23 +107,8 @@ public class Pawn extends Piece {
 	}
 
 	@Override
-	protected List<Integer[]> validMoves(int startRow, int startCol) {
-		
-		List<Integer[]> valid = new ArrayList<>();
-		
-		if(this.color.equals("White") && startRow > 0){
-			Integer[] arr = {--startRow, startCol};
-			valid.add(arr);
-		}
-		
-		if(this.color.equals("White") && startRow < 7){
-			Integer[] arr = {++startRow, startCol};
-			valid.add(arr);
-		}
-		
-		//find a way to check for kill move
-		
-		return null;
+	protected boolean checkForCheckMate(int startRow, int startCol, int[] kingSpot){	
+		return false;
 	}
 
 

@@ -82,26 +82,8 @@ public class Rook extends Piece {
 	}
 
 	@Override
-	protected List<Integer[]> validMoves(int startRow, int startCol) {
-		List<Integer[]> valid = new ArrayList<>();
-		
-		//add everything in same column
-		for(int i = 0; i < 8; i++) {
-			if(i != startRow) {
-				Integer[] arr = {startCol, i};
-				valid.add(arr);
-			}
-		}
-		
-		//add everything in same column
-		for(int i = 0; i < 8; i++) {
-			if(i != startCol) {
-				Integer[] arr = {i, startCol};
-				valid.add(arr);
-			}
-		}
-		
-		return valid;
+	protected boolean checkForCheckMate(int startRow, int startCol, int[] kingSpot){
+		return false;
 	}
 
 

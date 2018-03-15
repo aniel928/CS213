@@ -82,7 +82,7 @@ public class Chess{
 	}
 	
 	//handle promotion of piece.	
-	private static Piece promote(String strPiece, int row) {
+	private static Piece promote(String strPiece) {
 		Piece piece = null;
 		switch(strPiece) {
 			case "R":	
@@ -102,13 +102,12 @@ public class Chess{
 				System.out.println("Not valid promotion");
 		}
 	//	System.out.println("Promote pawn to "+piece+" at array["+row+"]["+col+"].");
-		promote = false;
 		return piece;
 	}
 	
 	//This just prints out that the move is illegal.	
 	private static void illegalMove() {
-		System.out.println("Illegal move, try again");
+		System.out.print("Illegal move, try again: ");
 		goAgain = true;
 	}
 
@@ -198,7 +197,6 @@ public class Chess{
 	
 	//see if White is in check
 	private static boolean whiteCheck() {
-		System.out.println("Checking for check for white");
 		for(int i = 0; i < board.ROWS; i++) {
 			for(int j = 0; j < board.COLS; j++) {
 				Piece piece = board.getPiece(i, j);
@@ -293,7 +291,7 @@ public class Chess{
 				continue;				
 			}
 			
-			//check if there is currently a piece on e2 that belongs to current color.
+			//check if there is currently a piece on starting spot that belongs to current color.
 			if(piece != null) {
 				if(piece.getColor().equals(turn)) {
 					System.out.println("Valid");
@@ -327,17 +325,40 @@ public class Chess{
 				if(!board.getPiece(endRow, endCol).getColor().equals(turn)) {
 					System.out.println("Valid");
 				}
-				else if(board.getPiece(endRow,  endCol).getPiece().equals("ghost")) {
-					System.out.println("Ok, just a ghost pawn");
-				}
+//				else if(board.getPiece(endRow,  endCol).getPiece().equals("ghost")) {
+//					System.out.println("Ok, just a ghost pawn");
+//				}
 				else {
 					System.out.println("You can't kill yourself!");
 					continue;
 				}
 			}
 			
+			//store in case issue with check and need to revert
+			Piece oldPiece = board.getPiece(endRow, endCol);
 			
 			
+			//check for promotion
+			if(piece.getPiece().equals("Pawn")) {
+				checkForPromotion(piece, startRow);
+			}			
+			
+			if(promote) {
+				String promoteTo = "";
+				if(moves.length < 3) {
+					promoteTo = "Q";
+				}
+				else {
+					promoteTo = moves[2];
+				}
+				piece = promote(promoteTo);
+				if(piece == null) {
+					illegalMove();
+					continue;
+				}
+			}
+			
+			//check for Castle
 			if(piece.getPiece().equals("King") && Math.abs(startCol - endCol) == 2) {
 				//if Black and not in check, then you're good.
 				if(turn.equals("Black") && !blackCheck()) {
@@ -359,29 +380,7 @@ public class Chess{
 				}
 			}
 			
-			if(piece.getPiece().equals("Pawn")) {
-				checkForPromotion(piece, startRow);
-
-			}			
-			
-			if(promote) {
-				String promoteTo = "";
-				if(moves.length < 3) {
-					promoteTo = "Q";
-				}
-				else {
-					promoteTo = moves[2];
-				}
-				piece = promote(promoteTo, startCol);
-				if(piece == null) {
-					illegalMove();
-					continue;
-				}
-			}
-			
-			//store in case issue with check and need to revert
-			Piece oldPiece = board.getPiece(endRow, endCol);
-			
+			//handle castle
 			if(castle) {
 				if(startCol - endCol == 2) {
 					board.setPiece(endRow,  endCol, piece);
@@ -389,22 +388,27 @@ public class Chess{
 					board.setPiece(endRow, 3, oldPiece);
 					board.setPiece(startRow, startCol, null);
 					board.setPiece(endRow, 0, null);
+					piece.moved = true;
+					oldPiece.moved = true;
 				}
 				else if(startCol - endCol == -2) {
 					board.setPiece(endRow,  endCol, piece);
-					oldPiece = board.getPiece(endRow, 0);
+					oldPiece = board.getPiece(endRow, 7);
 					board.setPiece(endRow, 5, oldPiece);
 					board.setPiece(startRow, startCol, null);
 					board.setPiece(endRow, 7, null);
+					piece.moved = true;
+					oldPiece.moved = true;
 				}
 			}
+			//no castle, so do regular move instead.
 			else {
-				
 				//move current to new and remove current position
 				board.setPiece(endRow, endCol, piece);
 				piece.moved = true;
 				board.setPiece(startRow, startCol, null);
 				
+				//if en passant, then enforce.
 				if(piece.getPiece().equals("Pawn") && oldPiece != null && oldPiece.getPiece().equals("ghost")) {
 					enforceEnpassant(endCol);
 				}
@@ -420,12 +424,14 @@ public class Chess{
 					BlackKing[1] = endCol;
 				}
 			}
+			
+			//Stalemate here
 
 			//Check both Kings in Check/CheckMate
 			boolean whiteCheck = whiteCheck();
 			boolean blackCheck = blackCheck();
 
-			//if current color in check, return error and revert cahnge
+			//if current color in check, return error and revert move
 			if((turn.equals("White") && whiteCheck) || (turn.equals("Black") && blackCheck)) {
 				illegalMove();
 				if(castle) {
@@ -449,10 +455,13 @@ public class Chess{
 						BlackKing[0] = 0;
 						BlackKing[1] = 4;
 					}
-					
+				}else if(promote){
+					piece = new Pawn(turn);
+					board.setPiece(startRow, startCol, piece);
+					board.setPiece(endRow, endCol, oldPiece);
 				}else {
-					board.setPiece(startRow,  startCol,  piece);
-					board.setPiece(endRow,  endCol, oldPiece);
+					board.setPiece(startRow, startCol, piece);
+					board.setPiece(endRow, endCol, oldPiece);
 				}
 				continue;
 			}
@@ -460,14 +469,17 @@ public class Chess{
 			else if((turn.equals("White") && blackCheck) || (turn.equals("Black") && whiteCheck)) {
 				//check for checkmate
 				boolean checkMate = false;
+				//
 				if(checkMate) {
 					System.out.println("Checkmate\n"+turn+" wins");
+					gameOver = true;
 				}else {
 					System.out.println("Check");
 				}
 				
 			}
 			castle = false;
+			promote = false;
 			
 			
 			//Change turns			

@@ -96,9 +96,9 @@ public class Bishop extends Piece {
 	}
 
 	@Override
-	protected List<Integer[]> validMoves(int startRow, int startCol) {
+	protected boolean checkForCheckMate(int startRow, int startCol, int[] kingSpot) {
 		// TODO Auto-generated method stub
-		return null;
+		return false;
 	}
 
 }

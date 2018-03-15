@@ -16,5 +16,5 @@ public abstract class Piece {
 	//check if anyone is in my way
 	protected abstract boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board);
 	//generate valid moves
-	protected abstract List<Integer[]> validMoves(int startRow, int startCol);
+	protected abstract boolean checkForCheckMate(int startRow, int startCol, int[] kingSpot);
 }
