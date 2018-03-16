@@ -13,7 +13,7 @@ public class Chess{
 	//Checks the format of the input and makes sure the user is giving good commands
 	private static boolean checkMoves(String[] moves) {
 
-		//should have at most 3 paraemters
+		//should have at most 3 parameters 
 		if(moves.length > 3) {
 			return false;
 		}
