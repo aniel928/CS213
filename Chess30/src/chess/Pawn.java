@@ -26,21 +26,23 @@ public class Pawn extends Piece {
 		if(this.color == "White") {
 			//first move
 			if(row == 6) {
-				int[] arr = {row - 2, col};
-				moves.add(arr);
+				if(board.getPiece(row - 2, col) == null) {
+					int[] arr = {row - 2, col};
+					moves.add(arr);
+				}
 			}
-			if(board.getPiece(row - 1, col) != null) {
+			if(board.getPiece(row - 1, col) == null) {
 				int[] arr = {row - 1, col};
 				moves.add(arr);
 			}
 			if(col > 0) {
-				if(board.getPiece(row - 1, col - 1)!= null) {
+				if(board.getPiece(row - 1, col - 1) != null) {
 					int[] arr = {row - 1, col - 1};
 					moves.add(arr);
 				}
 			}
 			if(col < 7) {
-				if(board.getPiece(row - 1, col + 1)!= null) {
+				if(board.getPiece(row - 1, col + 1) != null) {
 					int[] arr = {row - 1, col + 1};
 					moves.add(arr);
 				}
@@ -48,21 +50,24 @@ public class Pawn extends Piece {
 		}else {
 			//first move
 			if(row == 1) {
-				int[] arr = {row + 2, col};
-				moves.add(arr);
+				if(board.getPiece(row + 2, col) == null) {
+					int[] arr = {row + 2, col};
+					moves.add(arr);
+				}
+				
 			}
-			if(board.getPiece(row + 1, col) != null) {
+			if(board.getPiece(row + 1, col) == null) {
 				int[] arr = {row + 1, col};
 				moves.add(arr);
 			}
 			if(col > 0) {
-				if(board.getPiece(row + 1, col - 1)!= null) {
-					int[] arr = {row + 1, col -1 };
+				if(board.getPiece(row + 1, col - 1) != null) {
+					int[] arr = {row + 1, col - 1};
 					moves.add(arr);
 				}
 			}
 			if(col < 7) {
-				if(board.getPiece(row + 1, col + 1)!= null) {
+				if(board.getPiece(row + 1, col + 1) != null) {
 					int[] arr = {row + 1, col + 1};
 					moves.add(arr);
 				}
