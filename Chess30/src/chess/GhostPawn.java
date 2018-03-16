@@ -18,6 +18,10 @@ public class GhostPawn extends Piece {
 	protected String getPiece() {
 		return this.piece;
 	}
+	
+	protected List<int[]> allLegalMoves(int row, int col, ChessBoard board){
+		return null;
+	}
 
 	@Override
 	protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
@@ -37,7 +41,7 @@ public class GhostPawn extends Piece {
 	}
 	
 	public String toString() {
-		return "gp ";
+		return "gp";
 	}
 
 }

@@ -20,6 +20,27 @@ public class Rook extends Piece {
 		return this.piece;
 	}
 	
+	protected List<int[]> allLegalMoves(int row, int col, ChessBoard board){
+		List<int[]> moves = new ArrayList<int[]>();
+		
+		//all of this column
+		for(int i = 0; i < 8; i++) {
+			if(row != i) {
+				int arr[] = {i, col};
+				moves.add(arr);
+			}
+		}
+		
+		//all of this row
+		for(int i = 0; i < 8; i++) {
+			if(col != i) {
+				int arr[] = {row, i};
+				moves.add(arr);
+			}
+		}
+		return moves;
+	}
+	
 	@Override
 	protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
 		return ((startRow == endRow) || (startCol == endCol));			

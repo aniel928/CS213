@@ -11,6 +11,8 @@ public abstract class Piece {
 	protected abstract String getColor();
 	//get piece
 	protected abstract String getPiece();
+	//compile list of valid moves
+	protected abstract List<int[]> allLegalMoves(int row, int col, ChessBoard board);
 	//find out if current move is legal.
 	protected abstract boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board);
 	//check if anyone is in my way

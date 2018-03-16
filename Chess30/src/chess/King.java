@@ -1,5 +1,6 @@
 package chess;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class King extends Piece {
@@ -17,6 +18,46 @@ public class King extends Piece {
 	@Override
 	protected String getPiece() {
 		return this.piece;
+	}
+	
+	protected List<int[]> allLegalMoves(int row, int col, ChessBoard board){
+		List<int[]> moves = new ArrayList<int[]>();
+		if(row < 7) {
+			int[] arr = {row + 1, col};
+			moves.add(arr);
+			if(col > 0) {
+				int[] arr2 = {row + 1, col - 1};
+				moves.add(arr2);
+			}
+			if(col < 7) {
+				int arr2[] = {row + 1, col + 1};
+				moves.add(arr2);
+			}
+		}
+		if(col > 0) {
+			int[] arr = {row, col - 1};
+			moves.add(arr);
+		}
+		if(col < 7) {
+			int[] arr = {row, col + 1};
+			moves.add(arr);
+		}
+		if(row > 0) {
+			int[] arr = {row - 1, col};
+			moves.add(arr);
+			if(col > 0) {
+				int[] arr2 = {row - 1, col - 1};
+				moves.add(arr2);
+			}
+			if(col < 7) {
+				int[] arr2 = {row - 1, col + 1};
+				moves.add(arr2);
+			}
+		}
+		
+		
+		
+		return moves;
 	}
 	
 	@Override
