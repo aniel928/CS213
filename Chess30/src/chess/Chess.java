@@ -11,6 +11,30 @@ public class Chess{
 	private static ChessBoard board;
 	private static int[] WhiteKing, BlackKing;
 	
+	//En passant valid for only one move, so remove any ghost pawn at beginning of each turn.
+	private static void removeEnpassant() {
+		int i = 0;
+		if(turn.equals("White")) {
+			while(i < 8) {
+				if(board.getPiece(5, i) != null && board.getPiece(5, i).getPiece().equals("ghost")) {
+					board.setPiece(5, i, null);
+					break;
+				}
+				i++;
+			}
+		}
+		else {
+			while(i < 8) {
+				if(board.getPiece(2,  i) != null && board.getPiece(2, i).getPiece().equals("ghost")) {
+					board.setPiece(2, i, null);
+					break;
+				}
+				i++;
+			}
+		
+		}
+	}
+
 	//Checks the format of the input and makes sure the user is giving good commands
 	private static boolean checkMoves(String[] moves) {
 
@@ -75,95 +99,13 @@ public class Chess{
 		//if we passed all of that, then input is good.
 		return true;
 	}
-	
-	//check for promotion, if valid, promote
-	private static Piece checkForPromotion(Piece piece, int row, String[] moves) {
-		if(piece.getPiece().equals("Pawn")) {
-			if((turn.equals("White") && row == 1) || (turn.equals("Black") && row == 6)) {
-				promote = true;
-			}
-		}
-		//handle promotion
-		if(promote) {
-			String promoteTo = "";
-			if(moves.length < 3) {
-				promoteTo = "Q";
-			}
-			else {
-				promoteTo = moves[2];
-			}
-			piece = promote(promoteTo);
-		}
-		return piece;
-	}
-	
-	//handle promotion of piece.	
-	private static Piece promote(String strPiece) {
-		Piece piece = null;
-		switch(strPiece) {
-			//Rook
-			case "R":	
-				piece = new Rook(turn);
-				break;
-			//Knight
-			case "N":
-				piece = new Knight(turn);
-				break;
-			//Bishop
-			case "B": 
-				piece = new Bishop(turn);
-				break;
-			//Queen
-			case "Q":
-				piece = new Queen(turn);
-				break;
-			//Shouldn't enter here, but just in case.
-			default:
-				piece = null;
-		}
-		return piece;
-	}
-	
+
 	//This just prints out that the move is illegal.	
 	private static void illegalMove() {
 		System.out.print("Illegal move, try again: ");
 		goAgain = true;
 	}
 
-	//En passant valid for only one move, so remove any ghost pawn at beginning of each turn.
-	private static void removeEnpassant() {
-		int i = 0;
-		if(turn.equals("White")) {
-			while(i < 8) {
-				if(board.getPiece(5, i) != null && board.getPiece(5, i).getPiece().equals("ghost")) {
-					board.setPiece(5, i, null);
-					break;
-				}
-				i++;
-			}
-		}
-		else {
-			while(i < 8) {
-				if(board.getPiece(2,  i) != null && board.getPiece(2, i).getPiece().equals("ghost")) {
-					board.setPiece(2, i, null);
-					break;
-				}
-				i++;
-			}
-		
-		}
-	}
-
-	//if ghost pawn taken, remove pawn
-	private static void enforceEnpassant(int endCol) {
-		if(turn.equals("White")) {
-			board.setPiece(3, endCol, null);
-		}
-		else {
-			board.setPiece(4,  endCol,  null);
-		}
-	}
-	
 	//takes input of board position (i.e. a1 or e5) and returns where that is in the array
 	private static int[] getArrayVals(String move) {
 		int row;
@@ -213,146 +155,7 @@ public class Chess{
 		return array;
 		
 	}
-	
-	//see if White is in check
-	private static boolean whiteCheck(ChessBoard board) {
-		for(int i = 0; i < board.ROWS; i++) {
-			for(int j = 0; j < board.COLS; j++) {
-				Piece piece = board.getPiece(i, j);
-				if(piece != null && piece.getColor().equals("Black")) {
-					if(piece.isLegalMove(i, j, WhiteKing[0], WhiteKing[1], board) && piece.coastClear(i, j, WhiteKing[0], WhiteKing[1], board)) {
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
-	
-	//see if Black is in check
-	private static boolean blackCheck(ChessBoard board) {
-		for(int i = 0; i < board.ROWS; i++) {
-			for(int j = 0; j < board.COLS; j++) {
-				Piece piece = board.getPiece(i, j);
-				if(piece != null && piece.getColor().equals("White")) {
-					if(piece.isLegalMove(i, j, BlackKing[0], BlackKing[1], board) && piece.coastClear(i, j, BlackKing[0], BlackKing[1], board)) {
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
-	
-	//check for Stalemate
-	private static boolean checkforStaleMate() {
-		//for each row and each col,
-				for(int i = 0; i < board.ROWS; i++) {
-					for(int j = 0; j < board.COLS; j++) {
-						//grab the piece
-						Piece tempPiece = board.getPiece(i, j);
-						
-						//if it's a piece of the opposite color, get all of it's moves
-						if(tempPiece != null  && !tempPiece.getColor().equals(turn)) {
-							List <int[]> moves = tempPiece.allLegalMoves(i, j, board);
-							//for each move, create a temporary board and move the piece
-							if(moves != null) {
-								for(int[] move : moves) {
-									ChessBoard tempBoard = board.makeCopy();
-									if((tempBoard.getPiece(move[0], move[1]) == null || tempBoard.getPiece(move[0], move[1]).getColor().equals(turn)) && tempPiece.coastClear(i,  j,  move[0],  move[1],  tempBoard)) {
-										tempBoard.setPiece(move[0],  move[1],  tempPiece);
-										tempBoard.setPiece(i,  j,  null);
-										if(tempPiece.getPiece().equals("King")) {
-											if(turn.equals("White")) {
-												BlackKing = move;
-											}else {
-												WhiteKing = move;
-											}
-										}
-										//now check to see if check happened
-										boolean check = false;
-										if(turn.equals("White")) {
-											check = blackCheck(tempBoard);
-											if(tempPiece.getPiece().equals("King")) {
-												BlackKing[0] = i;
-												BlackKing[1] = j;
-											}
-										}
-										else{
-											check = whiteCheck(tempBoard);
-											if(tempPiece.getPiece().equals("King")) {
-												WhiteKing[0] = i;
-												WhiteKing[1] = j;
-											}
-										}
-										//if not currently in check, then there is a valid move. 
-										if(!check) {
-											return false;
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-				//if get through entire double loop and never returned, stalemate
-				return true;
-	}
-	
-	//check for Checkmate 
-	private static boolean checkForCheckMate() {
-		//for each row and each col,
-		for(int i = 0; i < board.ROWS; i++) {
-			for(int j = 0; j < board.COLS; j++) {
-				//grab the piece
-				Piece tempPiece = board.getPiece(i, j);
-				//if it's a piece of the opposite color, get all of it's moves
-				if(tempPiece != null  && !tempPiece.getColor().equals(turn)) {
-					List <int[]> moves = tempPiece.allLegalMoves(i, j, board);
-					//for each move, create a temporary board and move the piece
-					if(moves != null) {
-						for(int[] move : moves) {
-							ChessBoard tempBoard = board.makeCopy();
-							if((tempBoard.getPiece(move[0], move[1]) == null || tempBoard.getPiece(move[0], move[1]).getColor().equals(turn)) && tempPiece.coastClear(i,  j,  move[0],  move[1],  tempBoard)) {
-								tempBoard.setPiece(move[0],  move[1],  tempPiece);
-								tempBoard.setPiece(i,  j,  null);
-								if(tempPiece.getPiece().equals("King")) {
-									if(turn.equals("White")) {
-										BlackKing = move;
-									}else {
-										WhiteKing = move;
-									}
-								}
-								//now check to see if there's still check
-								boolean check = true;
-								if(turn.equals("White")) {
-									check = blackCheck(tempBoard);
-									if(tempPiece.getPiece().equals("King")) {
-										BlackKing[0] = i;
-										BlackKing[1] = j;
-									}
-								}
-								else{
-									check = whiteCheck(tempBoard);
-									if(tempPiece.getPiece().equals("King")) {
-										WhiteKing[0] = i;
-										WhiteKing[1] = j;
-									}
-								}
-								//if no longer in check, not checkmate
-								if(!check) {
-									return false;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		//if get through entire double loop and never returned, checkmate
-		return true;
-	}
-	
+
 	//make sure move is legal
 	private static boolean validMoveForPiece(Piece piece, int startRow, int endRow, int startCol, int endCol) {
 		//if no piece, return error
@@ -388,6 +191,55 @@ public class Chess{
 		}
 		
 		return true;
+	}
+	
+	//check for promotion, if valid, promote
+	private static Piece checkForPromotion(Piece piece, int row, String[] moves) {
+		if(piece.getPiece().equals("Pawn")) {
+			if((turn.equals("White") && row == 1) || (turn.equals("Black") && row == 6)) {
+				promote = true;
+			}
+		}
+		//handle promotion
+		if(promote) {
+			String promoteTo = "";
+			if(moves.length < 3) {
+				promoteTo = "Q";
+			}
+			else {
+				promoteTo = moves[2];
+			}
+			piece = promote(promoteTo);
+			promote = false;
+		}
+		return piece;
+	}
+	
+	//handle promotion of piece.	
+	private static Piece promote(String strPiece) {
+		Piece piece = null;
+		switch(strPiece) {
+			//Rook
+			case "R":	
+				piece = new Rook(turn);
+				break;
+			//Knight
+			case "N":
+				piece = new Knight(turn);
+				break;
+			//Bishop
+			case "B": 
+				piece = new Bishop(turn);
+				break;
+			//Queen
+			case "Q":
+				piece = new Queen(turn);
+				break;
+			//Shouldn't enter here, but just in case.
+			default:
+				piece = null;
+		}
+		return piece;
 	}
 	
 	//check to see if piece is trying to castle, returns -1 on error, 0 on success, 1 for "Not King"
@@ -433,6 +285,7 @@ public class Chess{
 						return -1;
 					}
 				}
+				performCastle(piece, startRow, endRow, startCol, endCol);
 				return 0;
 			}
 			//if in check, not so good.
@@ -444,7 +297,7 @@ public class Chess{
 		return 1;
 	}
 	
-	//
+	//perform the actual Castle
 	private static void performCastle(Piece piece, int startRow, int endRow, int startCol, int endCol){
 		if(startCol - endCol == 2) {
 			board.setPiece(endRow,  endCol, piece);
@@ -466,6 +319,101 @@ public class Chess{
 		}
 	}
 	
+	//if ghost pawn taken, remove pawn
+	private static void enforceEnpassant(int endCol) {
+		if(turn.equals("White")) {
+			board.setPiece(3, endCol, null);
+		}
+		else {
+			board.setPiece(4,  endCol,  null);
+		}
+	}
+	
+	//see if White is in check
+	private static boolean whiteCheck(ChessBoard board) {
+		for(int i = 0; i < board.ROWS; i++) {
+			for(int j = 0; j < board.COLS; j++) {
+				Piece piece = board.getPiece(i, j);
+				if(piece != null && piece.getColor().equals("Black")) {
+					if(piece.isLegalMove(i, j, WhiteKing[0], WhiteKing[1], board) && piece.coastClear(i, j, WhiteKing[0], WhiteKing[1], board)) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	//see if Black is in check
+	private static boolean blackCheck(ChessBoard board) {
+		for(int i = 0; i < board.ROWS; i++) {
+			for(int j = 0; j < board.COLS; j++) {
+				Piece piece = board.getPiece(i, j);
+				if(piece != null && piece.getColor().equals("White")) {
+					if(piece.isLegalMove(i, j, BlackKing[0], BlackKing[1], board) && piece.coastClear(i, j, BlackKing[0], BlackKing[1], board)) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	//check for Checkmate/StaleMate 
+	private static boolean checkForMate() {
+		//for each row and each col,
+		for(int i = 0; i < board.ROWS; i++) {
+			for(int j = 0; j < board.COLS; j++) {
+				//grab the piece
+				Piece tempPiece = board.getPiece(i, j);
+				//if it's a piece of the opposite color, get all of it's moves
+				if(tempPiece != null  && !tempPiece.getColor().equals(turn)) {
+					List <int[]> moves = tempPiece.allLegalMoves(i, j, board);
+					//for each move, create a temporary board and move the piece
+					if(moves != null) {
+						for(int[] move : moves) {
+							ChessBoard tempBoard = board.makeCopy();
+							if((tempBoard.getPiece(move[0], move[1]) == null || tempBoard.getPiece(move[0], move[1]).getColor().equals(turn)) && tempPiece.coastClear(i,  j,  move[0],  move[1],  tempBoard)) {
+								tempBoard.setPiece(move[0],  move[1],  tempPiece);
+								tempBoard.setPiece(i,  j,  null);
+								if(tempPiece.getPiece().equals("King")) {
+									if(turn.equals("White")) {
+										BlackKing = move;
+									}else {
+										WhiteKing = move;
+									}
+								}
+								//now check to see if there's still check
+								boolean check = false;
+								if(turn.equals("White")) {
+									check = blackCheck(tempBoard);
+									if(tempPiece.getPiece().equals("King")) {
+										BlackKing[0] = i;
+										BlackKing[1] = j;
+									}
+								}
+								else{
+									check = whiteCheck(tempBoard);
+									if(tempPiece.getPiece().equals("King")) {
+										WhiteKing[0] = i;
+										WhiteKing[1] = j;
+									}
+								}
+								//if no longer in check, not checkmate
+								if(!check) {
+									return false;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		//if get through entire double loop and never returned, checkmate
+		return true;
+	}
+	
+	//change turn variable between "White" and "Black"
 	private static void changeTurns() {
 		//Change turns			
 		if(turn.equals("White")) {
@@ -479,7 +427,8 @@ public class Chess{
 	//the actual game
 	private static void playGame(Scanner scanner) {
 		while(!gameOver) {
-			//if pawn double moved last time, remove enpassant.
+			
+			//im case pawn double moved last time, remove enpassant.
 			removeEnpassant();
 			
 			if(goAgain) {
@@ -489,11 +438,12 @@ public class Chess{
 				//Prompt user for move and parse input
 				System.out.print(turn + "'s move: ");
 			}			
-			
+
+			//Get the user input and split it out into portions
 			String move = scanner.nextLine();
 			String moves[] = move.split(" ");
 			
-			//check for errors in parsing.
+			//Parse through input and check for issues
 			boolean validInput = checkMoves(moves);			
 			if(!validInput) {
 				illegalMove();
@@ -521,20 +471,18 @@ public class Chess{
 				continue;
 			}
 			
-			//Store this piece in a variable
+			//Get the piece from the starting position and store it in a variable
 			Piece piece = board.getPiece(startRow,  startCol);
 			
-			//make sure it's a legal move
+			//make sure wherever this piece is trying to go, it's a legal move
 			boolean validMove = validMoveForPiece(piece, startRow, endRow, startCol, endCol);
-			
 			if(!validMove) {
 				illegalMove();
 				continue;
 			}
 			
-			//store to check en passant
+			//store piece we're eviciting/capturing to check en passant
 			Piece oldPiece = board.getPiece(endRow, endCol);	
-			
 			
 			//Before we start moving pieces, take a copy of the board so we can revert easily.
 			ChessBoard oldBoard = board.makeCopy();
@@ -550,6 +498,7 @@ public class Chess{
 				continue;
 			}
 			
+			//see if castling is valid and then perform castle
 			int status = checkForCastle(piece, startRow, endRow, startCol, endCol);
 			
 			if(status == -1) {
@@ -557,12 +506,8 @@ public class Chess{
 				continue;
 			}
 		
-			//handle castle
-			if(status == 0) {
-				performCastle(piece, startRow, endRow, startCol, endCol);
-			}
-			//no castle, so do regular move instead.
-			else {
+			//if we didn't castle, then it's a normal move.
+			if(status != 0) {
 				//move current to new and remove current position
 				board.setPiece(endRow, endCol, piece);
 				piece.moved = true;
@@ -574,7 +519,7 @@ public class Chess{
 				}
 			}
 
-			//update King's location so that 
+			//update King's location so that we can check for Check
 			if(piece.getPiece().equals("King")) {
 				if(turn.equals("White")) {
 					WhiteKing[0] = endRow;
@@ -585,7 +530,6 @@ public class Chess{
 					BlackKing[1] = endCol;
 				}
 			}
-			
 			
 			//Check both Kings in Check/CheckMate
 			boolean whiteCheck = whiteCheck(board);
@@ -609,13 +553,12 @@ public class Chess{
 						BlackKing[1] = startCol;
 					}
 				}
-				
 				continue;
 			}
 			//if other color in check, check for checkmate, then return either "Check" or "Checkmate"
 			else if((turn.equals("White") && blackCheck) || (turn.equals("Black") && whiteCheck)) {
 				//check for checkmate
-				boolean checkMate = checkForCheckMate();
+				boolean checkMate = checkForMate();
 				if(checkMate) {
 					System.out.println(board.getBoard());
 
@@ -628,7 +571,7 @@ public class Chess{
 				
 			}
 			//Stalemate here
-			else if(checkforStaleMate()) {
+			else if(checkForMate()) {
 				System.out.println(board.getBoard());
 				System.out.println("Stalemate");
 				System.out.println("Draw");
@@ -637,12 +580,12 @@ public class Chess{
 			else {
 				System.out.println(board.getBoard());
 			}
-			promote = false;
 			
 			changeTurns();
 		}
 	}
 	
+	//main method
 	public static void main(String[] args){
 		//set up scanner
 		Scanner scanner = new Scanner(System.in);
