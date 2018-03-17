@@ -392,28 +392,57 @@ public class Chess{
 	}
 	
 	//check to see if piece is trying to castle, returns -1 on error, 0 on success, 1 for "Not King"
-	private static int checkForCastle(Piece piece, int startCol, int endCol) {
+	private static int checkForCastle(Piece piece, int startRow, int endRow, int startCol, int endCol) {
 		//check for Castle
 		if(piece.getPiece().equals("King") && Math.abs(startCol - endCol) == 2) {
-			//if Black and not in check, then you're good.
-			if(turn.equals("Black") && !blackCheck(board)) {
+			//if not in check, then you're good.
+			if((turn.equals("Black") && !blackCheck(board)) || turn.equals("White") && !whiteCheck(board)){
+				//check to see if squares between are in check
+				if(startCol - endCol == 2) {
+					//Queen Side Castle
+					ChessBoard tempBoard = board.makeCopy();
+					tempBoard.setPiece(startRow,  startCol - 1, piece);
+					if(turn.equals("White")){
+						WhiteKing[1]--;	
+					}else{
+						BlackKing[1]--;
+					}
+					if(turn.equals("Black") && blackCheck(tempBoard)){
+						BlackKing[1]++;
+						return -1;
+					}
+					if(turn.equals("White") && whiteCheck(tempBoard)) {
+						WhiteKing[1]++;
+						return -1;
+					}
+				}
+				if(endCol - startCol == 2) {
+					//King Side Castle
+					ChessBoard tempBoard = board.makeCopy();
+					tempBoard.setPiece(startRow,  startCol + 1, piece);
+					if(turn.equals("White")){
+						WhiteKing[1]++;	
+					}else{
+						BlackKing[1]++;
+					}
+					if(turn.equals("Black") && blackCheck(tempBoard)){
+						BlackKing[1]--;
+						return -1;
+					}
+					if(turn.equals("White") && whiteCheck(tempBoard)) {
+						WhiteKing[1]--;
+						return -1;
+					}
+				}
 				castle = true;
 				return 0;
 			}
-			//if Black and in check, not so good.
-			else if(turn.equals("Black")) {
-				return -1;
-			}
-			//if White and not in check, good
-			else if(turn.equals("White") && !whiteCheck(board)) {
-				castle = true;
-				return 0;
-			}
-			//if White and in check, not so good.
-			else if(turn.equals("White")) {
+			//if in check, not so good.
+			else{
 				return -1;
 			}
 		}
+		//if not King, no error, but return 1 in case we want to know not King.
 		return 1;
 	}
 	
@@ -523,7 +552,7 @@ public class Chess{
 				continue;
 			}
 			
-			int status = checkForCastle(piece, startCol, endCol);
+			int status = checkForCastle(piece, startRow, endRow, startCol, endCol);
 			
 			if(status == -1) {
 				illegalMove();
