@@ -20,6 +20,7 @@ public class Queen extends Piece {
 		return this.piece;
 	}
 	
+	@Override
 	protected List<int[]> allLegalMoves(int row, int col, ChessBoard board){
 		List<int[]> moves = new ArrayList<int[]>();
 
@@ -193,11 +194,5 @@ public class Queen extends Piece {
 			return "bQ";
 		}
 	}
-
-	@Override
-	protected boolean checkForCheckMate(int startRow, int startCol, int[] kingSpot){
-		return false;
-	}
-
 
 }

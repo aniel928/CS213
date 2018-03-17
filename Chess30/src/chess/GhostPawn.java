@@ -33,13 +33,8 @@ public class GhostPawn extends Piece {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
-	@Override
-	protected boolean checkForCheckMate(int startRow, int startCol, int[] kingSpot){
-		// TODO Auto-generated method stub
-		return false;
-	}
 	
+	@Override
 	public String toString() {
 		return "gp";
 	}

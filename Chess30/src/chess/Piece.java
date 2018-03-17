@@ -17,6 +17,4 @@ public abstract class Piece {
 	protected abstract boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board);
 	//check if anyone is in my way
 	protected abstract boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board);
-	//generate valid moves
-	protected abstract boolean checkForCheckMate(int startRow, int startCol, int[] kingSpot);
 }

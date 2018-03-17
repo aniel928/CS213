@@ -20,6 +20,7 @@ public class King extends Piece {
 		return this.piece;
 	}
 	
+	@Override
 	protected List<int[]> allLegalMoves(int row, int col, ChessBoard board){
 		List<int[]> moves = new ArrayList<int[]>();
 		if(row < 7) {
@@ -54,9 +55,6 @@ public class King extends Piece {
 				moves.add(arr2);
 			}
 		}
-		
-		
-		
 		return moves;
 	}
 	
@@ -100,6 +98,7 @@ public class King extends Piece {
 		return true;	
 	}
 	
+	
 	@Override
 	public String toString() {
 		if(this.color == "White") {
@@ -110,11 +109,7 @@ public class King extends Piece {
 		}
 	}
 
-	@Override
-	protected boolean checkForCheckMate(int startRow, int startCol, int[] kingSpot){
-		// TODO Auto-generated method stub
-		return false;
-	}
+	
 
 
 }

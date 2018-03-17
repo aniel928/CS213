@@ -20,6 +20,7 @@ public class Knight extends Piece {
 		return this.piece;
 	}
 	
+	@Override
 	protected List<int[]> allLegalMoves(int row, int col, ChessBoard board){
 		List<int[]> moves = new ArrayList<int[]>();
 		//top
@@ -89,12 +90,5 @@ public class Knight extends Piece {
 			return "bN";
 		}
 	}
-
-	@Override
-	protected boolean checkForCheckMate(int startRow, int startCol, int[] kingSpot){
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 
 }
