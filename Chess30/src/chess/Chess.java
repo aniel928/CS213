@@ -9,7 +9,6 @@ public class Chess{
 	private static boolean promote = false;
 	private static boolean goAgain = false;
 	private static ChessBoard board;
-	private static boolean castle = false;
 	private static int[] WhiteKing, BlackKing;
 	
 	//Checks the format of the input and makes sure the user is giving good commands
@@ -434,7 +433,6 @@ public class Chess{
 						return -1;
 					}
 				}
-				castle = true;
 				return 0;
 			}
 			//if in check, not so good.
@@ -560,7 +558,7 @@ public class Chess{
 			}
 		
 			//handle castle
-			if(castle) {
+			if(status == 0) {
 				performCastle(piece, startRow, endRow, startCol, endCol);
 			}
 			//no castle, so do regular move instead.
@@ -639,7 +637,6 @@ public class Chess{
 			else {
 				System.out.println(board.getBoard());
 			}
-			castle = false;
 			promote = false;
 			
 			changeTurns();
