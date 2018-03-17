@@ -105,8 +105,6 @@ public class Bishop extends Piece {
 			endRow--;
 			startCol--;
 			endCol++;
-		}else {
-			System.out.println("this should never happen");
 		}
 		int i = startRow;
 		int j = startCol;

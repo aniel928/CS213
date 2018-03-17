@@ -5,7 +5,7 @@ public class ChessBoard {
 	final int COLS = 8;
 	Piece[][] positions = new Piece[ROWS][COLS];
 	
-	
+
 	void initializeBoard() {
 		positions[0][0] = new Rook("Black");
 		positions[0][1] = new Knight("Black");
@@ -44,6 +44,16 @@ public class ChessBoard {
 		positions[7][7] = new Rook("White");
 	}
 	
+	
+	
+//	void initializeBoard() {
+//		positions[0][4] = new King("Black");
+//		positions[7][4] = new King("White");
+//		positions[7][3] = new Rook("White");
+//		positions[7][5] = new Rook("White");
+//		positions[1][0] = new Rook("White");
+//	}
+	
 	String getBoard() {
 		// TODO Auto-generated method stub
 		String board = "\n";
@@ -78,5 +88,15 @@ public class ChessBoard {
 	
 	void setPiece(int row, int col, Piece piece) {
 		positions[row][col] = piece;
+	}
+	
+	protected ChessBoard makeCopy() {
+		ChessBoard newBoard = new ChessBoard();
+		for(int i = 0; i < ROWS; i++) {
+			for(int j = 0; j < COLS; j++) {
+				newBoard.positions[i][j] = this.positions[i][j];
+			}
+		}
+		return newBoard;
 	}
 }

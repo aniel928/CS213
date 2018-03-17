@@ -66,16 +66,16 @@ public class King extends Piece {
 		if(!this.moved && startRow == endRow) {
 			//right side of board
 			if(endCol == 6) {
-				if(board.getPiece(board.ROWS - startRow,  7) != null) {
-					if(board.getPiece(board.ROWS - startRow,7).getPiece().equals("Rook") && !board.getPiece(board.ROWS - startRow, 7).moved) {
+				if(board.getPiece(startRow,  7) != null) {
+					if(board.getPiece(startRow,7).getPiece().equals("Rook") && !board.getPiece(startRow, 7).moved) {
 						return true;
 					}
 				}
 			}
 			//left side of board.
 			if(endCol == 2) {
-				if(board.getPiece(board.ROWS - startRow,  0) != null) {
-					if(board.getPiece(board.ROWS - startRow,  0).getPiece().equals("Rook") && !board.getPiece(board.ROWS - startRow,  0).moved) {
+				if(board.getPiece(startRow,  0) != null) {
+					if(board.getPiece(startRow,  0).getPiece().equals("Rook") && !board.getPiece(startRow,  0).moved) {
 						return true;
 					}
 				}
