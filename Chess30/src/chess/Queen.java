@@ -3,23 +3,41 @@ package chess;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Code for the Queen piece.
+ * @author 
+ *
+ */
 public class Queen extends Piece {
 
+	/**
+	 * This is the constructor for the Queen piece.
+	 * @param color
+	 */
 	public Queen(String color) {
 		this.color = color;
 		this.piece = "Queen";
 	}
 	
+	/**
+	 * Gets the color.
+	 */
 	@Override
 	protected String getColor() {
 		return this.color;
 	}
 
+	/**
+	 * Gets the piece.
+	 */
 	@Override
 	protected String getPiece() {
 		return this.piece;
 	}
 	
+	/**
+	 * A list of all legal moves for the Queen.
+	 */
 	@Override
 	protected List<int[]> allLegalMoves(int row, int col, ChessBoard board){
 		List<int[]> moves = new ArrayList<int[]>();
@@ -79,11 +97,17 @@ public class Queen extends Piece {
 		return moves;
 	}
 	
+	/**
+	 * Checks to see if a move is legal.
+	 */
 	@Override
 	protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
 		return (Math.abs(startRow - endRow) == Math.abs(startCol - endCol)) || ((startRow == endRow) || (startCol == endCol));
 	}
 	
+	/**
+	 * Checks to see if the path is clear.
+	 */
 	@Override
 	protected boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
 		boolean properOrder = true;
@@ -185,6 +209,9 @@ public class Queen extends Piece {
 		return true;
 	}
 	
+	/**
+	 * Returns the color of the Queen.
+	 */
 	@Override
 	public String toString() {
 		if(this.color == "White") {
