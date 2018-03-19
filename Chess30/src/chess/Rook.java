@@ -3,23 +3,41 @@ package chess;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Code for the Rook piece.
+ * @author 
+ *
+ */
 public class Rook extends Piece {
 	
+	/**
+	 * This is the constructor for the Rook piece.
+	 * @param color
+	 */
 	public Rook(String color) {
 		this.color = color;
 		this.piece = "Rook";
 	}
 	
+	/**
+	 * Gets the color.
+	 */
 	@Override
 	protected String getColor() {
 		return this.color;
 	}
 
+	/**
+	 * Gets the piece.
+	 */
 	@Override
 	protected String getPiece() {
 		return this.piece;
 	}
 	
+	/**
+	 * A list of all legal moves for the Rook.
+	 */
 	@Override
 	protected List<int[]> allLegalMoves(int row, int col, ChessBoard board){
 		List<int[]> moves = new ArrayList<int[]>();
@@ -42,11 +60,17 @@ public class Rook extends Piece {
 		return moves;
 	}
 	
+	/**
+	 * Checks to see if a move is legal.
+	 */
 	@Override
 	protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
 		return ((startRow == endRow) || (startCol == endCol));			
 	}
 	
+	/**
+	 * Checks to see if the path is clear.
+	 */
 	@Override
 	protected boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
 		if(startRow == endRow) {
@@ -93,6 +117,9 @@ public class Rook extends Piece {
 		return true;
 	}
 	
+	/**
+	 * Returns the color of the Rook.
+	 */
 	@Override
 	public String toString() {
 		if(this.color == "White") {
