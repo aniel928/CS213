@@ -3,24 +3,41 @@ package chess;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Code for the Pawn piece.
+ * @author 
+ *
+ */
 public class Pawn extends Piece {
 	
-	
+	/**
+	 * This is the constructor for the Pawn piece.
+	 * @param color
+	 */
 	public Pawn(String color) {
 		this.color = color;
 		this.piece = "Pawn";
 	}
 	
+	/**
+	 * Gets the color.
+	 */
 	@Override
 	protected String getColor() {
 		return this.color;
 	}
 
+	/**
+	 * Gets the piece/
+	 */
 	@Override
 	protected String getPiece() {
 		return this.piece;
 	}
 	
+	/**
+	 * A list of all legal moves for the Pawn.
+	 */
 	@Override
 	protected List<int[]> allLegalMoves(int row, int col, ChessBoard board){
 		List<int[]> moves = new ArrayList<int[]>();
@@ -77,6 +94,9 @@ public class Pawn extends Piece {
 		return moves;
 	}
 	
+	/**
+	 * Checks to see if a move is legal.
+	 */
 	@Override
 	protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {	
 		//if White pawn
@@ -129,6 +149,9 @@ public class Pawn extends Piece {
 		return false;
 	}
 	
+	/**
+	 * Checks to see if the path is clear.
+	 */
 	@Override
 	protected boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
 		if(this.color.equals("White")){
@@ -152,6 +175,9 @@ public class Pawn extends Piece {
 		return true;
 	}
 	
+	/**
+	 * Returns the color of the Pawn.
+	 */
 	@Override
 	public String toString() {
 		if(this.color == "White") {
