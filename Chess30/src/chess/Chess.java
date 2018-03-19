@@ -3,8 +3,8 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Code for the entire chess game 
- * @author JMuccino
+ * Code for the entire chess game.
+ * @author 
  *
  */
 public class Chess{

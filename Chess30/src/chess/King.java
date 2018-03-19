@@ -3,23 +3,41 @@ package chess;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Code for the King piece.
+ * @author
+ *
+ */
 public class King extends Piece {
 	
+	/**
+	 * This is the constructor for the King piece.
+	 * @param color
+	 */
 	public King(String color) {
 		this.color = color;
 		this.piece = "King";
 	}
 
+	/**
+	 * Gets the color.
+	 */
 	@Override
 	protected String getColor() {
 		return this.color;
 	}
 
+	/**
+	 * Gets the piece.
+	 */
 	@Override
 	protected String getPiece() {
 		return this.piece;
 	}
 	
+	/**
+	 * A list of all legal moves for the King.
+	 */
 	@Override
 	protected List<int[]> allLegalMoves(int row, int col, ChessBoard board){
 		List<int[]> moves = new ArrayList<int[]>();
@@ -58,6 +76,9 @@ public class King extends Piece {
 		return moves;
 	}
 	
+	/**
+	 * Checks to see if a move is legal.
+	 */
 	@Override
 	protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
 		//if piece hasn't moved and king is trying to move two spaces to the left or right, then look for castle
@@ -82,6 +103,9 @@ public class King extends Piece {
 		return ((startRow == endRow || Math.abs(startRow - endRow) == 1) && (startCol == endCol || Math.abs(startCol - endCol) == 1)); 
 	}
 	
+	/**
+	 * Cheks to see if the path is clear.
+	 */
 	@Override
 	protected boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
 		if(startCol - endCol == 2) {
@@ -98,7 +122,9 @@ public class King extends Piece {
 		return true;	
 	}
 	
-	
+	/**
+	 * Returns the color of the King.
+	 */
 	@Override
 	public String toString() {
 		if(this.color == "White") {

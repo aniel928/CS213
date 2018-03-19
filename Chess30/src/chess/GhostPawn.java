@@ -6,7 +6,7 @@ import java.util.List;
  * This is the GhostPawn class. It is used for En Passant.
  * The GhostPawn only lasts for 1 turn and is not a visible piece on the board.
  * If the GhostPawn is taken, then the Pawn in front of it is also taken.
- * @author JMuccino
+ * @author 
  *
  */
 public class GhostPawn extends Piece {

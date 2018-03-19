@@ -5,11 +5,12 @@ import java.util.List;
 
 /**
  * Code for the Bishop piece.
+ * @author JMuccino
  *
  */
 public class Bishop extends Piece {
 	/**
-	 * This is the constructor for the Bishop piece
+	 * This is the constructor for the Bishop piece.
 	 * @param color
 	 */
 	public Bishop(String color) {
