@@ -3,23 +3,41 @@ package chess;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Code for the Knight piece.
+ * @author 
+ *
+ */
 public class Knight extends Piece {
 
+	/**
+	 * This is the constructor for the Knight piece.
+	 * @param color
+	 */
 	public Knight(String color) {
 		this.color = color;
 		this.piece = "Knight";
 	}
 	
+	/**
+	 * Gets the color.
+	 */
 	@Override
 	protected String getColor() {
 		return this.color;
 	}
 
+	/**
+	 * Gets the piece.
+	 */
 	@Override
 	protected String getPiece() {
 		return this.piece;
 	}
 	
+	/**
+	 * A list of all legal moves for the Knight.
+	 */
 	@Override
 	protected List<int[]> allLegalMoves(int row, int col, ChessBoard board){
 		List<int[]> moves = new ArrayList<int[]>();
@@ -70,17 +88,26 @@ public class Knight extends Piece {
 		return moves;
 	}
 	
+	/**
+	 * Cheks to see if a move is legal.
+	 */
 	@Override
 	protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
 		return (Math.abs(startRow - endRow) == 1 && Math.abs(startCol - endCol) == 2) || (Math.abs(startRow - endRow) == 2 && Math.abs(startCol - endCol) == 1);
 	}
 	
+	/**
+	 * Checks to see if the path is clear.
+	 */
 	@Override
 	protected boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
 		// TODO Auto-generated method stub
 		return true;
 	}
 	
+	/**
+	 * Returns the color of the Knight.
+	 */
 	@Override
 	public String toString() {
 		if(this.color == "White") {
