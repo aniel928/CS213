@@ -11,7 +11,9 @@ public class Chess{
 	private static ChessBoard board;
 	private static int[] WhiteKing, BlackKing;
 	
-	//En passant valid for only one move, so remove any ghost pawn at beginning of each turn.
+	/**
+	 * En passant is valid for only one move, so remove any ghost pawn at beginning of each turn.
+	 */
 	private static void removeEnpassant() {
 		int i = 0;
 		if(turn.equals("White")) {
@@ -35,7 +37,11 @@ public class Chess{
 		}
 	}
 
-	//Checks the format of the input and makes sure the user is giving good commands
+	/**
+	 * Checks the format of the input and makes sure the user is giving good commands.
+	 * @param moves
+	 * @return
+	 */
 	private static boolean checkMoves(String[] moves) {
 
 		//should have at most 3 parameters 
@@ -100,13 +106,19 @@ public class Chess{
 		return true;
 	}
 
-	//This just prints out that the move is illegal.	
+	/**
+	 * This just prints out that the move is illegal.	
+	 */
 	private static void illegalMove() {
 		System.out.print("Illegal move, try again: ");
 		goAgain = true;
 	}
 
-	//takes input of board position (i.e. a1 or e5) and returns where that is in the array
+	/**
+	 * Takes input of board position (i.e. a1 or e5) and returns where that is in the array.
+	 * @param move
+	 * @return
+	 */
 	private static int[] getArrayVals(String move) {
 		int row;
 		try{
@@ -156,7 +168,15 @@ public class Chess{
 		
 	}
 
-	//make sure move is legal
+	/**
+	 * Makes sure move is legal.
+	 * @param piece
+	 * @param startRow
+	 * @param endRow
+	 * @param startCol
+	 * @param endCol
+	 * @return
+	 */
 	private static boolean validMoveForPiece(Piece piece, int startRow, int endRow, int startCol, int endCol) {
 		//if no piece, return error
 		if(piece == null) {
@@ -193,7 +213,13 @@ public class Chess{
 		return true;
 	}
 	
-	//check for promotion, if valid, promote
+	/**
+	 * Checks for promotion. If valid, then promote.
+	 * @param piece
+	 * @param row
+	 * @param moves
+	 * @return
+	 */
 	private static Piece checkForPromotion(Piece piece, int row, String[] moves) {
 		if(piece.getPiece().equals("Pawn")) {
 			if((turn.equals("White") && row == 1) || (turn.equals("Black") && row == 6)) {
@@ -215,7 +241,11 @@ public class Chess{
 		return piece;
 	}
 	
-	//handle promotion of piece.	
+	/**
+	 * Handles promotion of a piece.	
+	 * @param strPiece
+	 * @return
+	 */
 	private static Piece promote(String strPiece) {
 		Piece piece = null;
 		switch(strPiece) {
@@ -242,7 +272,15 @@ public class Chess{
 		return piece;
 	}
 	
-	//check to see if piece is trying to castle, returns -1 on error, 0 on success, 1 for "Not King"
+	/**
+	 * Checks to see if a piece is trying to castle. Returns -1 on error, 0 on success, 1 for "Not King".
+	 * @param piece
+	 * @param startRow
+	 * @param endRow
+	 * @param startCol
+	 * @param endCol
+	 * @return
+	 */
 	private static int checkForCastle(Piece piece, int startRow, int endRow, int startCol, int endCol) {
 		//check for Castle
 		if(piece.getPiece().equals("King") && Math.abs(startCol - endCol) == 2) {
@@ -297,7 +335,14 @@ public class Chess{
 		return 1;
 	}
 	
-	//perform the actual Castle
+	/**
+	 * Performs the actual Castle.
+	 * @param piece
+	 * @param startRow
+	 * @param endRow
+	 * @param startCol
+	 * @param endCol
+	 */
 	private static void performCastle(Piece piece, int startRow, int endRow, int startCol, int endCol){
 		if(startCol - endCol == 2) {
 			board.setPiece(endRow,  endCol, piece);
@@ -319,7 +364,10 @@ public class Chess{
 		}
 	}
 	
-	//if ghost pawn taken, remove pawn
+	/**
+	 * If ghost pawn is taken, then remove actual pawn.
+	 * @param endCol
+	 */
 	private static void enforceEnpassant(int endCol) {
 		if(turn.equals("White")) {
 			board.setPiece(3, endCol, null);
@@ -329,7 +377,11 @@ public class Chess{
 		}
 	}
 	
-	//see if White is in check
+	/**
+	 * Sees if White is in check.
+	 * @param board
+	 * @return
+	 */
 	private static boolean whiteCheck(ChessBoard board) {
 		for(int i = 0; i < board.ROWS; i++) {
 			for(int j = 0; j < board.COLS; j++) {
@@ -344,7 +396,11 @@ public class Chess{
 		return false;
 	}
 	
-	//see if Black is in check
+	/**
+	 * Sees if Black is in check.
+	 * @param board
+	 * @return
+	 */
 	private static boolean blackCheck(ChessBoard board) {
 		for(int i = 0; i < board.ROWS; i++) {
 			for(int j = 0; j < board.COLS; j++) {
@@ -359,7 +415,10 @@ public class Chess{
 		return false;
 	}
 	
-	//check for Checkmate/StaleMate 
+	/**
+	 * Checks for Checkmate/StaleMate.
+	 * @return
+	 */
 	private static boolean checkForMate() {
 		//for each row and each col,
 		for(int i = 0; i < board.ROWS; i++) {
@@ -413,7 +472,9 @@ public class Chess{
 		return true;
 	}
 	
-	//change turn variable between "White" and "Black"
+	/**
+	 * Change turn variable between "White" and "Black".
+	 */
 	private static void changeTurns() {
 		//Change turns			
 		if(turn.equals("White")) {
@@ -424,7 +485,10 @@ public class Chess{
 		}
 	}
 	
-	//the actual game
+	/**
+	 * The actual game.
+	 * @param scanner
+	 */
 	private static void playGame(Scanner scanner) {
 		while(!gameOver) {
 			
@@ -443,7 +507,6 @@ public class Chess{
 			String move = scanner.nextLine();
 			String moves[] = move.split(" ");
 			
-			//Parse through input and check for issues
 			boolean validInput = checkMoves(moves);			
 			if(!validInput) {
 				illegalMove();
@@ -585,7 +648,10 @@ public class Chess{
 		}
 	}
 	
-	//main method
+	/**
+	 * The main method.
+	 * @param args
+	 */
 	public static void main(String[] args){
 		//set up scanner
 		Scanner scanner = new Scanner(System.in);
