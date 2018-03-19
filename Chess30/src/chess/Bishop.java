@@ -3,23 +3,39 @@ package chess;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Code for the Bishop piece.
+ *
+ */
 public class Bishop extends Piece {
-	
+	/**
+	 * This is the constructor for the Bishop piece
+	 * @param color
+	 */
 	public Bishop(String color) {
 		this.color = color;
 		this.piece = "Bishop";
 	}
-
+	
+	/**
+	 * Gets the color.
+	 */
 	@Override
 	protected String getColor() {
 		return this.color;
 	}
 	
+	/**
+	 * Gets the piece.
+	 */
 	@Override
 	protected String getPiece() {
 		return this.piece;
 	}
 
+	/**
+	 * A list of all legal moves for the Bishop.
+	 */
 	@Override
 	protected List<int[]> allLegalMoves(int row, int col, ChessBoard board){
 		List<int[]> moves = new ArrayList<int[]>();
@@ -62,11 +78,17 @@ public class Bishop extends Piece {
 		return moves;
 	}
 	
+	/**
+	 * Checks to see if a move is legal.
+	 */
 	@Override
 	protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
 		return Math.abs(startRow - endRow) == Math.abs(startCol - endCol);
 	}
 	
+	/**
+	 * Checks to see if the path is clear.
+	 */
 	@Override
 	protected boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
 		boolean properOrder = true;
@@ -126,6 +148,9 @@ public class Bishop extends Piece {
 		return true;
 	}
 	
+	/**
+	 * Returns the color of the Bishop.
+	 */
 	@Override
 	public String toString() {
 		if(this.color == "White") {

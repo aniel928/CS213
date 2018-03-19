@@ -2,6 +2,11 @@ package chess;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Code for the entire chess game 
+ * @author JMuccino
+ *
+ */
 public class Chess{
 	private static boolean gameOver = false;
 	protected static String turn = "White";
@@ -649,7 +654,7 @@ public class Chess{
 	}
 	
 	/**
-	 * The main method.
+	 * The main class.
 	 * @param args
 	 */
 	public static void main(String[] args){
