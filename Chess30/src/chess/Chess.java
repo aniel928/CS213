@@ -12,7 +12,6 @@ public class Chess{
 	protected static String turn = "White";
 	private static boolean draw = false;
 	private static boolean promote = false;
-	private static boolean goAgain = false;
 	private static ChessBoard board;
 	private static int[] WhiteKing, BlackKing;
 	
@@ -115,8 +114,7 @@ public class Chess{
 	 * This just prints out that the move is illegal.	
 	 */
 	private static void illegalMove() {
-		System.out.print("Illegal move, try again: ");
-		goAgain = true;
+		System.out.println("Illegal move, try again.");
 	}
 
 	/**
@@ -497,16 +495,10 @@ public class Chess{
 	private static void playGame(Scanner scanner) {
 		while(!gameOver) {
 			
-			//im case pawn double moved last time, remove enpassant.
+			//in case pawn double moved last time, remove en passant.
 			removeEnpassant();
 			
-			if(goAgain) {
-				goAgain = false;
-			}
-			else{
-				//Prompt user for move and parse input
-				System.out.print(turn + "'s move: ");
-			}			
+			System.out.print(turn + "'s move: ");
 
 			//Get the user input and split it out into portions
 			String move = scanner.nextLine();
