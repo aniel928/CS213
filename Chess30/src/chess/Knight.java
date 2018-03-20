@@ -16,11 +16,11 @@ public class Knight extends Piece {
 	 */
 	public Knight(String color) {
 		this.color = color;
-		this.piece = "Knight";
+		this.name = "Knight";
 	}
 	
 	/**
-	 * Gets the color.
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected String getColor() {
@@ -28,15 +28,15 @@ public class Knight extends Piece {
 	}
 
 	/**
-	 * Gets the piece.
+	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getPiece() {
-		return this.piece;
+	protected String getName() {
+		return this.name;
 	}
 	
 	/**
-	 * A list of all legal moves for the Knight.
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected List<int[]> allLegalMoves(int row, int col, ChessBoard board){
@@ -89,7 +89,7 @@ public class Knight extends Piece {
 	}
 	
 	/**
-	 * Cheks to see if a move is legal.
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
@@ -97,7 +97,7 @@ public class Knight extends Piece {
 	}
 	
 	/**
-	 * Checks to see if the path is clear.
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
@@ -106,7 +106,7 @@ public class Knight extends Piece {
 	}
 	
 	/**
-	 * Returns the color of the Knight.
+	 * Returns a two-character long representation of the piece.
 	 */
 	@Override
 	public String toString() {

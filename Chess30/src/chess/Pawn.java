@@ -16,11 +16,11 @@ public class Pawn extends Piece {
 	 */
 	public Pawn(String color) {
 		this.color = color;
-		this.piece = "Pawn";
+		this.name = "Pawn";
 	}
 	
 	/**
-	 * Gets the color.
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected String getColor() {
@@ -28,15 +28,15 @@ public class Pawn extends Piece {
 	}
 
 	/**
-	 * Gets the piece/
+	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getPiece() {
-		return this.piece;
+	protected String getName() {
+		return this.name;
 	}
 	
 	/**
-	 * A list of all legal moves for the Pawn.
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected List<int[]> allLegalMoves(int row, int col, ChessBoard board){
@@ -54,13 +54,13 @@ public class Pawn extends Piece {
 				moves.add(arr);
 			}
 			if(col > 0) {
-				if(board.getPiece(row - 1, col - 1) != null && !board.getPiece(row - 1, col - 1).getPiece().equals("ghost")) {
+				if(board.getPiece(row - 1, col - 1) != null && !board.getPiece(row - 1, col - 1).getName().equals("ghost")) {
 					int[] arr = {row - 1, col - 1};
 					moves.add(arr);
 				}
 			}
 			if(col < 7) {
-				if(board.getPiece(row - 1, col + 1) != null && !board.getPiece(row - 1, col + 1).getPiece().equals("ghost")) {
+				if(board.getPiece(row - 1, col + 1) != null && !board.getPiece(row - 1, col + 1).getName().equals("ghost")) {
 					int[] arr = {row - 1, col + 1};
 					moves.add(arr);
 				}
@@ -79,13 +79,13 @@ public class Pawn extends Piece {
 				moves.add(arr);
 			}
 			if(col > 0) {
-				if(board.getPiece(row + 1, col - 1) != null && !board.getPiece(row + 1, col - 1).getPiece().equals("ghost")) {	
+				if(board.getPiece(row + 1, col - 1) != null && !board.getPiece(row + 1, col - 1).getName().equals("ghost")) {	
 					int[] arr = {row + 1, col - 1};
 					moves.add(arr);
 				}
 			}
 			if(col < 7) {
-				if(board.getPiece(row + 1, col + 1) != null && !board.getPiece(row + 1, col + 1).getPiece().equals("ghost")) {
+				if(board.getPiece(row + 1, col + 1) != null && !board.getPiece(row + 1, col + 1).getName().equals("ghost")) {
 					int[] arr = {row + 1, col + 1};
 					moves.add(arr);
 				}
@@ -95,7 +95,7 @@ public class Pawn extends Piece {
 	}
 	
 	/**
-	 * Checks to see if a move is legal.
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {	
@@ -150,7 +150,7 @@ public class Pawn extends Piece {
 	}
 	
 	/**
-	 * Checks to see if the path is clear.
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
@@ -176,7 +176,7 @@ public class Pawn extends Piece {
 	}
 	
 	/**
-	 * Returns the color of the Pawn.
+	 * Returns a two-character long representation of the piece.
 	 */
 	@Override
 	public String toString() {

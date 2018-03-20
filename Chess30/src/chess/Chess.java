@@ -23,7 +23,7 @@ public class Chess{
 		int i = 0;
 		if(turn.equals("White")) {
 			while(i < 8) {
-				if(board.getPiece(5, i) != null && board.getPiece(5, i).getPiece().equals("ghost")) {
+				if(board.getPiece(5, i) != null && board.getPiece(5, i).getName().equals("ghost")) {
 					board.setPiece(5, i, null);
 					break;
 				}
@@ -32,7 +32,7 @@ public class Chess{
 		}
 		else {
 			while(i < 8) {
-				if(board.getPiece(2,  i) != null && board.getPiece(2, i).getPiece().equals("ghost")) {
+				if(board.getPiece(2,  i) != null && board.getPiece(2, i).getName().equals("ghost")) {
 					board.setPiece(2, i, null);
 					break;
 				}
@@ -193,7 +193,7 @@ public class Chess{
 		}
 		
 		//if promotion got flagged and this piece is not a pawn, illegal move
-		if(promote && !piece.getPiece().equals("Pawn")){
+		if(promote && !piece.getName().equals("Pawn")){
 			promote = false;
 			return false;
 		}
@@ -226,7 +226,7 @@ public class Chess{
 	 * @return
 	 */
 	private static Piece checkForPromotion(Piece piece, int row, String[] moves) {
-		if(piece.getPiece().equals("Pawn")) {
+		if(piece.getName().equals("Pawn")) {
 			if((turn.equals("White") && row == 1) || (turn.equals("Black") && row == 6)) {
 				promote = true;
 			}
@@ -288,7 +288,7 @@ public class Chess{
 	 */
 	private static int checkForCastle(Piece piece, int startRow, int endRow, int startCol, int endCol) {
 		//check for Castle
-		if(piece.getPiece().equals("King") && Math.abs(startCol - endCol) == 2) {
+		if(piece.getName().equals("King") && Math.abs(startCol - endCol) == 2) {
 			//if not in check, then you're good.
 			if((turn.equals("Black") && !blackCheck(board)) || turn.equals("White") && !whiteCheck(board)){
 				//check to see if squares between are in check
@@ -440,7 +440,7 @@ public class Chess{
 							if((tempBoard.getPiece(move[0], move[1]) == null || tempBoard.getPiece(move[0], move[1]).getColor().equals(turn)) && tempPiece.isLegalMove(i,  j,  move[0],  move[1],  tempBoard) && tempPiece.coastClear(i,  j,  move[0],  move[1],  tempBoard)) {
 								tempBoard.setPiece(move[0],  move[1],  tempPiece);
 								tempBoard.setPiece(i,  j,  null);
-								if(tempPiece.getPiece().equals("King")) {
+								if(tempPiece.getName().equals("King")) {
 									if(turn.equals("White")) {
 										BlackKing = move;
 									}else {
@@ -451,14 +451,14 @@ public class Chess{
 								boolean check = false;
 								if(turn.equals("White")) {
 									check = blackCheck(tempBoard);
-									if(tempPiece.getPiece().equals("King")) {
+									if(tempPiece.getName().equals("King")) {
 										BlackKing[0] = i;
 										BlackKing[1] = j;
 									}
 								}
 								else{
 									check = whiteCheck(tempBoard);
-									if(tempPiece.getPiece().equals("King")) {
+									if(tempPiece.getName().equals("King")) {
 										WhiteKing[0] = i;
 										WhiteKing[1] = j;
 									}
@@ -556,7 +556,7 @@ public class Chess{
 			ChessBoard oldBoard = board.makeCopy();
 			
 			//check for promotion
-			if(piece.getPiece().equals("Pawn")) {
+			if(piece.getName().equals("Pawn")) {
 				piece = checkForPromotion(piece, startRow, moves);
 			}
 			
@@ -582,13 +582,13 @@ public class Chess{
 				board.setPiece(startRow, startCol, null);
 				
 				//if captured en passant, then enforce.
-				if(piece.getPiece().equals("Pawn") && oldPiece != null && oldPiece.getPiece().equals("ghost")) {
+				if(piece.getName().equals("Pawn") && oldPiece != null && oldPiece.getName().equals("ghost")) {
 					enforceEnpassant(endCol);
 				}
 			}
 
 			//update King's location so that we can check for Check
-			if(piece.getPiece().equals("King")) {
+			if(piece.getName().equals("King")) {
 				if(turn.equals("White")) {
 					WhiteKing[0] = endRow;
 					WhiteKing[1] = endCol;
@@ -611,7 +611,7 @@ public class Chess{
 				board = oldBoard.makeCopy();
 				
 				//if King was moved, change locations back.
-				if(piece.getPiece().equals("King")) {
+				if(piece.getName().equals("King")) {
 					if(turn.equals("White")) {
 						WhiteKing[0] = startRow;
 						WhiteKing[1] = startCol;

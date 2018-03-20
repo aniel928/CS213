@@ -15,11 +15,11 @@ public class Bishop extends Piece {
 	 */
 	public Bishop(String color) {
 		this.color = color;
-		this.piece = "Bishop";
+		this.name = "Bishop";
 	}
 	
 	/**
-	 * Gets the color.
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected String getColor() {
@@ -27,15 +27,15 @@ public class Bishop extends Piece {
 	}
 	
 	/**
-	 * Gets the piece.
+	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getPiece() {
-		return this.piece;
+	protected String getName() {
+		return this.name;
 	}
 
 	/**
-	 * A list of all legal moves for the Bishop.
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected List<int[]> allLegalMoves(int row, int col, ChessBoard board){
@@ -80,7 +80,7 @@ public class Bishop extends Piece {
 	}
 	
 	/**
-	 * Checks to see if a move is legal.
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
@@ -88,7 +88,7 @@ public class Bishop extends Piece {
 	}
 	
 	/**
-	 * Checks to see if the path is clear.
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
@@ -134,7 +134,7 @@ public class Bishop extends Piece {
 		
 			while(i <= endRow) {
 				if(board.getPiece(i, j) != null) {
-					if(!board.getPiece(i, j).getPiece().equals("ghost")) {
+					if(!board.getPiece(i, j).getName().equals("ghost")) {
 						return false;
 					}
 				}
@@ -150,7 +150,7 @@ public class Bishop extends Piece {
 	}
 	
 	/**
-	 * Returns the color of the Bishop.
+	 * Returns a two-character long representation of the piece.
 	 */
 	@Override
 	public String toString() {

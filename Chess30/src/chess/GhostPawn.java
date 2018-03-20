@@ -16,12 +16,12 @@ public class GhostPawn extends Piece {
 	 * @param color
 	 */
 	public GhostPawn(String color) {
-		this.piece = "ghost";
+		this.name = "ghost";
 		this.color = color;
 	}
 	
 	/**
-	 * Gets the color.
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected String getColor() {
@@ -29,22 +29,22 @@ public class GhostPawn extends Piece {
 	}
 
 	/**
-	 * Gets the piece.
+	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getPiece() {
-		return this.piece;
+	protected String getName() {
+		return this.name;
 	}
 	
 	/**
-	 * A list of all legal moves for the GhostPawn.
+	 * {@inheritDoc}
 	 */
 	protected List<int[]> allLegalMoves(int row, int col, ChessBoard board){
 		return null;
 	}
 
 	/**
-	 * Checks to see if a move is legal.
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
@@ -52,7 +52,7 @@ public class GhostPawn extends Piece {
 	}
 
 	/**
-	 * Checks to see if a path is clear.
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
@@ -61,7 +61,7 @@ public class GhostPawn extends Piece {
 	}
 	
 	/**
-	 * Returns the GhostPawn piece.
+	 * Returns a two-character long representation of the piece.
 	 */
 	@Override
 	public String toString() {

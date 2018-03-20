@@ -1,5 +1,9 @@
 package chess;
-
+/**
+ * This is a class for the chessboard.  It contains all logic for getting/setting positions, making copies of the board, and returning current board layout.
+ * @author alh220
+ * @author jmuccino
+ */
 public class ChessBoard {
 	final int ROWS = 8;
 	final int COLS = 8;
@@ -59,7 +63,7 @@ public class ChessBoard {
 		String board = "\n";
 		for(int i = 0; i< ROWS; i++) {
 			for(int j = 0; j< COLS; j++) {
-				if(positions[i][j] != null && !positions[i][j].getPiece().equals("ghost")) {
+				if(positions[i][j] != null && !positions[i][j].getName().equals("ghost")) {
 					board += positions[i][j].toString()+ " ";
 				}
 				else {

@@ -16,11 +16,11 @@ public class Queen extends Piece {
 	 */
 	public Queen(String color) {
 		this.color = color;
-		this.piece = "Queen";
+		this.name = "Queen";
 	}
 	
 	/**
-	 * Gets the color.
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected String getColor() {
@@ -28,15 +28,15 @@ public class Queen extends Piece {
 	}
 
 	/**
-	 * Gets the piece.
+	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getPiece() {
-		return this.piece;
+	protected String getName() {
+		return this.name;
 	}
 	
 	/**
-	 * A list of all legal moves for the Queen.
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected List<int[]> allLegalMoves(int row, int col, ChessBoard board){
@@ -98,7 +98,7 @@ public class Queen extends Piece {
 	}
 	
 	/**
-	 * Checks to see if a move is legal.
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
@@ -106,7 +106,7 @@ public class Queen extends Piece {
 	}
 	
 	/**
-	 * Checks to see if the path is clear.
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
@@ -125,7 +125,7 @@ public class Queen extends Piece {
 			int i = startCol;
 			while(i <= endCol) {
 				if(board.getPiece(startRow, i) != null) {
-					if(!board.getPiece(startRow, i).getPiece().equals("ghost")) {
+					if(!board.getPiece(startRow, i).getName().equals("ghost")) {
 						return false;
 					}
 				}
@@ -146,7 +146,7 @@ public class Queen extends Piece {
 			int i = startRow;
 			while(i <= endRow) {
 				if(board.getPiece(i, startCol) != null) {
-					if(!board.getPiece(i, startCol).getPiece().equals("ghost")) {
+					if(!board.getPiece(i, startCol).getName().equals("ghost")) {
 						return false;
 					}
 				}
@@ -194,7 +194,7 @@ public class Queen extends Piece {
 			
 			while(i <= endRow) {
 				if(board.getPiece(i, j) != null) {
-					if(!board.getPiece(i, j).getPiece().equals("ghost")) {
+					if(!board.getPiece(i, j).getName().equals("ghost")) {
 						return false;
 					}
 				}
@@ -210,7 +210,7 @@ public class Queen extends Piece {
 	}
 	
 	/**
-	 * Returns the color of the Queen.
+	 * Returns a two-character long representation of the piece.
 	 */
 	@Override
 	public String toString() {

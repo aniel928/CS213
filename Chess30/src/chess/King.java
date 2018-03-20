@@ -16,11 +16,11 @@ public class King extends Piece {
 	 */
 	public King(String color) {
 		this.color = color;
-		this.piece = "King";
+		this.name = "King";
 	}
 
 	/**
-	 * Gets the color.
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected String getColor() {
@@ -28,15 +28,15 @@ public class King extends Piece {
 	}
 
 	/**
-	 * Gets the piece.
+	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getPiece() {
-		return this.piece;
+	protected String getName() {
+		return this.name;
 	}
 	
 	/**
-	 * A list of all legal moves for the King.
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected List<int[]> allLegalMoves(int row, int col, ChessBoard board){
@@ -91,7 +91,7 @@ public class King extends Piece {
 	}
 	
 	/**
-	 * Checks to see if a move is legal.
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
@@ -100,7 +100,7 @@ public class King extends Piece {
 			//right side of board
 			if(endCol == 6) {
 				if(board.getPiece(startRow,  7) != null) {
-					if(board.getPiece(startRow,7).getPiece().equals("Rook") && !board.getPiece(startRow, 7).moved) {
+					if(board.getPiece(startRow,7).getName().equals("Rook") && !board.getPiece(startRow, 7).moved) {
 						return true;
 					}
 				}
@@ -108,7 +108,7 @@ public class King extends Piece {
 			//left side of board.
 			if(endCol == 2) {
 				if(board.getPiece(startRow,  0) != null) {
-					if(board.getPiece(startRow,  0).getPiece().equals("Rook") && !board.getPiece(startRow,  0).moved) {
+					if(board.getPiece(startRow,  0).getName().equals("Rook") && !board.getPiece(startRow,  0).moved) {
 						return true;
 					}
 				}
@@ -118,7 +118,7 @@ public class King extends Piece {
 	}
 	
 	/**
-	 * Cheks to see if the path is clear.
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
@@ -137,7 +137,7 @@ public class King extends Piece {
 	}
 	
 	/**
-	 * Returns the color of the King.
+	 * Returns a two-character long representation of the piece.
 	 */
 	@Override
 	public String toString() {
