@@ -41,6 +41,20 @@ public class King extends Piece {
 	@Override
 	protected List<int[]> allLegalMoves(int row, int col, ChessBoard board){
 		List<int[]> moves = new ArrayList<int[]>();
+		if(!this.moved) {
+			if(this.color.equals("White")) {
+				int[] arr = {7, 2}; 
+				moves.add(arr);
+				int[] arr2 = {7, 6};
+				moves.add(arr2);
+			}
+			else {
+				int[] arr = {0, 2}; 
+				moves.add(arr);
+				int[] arr2 = {0, 6};
+				moves.add(arr2);
+			}
+		}
 		if(row < 7) {
 			int[] arr = {row + 1, col};
 			moves.add(arr);

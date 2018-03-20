@@ -437,7 +437,7 @@ public class Chess{
 					if(moves != null) {
 						for(int[] move : moves) {
 							ChessBoard tempBoard = board.makeCopy();
-							if((tempBoard.getPiece(move[0], move[1]) == null || tempBoard.getPiece(move[0], move[1]).getColor().equals(turn)) && tempPiece.coastClear(i,  j,  move[0],  move[1],  tempBoard)) {
+							if((tempBoard.getPiece(move[0], move[1]) == null || tempBoard.getPiece(move[0], move[1]).getColor().equals(turn)) && tempPiece.isLegalMove(i,  j,  move[0],  move[1],  tempBoard) && tempPiece.coastClear(i,  j,  move[0],  move[1],  tempBoard)) {
 								tempBoard.setPiece(move[0],  move[1],  tempPiece);
 								tempBoard.setPiece(i,  j,  null);
 								if(tempPiece.getPiece().equals("King")) {
