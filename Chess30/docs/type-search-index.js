@@ -1,0 +1,1 @@
+typeSearchIndex = [{"p":"chess","l":"Bishop"},{"p":"chess","l":"Chess"},{"p":"chess","l":"ChessBoard"},{"p":"chess","l":"GhostPawn"},{"p":"chess","l":"King"},{"p":"chess","l":"Knight"},{"p":"chess","l":"Pawn"},{"p":"chess","l":"Piece"},{"p":"chess","l":"Queen"},{"p":"chess","l":"Rook"}]
