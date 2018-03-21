@@ -4,14 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Code for the Bishop piece.
+ * Bishop piece to be used in Chess game.  Contains attributes and methods that are inherited from the abstract class {@link Piece}. 
  * @author JMuccino
+ * @author alh220
  *
  */
 public class Bishop extends Piece {
 	/**
-	 * This is the constructor for the Bishop piece.
-	 * @param color
+	 * Creates new Bishop and sets the color and name.
+	 * @param color a string ("White" or "Black") representing which player the piece belongs to.
 	 */
 	public Bishop(String color) {
 		this.color = color;

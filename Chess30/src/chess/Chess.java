@@ -3,23 +3,49 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Code for the entire chess game.
- * @author 
+ * Chess game and methods.  Contains code for en passant, promotion, castling (regular and queen side), check, checkmate and stalemate.  
+ 
+ * @author alh220
+ * @author jmuccino
  *
+ * @see ChessBoard
+ * @see Piece
+ * 
  */
 public class Chess{
-	private static boolean gameOver = false;
+	/**
+	 * boolean to keep track of whether game is still going
+ 	*/	
+ 	private static boolean gameOver = false;
+ 	/**
+	 * String to keep track of whose turn it is.
+ 	*/
 	protected static String turn = "White";
+	/**
+	 * boolean to keep track of draw requests between turns.
+ 	*/
 	private static boolean draw = false;
+	/**
+	 * boolean to keep track of promotion requests.
+ 	*/
 	private static boolean promote = false;
+	/**
+	 * {@link ChessBoard} object to keep track of where the pieces are.
+ 	*/
 	private static ChessBoard board;
+	/**
+	 * Integer array storing to store the current position of each king to make validation of "Check" easier.
+ 	*/
 	private static int[] WhiteKing, BlackKing;
 	
 	/**
-	 * En passant is valid for only one move, so remove any ghost pawn at beginning of each turn.
+	 * Remove {@link GhostPawn} belonging to current player from board.  This method is run at the start of each turn, 
+	 * so if White, for example, moved a pawn two spaces on their last turn, we are removing the {@link GhostPawn} from the board
+	 * because the chance for En Passant is over.
 	 */
 	private static void removeEnpassant() {
 		int i = 0;
+		//if current turn is white, remove any GhostPawn's from rank 3.
 		if(turn.equals("White")) {
 			while(i < 8) {
 				if(board.getPiece(5, i) != null && board.getPiece(5, i).getName().equals("ghost")) {
@@ -29,6 +55,7 @@ public class Chess{
 				i++;
 			}
 		}
+		//if current turn in Black, remove any GhostPawn's from rank 6
 		else {
 			while(i < 8) {
 				if(board.getPiece(2,  i) != null && board.getPiece(2, i).getName().equals("ghost")) {
@@ -42,9 +69,11 @@ public class Chess{
 	}
 
 	/**
-	 * Checks the format of the input and makes sure the user is giving good commands.
-	 * @param moves
-	 * @return
+	 * <p>Preliminary validation of user input.  Checks for number of parameters and determines validity based on those parameters.</p>
+	 * <p>In addition to validating user input format, also checks for resignation, draw requests, draw confirmation, and promotion requests.
+	 *   
+	 * @param moves a String array containing all parameters of user input. 
+	 * @return a boolean determining whether or not what the user entered was a valid command.
 	 */
 	private static boolean checkMoves(String[] moves) {
 
@@ -52,13 +81,14 @@ public class Chess{
 		if(moves.length > 3) {
 			return false;
 		}
+		
 		//if there are three, it's either offering draw or a request to promote
 		else if(moves.length == 3) {
 			//offer to draw sets variable so on the next turn we know the user offered a draw.
 			if(moves[2].equals("draw?")) {
-				draw = true;;
+				draw = true;
 			}
-			//request to promote flags a variable for when we're ready to promote.  
+			//request to promote flags a variable for when we're ready to promote. (Does not guarantee validity since we don't know piece yet) 
 			else if(moves[2].equals("N") || moves[2].equals("R") || moves[2].equals("B") || moves[2].equals("Q")){
 				promote = true;
 			}
@@ -90,18 +120,17 @@ public class Chess{
 				return false;
 			}
 		}
-		//if it's not a case above then there should only be two paramters, the starting and ending positions
+		//if it's not a case above then there should only be two parameters, the starting and ending positions
 		else if(moves.length != 2) {
 			return false;
 		}
-		
-		//Now that we're through all of that, if we haven't returned yet, there's more work to do.  
-		//If we're here, then user didn't accept draw. Change draw back to false.
+	  
+		//If we're here, then user didn't accept draw. Change draw back to false. (Unless of course this user just requested a draw)
 		if(!(moves.length == 3 && moves[2].equals("draw"))) {
 			draw = false;
 		}
 		
-		//Finally, validate that the first two paramters of input in format of letter/number letter number i.e. e2 e5
+		//Finally, validate that the first two parameters of input are only two characters long each (rank and file)
 		if(moves[0].length() != 2 || moves[1].length() != 2) {
 			return false;
 		}
@@ -111,21 +140,21 @@ public class Chess{
 	}
 
 	/**
-	 * This just prints out that the move is illegal.	
+	 * Method to print when move is illegal. 	
 	 */
 	private static void illegalMove() {
 		System.out.println("Illegal move, try again.");
 	}
 
 	/**
-	 * Takes input of board position (i.e. a1 or e5) and returns where that is in the array.
-	 * @param move
-	 * @return
+	 * Takes input of board position (i.e. a1 or e5) and returns array indices that reference positions on board.
+	 * @param move String representing a board position passed in through user input.  
+	 * @return integer array representing the row and column indices on the {@link board} on success. Positions include -1 on error.
 	 */
 	private static int[] getArrayVals(String move) {
 		int row;
 		try{
-			//row 8 is at top of board, so we need to reverse the input row #
+			//row 8 is at top of board, so we need to reverse the input row # to match the index
 			row = board.ROWS-Integer.parseInt(String.valueOf(move.charAt(1)));
 		}
 		catch(Exception e){
@@ -172,20 +201,26 @@ public class Chess{
 	}
 
 	/**
-	 * Makes sure move is legal.
-	 * @param piece
-	 * @param startRow
-	 * @param endRow
-	 * @param startCol
-	 * @param endCol
-	 * @return
+	 * <p>This method continues checking validity of move.  First, it C]checks to make sure that the piece exists and is the correct color.</p>
+	 * <p>If promotion is flagged, it makes sure that this piece is a pawn and is moving to the correct (final) rank for the color.</p> 
+	 * <p>Next it checks whether this move is valid by calling {@link Piece.isLegalMove} and {@link Piece.coastClear}</p>
+	 * <p>Finally, it checks to make sure that if the square the piece is trying to move to contains another piece, that it is of the opposite color.
+	 * 
+	 * @param piece A chess piece inherited from the {@link Piece} object 
+	 * @param startRow An integer between 0-7 signifying which rank the piece exists on.
+	 * @param endRow An integer between 0-7 signifying which rank the player is moving the piece to.
+	 * @param startCol An integer between 0-7 signifying which file the piece exists on.
+	 * @param endCol An integer between 0-7 signifying which file the player is moving the piece to.
+	 * @return a boolean signifying whether or not the move is valid.  Could return false if the player is selecting a square on the board that does 
+	 * not contain their piece or is moving the piece in an illegal way, 
 	 */
 	private static boolean validMoveForPiece(Piece piece, int startRow, int endRow, int startCol, int endCol) {
-		//if no piece, return error
+		//is there a piece?
 		if(piece == null) {
 			return false;
 		}
 		
+		//does it belong to this player?
 		if(!piece.getColor().equals(turn)) {
 			return false;
 		}
@@ -195,20 +230,21 @@ public class Chess{
 			promote = false;
 			return false;
 		}
+		//if promotion got flagged and pawn is not moving to last row, illegal move.
 		if(promote && ((piece.getColor().equals("White") && endRow != 0) || (piece.getColor().equals("Black") && endRow != 7))) {
 			promote = false;
 			return false;				
 		}
-		//if yes, check for valid moves (function in piece)
+		//check if move is legal.
 		if(!(piece.isLegalMove(startRow, startCol, endRow, endCol, board))) {
 			return false;
 		}
-		//if valid ,check for pieces in the way (except for knight)
+		//check for pieces in the way
 		if(!(piece.coastClear(startRow, startCol, endRow, endCol, board))){
 			return false;
 		}
 		
-		//check if another piece occupies destination (opposite color)
+		//check if another piece occupies destination (must be opposite color)
 		if(board.getPiece(endRow,  endCol) != null && board.getPiece(endRow, endCol).getColor().equals(turn)) {
 			return false;
 		}
@@ -217,11 +253,11 @@ public class Chess{
 	}
 	
 	/**
-	 * Checks for promotion. If valid, then promote.
-	 * @param piece
-	 * @param row
-	 * @param moves
-	 * @return
+	 * Method checks for promotion and sets up promotion if not requested when pawn moves to last row.  Calls {@link promote}.
+	 * @param piece A chess piece inherited from the {@link Piece} object
+	 * @param row An integer between 0-7 representing the starting row of a move.
+	 * @param moves an integer array holding the user input
+	 * @return a {@link Piece} object that pawn was promoted to.
 	 */
 	private static Piece checkForPromotion(Piece piece, int row, String[] moves) {
 		if(piece.getName().equals("Pawn")) {
@@ -245,9 +281,9 @@ public class Chess{
 	}
 	
 	/**
-	 * Handles promotion of a piece.	
-	 * @param strPiece
-	 * @return
+	 * Called from {@link checkForPromotion}.  Takes in a string of what to promote to and returns that new piece.
+	 * @param strPiece string reperesentation of piece requested.
+	 * @return {@link Piece} object requested.
 	 */
 	private static Piece promote(String strPiece) {
 		Piece piece = null;
@@ -276,13 +312,17 @@ public class Chess{
 	}
 	
 	/**
-	 * Checks to see if a piece is trying to castle. Returns -1 on error, 0 on success, 1 for "Not King".
-	 * @param piece
-	 * @param startRow
-	 * @param endRow
-	 * @param startCol
-	 * @param endCol
-	 * @return
+	 * If the King is requesting a castle, checks to see if it can.  First it checks to make sure it is not currently in Check.   Next we make a copy
+	 * of the board and move the piece over one square and verify that the King is not check (because the King cannot move through check).  If he is 
+	 * in check, we revert the board and return a -1.  Otherwise, we perform the castle by calling {@link performCastle} method and we return 0 to 
+	 * signal that we successfully castled.
+	 * 
+	 * @param piece A chess piece inherited from the {@link Piece} object 
+	 * @param startRow An integer between 0-7 signifying which rank the piece exists on.
+	 * @param endRow An integer between 0-7 signifying which rank the player is moving the piece to.
+	 * @param startCol An integer between 0-7 signifying which file the piece exists on.
+	 * @param endCol An integer between 0-7 signifying which file the player is moving the piece to.
+	 * @return an integer: 0 for success, -1 for error, and 1 for "Not King" (which is not an error)
 	 */
 	private static int checkForCastle(Piece piece, int startRow, int endRow, int startCol, int endCol) {
 		//check for Castle
@@ -339,14 +379,15 @@ public class Chess{
 	}
 	
 	/**
-	 * Performs the actual Castle.
-	 * @param piece
-	 * @param startRow
-	 * @param endRow
-	 * @param startCol
-	 * @param endCol
+	 * Performs the actual Castle.  Checks for Queenside vs Kingside castling, then moves the pieces around.
+	 * @param piece A chess piece inherited from the {@link Piece} object 
+	 * @param startRow An integer between 0-7 signifying which rank the piece exists on.
+	 * @param endRow An integer between 0-7 signifying which rank the player is moving the piece to.
+	 * @param startCol An integer between 0-7 signifying which file the piece exists on.
+	 * @param endCol An integer between 0-7 signifying which file the player is moving the piece to.
 	 */
 	private static void performCastle(Piece piece, int startRow, int endRow, int startCol, int endCol){
+		//Queen side castle
 		if(startCol - endCol == 2) {
 			board.setPiece(endRow,  endCol, piece);
 			Piece rook = board.getPiece(endRow, 0);
@@ -356,6 +397,7 @@ public class Chess{
 			piece.moved = true;
 			rook.moved = true;
 		}
+		//King-side castle
 		else if(startCol - endCol == -2) {
 			board.setPiece(endRow,  endCol, piece);
 			Piece rook = board.getPiece(endRow, 7);
@@ -368,8 +410,9 @@ public class Chess{
 	}
 	
 	/**
-	 * If ghost pawn is taken, then remove actual pawn.
-	 * @param endCol
+	 * Method to enforce en passant.  Called when a ghost pawn is killed by a pawn of the opposite color.  
+	 * This method just sets the pawn's square to null.
+	 * @param endCol an integer representing the column that the piece was in.
 	 */
 	private static void enforceEnpassant(int endCol) {
 		if(turn.equals("White")) {
@@ -381,9 +424,10 @@ public class Chess{
 	}
 	
 	/**
-	 * Sees if White is in check.
-	 * @param board
-	 * @return
+	 * <p>Checks for white in Check by going through the entire board and checking to see if any black piece can reach the King.</p>
+	 * <p>Uses {@link Piece.isLegalMove} and {@link Piece.coastClear} to validate moves.</p>
+	 * @param board A {@link Chessboard} object of the board that we are looking for check on.
+	 * @return a boolean telling whether or not white is in check.
 	 */
 	private static boolean whiteCheck(ChessBoard board) {
 		for(int i = 0; i < board.ROWS; i++) {
@@ -400,9 +444,10 @@ public class Chess{
 	}
 	
 	/**
-	 * Sees if Black is in check.
-	 * @param board
-	 * @return
+	 * <p>Checks for black in Check by going through the entire board and checking to see if any white piece can reach the King.</p>
+	 * <p>Uses {@link Piece.isLegalMove} and {@link Piece.coastClear} to validate moves.</p>
+	 * @param board A {@link Chessboard} object of the board that we are looking for check on.
+	 * @return a boolean telling whether or not black is in check.
 	 */
 	private static boolean blackCheck(ChessBoard board) {
 		for(int i = 0; i < board.ROWS; i++) {
@@ -419,8 +464,10 @@ public class Chess{
 	}
 	
 	/**
-	 * Checks for Checkmate/StaleMate.
-	 * @return
+	 * Checks for Checkmate/StaleMate.  This method goes through the entire board, grabs every piece of the opposite color, and moves it
+	 * to every place returned from {@link Piece.allLegalMoves} on a new temporary board. It then calls {@link whiteCheck} or {@link blackCheck}
+	 * depending on the turn.  If it returns false, then there exists a move where the player will not be in check, so we return false for checkmate/stalemate.
+	 * @return boolean telling whether or not checkmate or stalemate currently exists.
 	 */
 	private static boolean checkForMate() {
 		//for each row and each col,
@@ -476,7 +523,7 @@ public class Chess{
 	}
 	
 	/**
-	 * Change turn variable between "White" and "Black".
+	 * Change value of turn variable between "White" and "Black". This changes who's turn it is in the game.
 	 */
 	private static void changeTurns() {
 		//Change turns			
@@ -489,8 +536,8 @@ public class Chess{
 	}
 	
 	/**
-	 * The actual game.
-	 * @param scanner
+	 * The actual game.  A loop that continues until game over.
+	 * @param scanner the stream that the players type their commands into.
 	 */
 	private static void playGame(Scanner scanner) {
 		while(!gameOver) {
@@ -646,8 +693,8 @@ public class Chess{
 	}
 	
 	/**
-	 * The main class.
-	 * @param args
+	 * The main method that starts the game up.
+	 * @param args should be empty.  We are not checking for command line arguments, so if any are entered they will be ignored.
 	 */
 	public static void main(String[] args){
 		//set up scanner

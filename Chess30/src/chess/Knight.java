@@ -4,15 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Code for the Knight piece.
- * @author 
+ * Knight piece to be used in Chess game.  Contains attributes and methods that are inherited from the abstract class {@link Piece}.
+ * @author alh220
+ * @author jmuccino
  *
  */
 public class Knight extends Piece {
 
 	/**
-	 * This is the constructor for the Knight piece.
-	 * @param color
+	 * Creates new Knight and sets the color and name.
+	 * @param color a string ("White" or "Black") representing which player the piece belongs to.
 	 */
 	public Knight(String color) {
 		this.color = color;
