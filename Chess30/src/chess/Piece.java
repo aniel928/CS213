@@ -11,53 +11,32 @@ import java.util.List;
  *
  */
 public abstract class Piece {
+	
 	/**
-	 * Color of player for Chess game
-	 * @author alh220
-	 * @author jmuccino
-	 * 
-	 */
-	enum Player
-	{
-	    WHITE, BLACK;
-	}
-	 
-	/**
-	 * Possible names of chess pieces.
-	 * @author alh220
-	 * @author jmuccino
-	 *
-	 */
-	enum PieceName
-	{
-	    KING, QUEEN, BISHOP, KNIGHT, ROOK, PAWN, GHOST;
-	}
-	 
-	/**
-	 * An enum declared in {@link Chess} storing which player the piece belongs to. (e.g. "White" or "Black")
+	 * An enum storing which player the piece belongs to. (e.g. "White" or "Black")
 	 */
 	protected Player color;
 	
 	/**
-	 * A {@link String} storing the name of the piece so we can easily figure out what 
-	 * it is in an array of abstract Pieces. (e.g. "Pawn", "Bishop", etc.)
+	 * An enum storing the name of the piece so we can easily figure out what 
+	 * it is in an array of abstract Pieces.
 	 */
 	protected PieceName name;
 	
 	/**
-	 * A {@link Boolean} that stores whether or not the piece has moved.  
+	 * A that stores whether or not the piece has moved.  
 	 */
 	protected boolean moved = false;
 
 	/**
 	 * Getter method to return which team the piece belongs to.
-	 * @return {@link Piece.color}
+	 * @return {@link #color}
 	 */
 	protected abstract Player getColor();
 	
 	/**
 	 * Getter method to return the name of the piece.
-	 * @return {@link Piece.name}
+	 * @return {@link #name}
 	 */
 	protected abstract PieceName getName();
 	
@@ -66,12 +45,10 @@ public abstract class Piece {
 	 * list of all valid moves, primarily to check for checkmate or stalemate.    
 	 * @param row an integer between 0 and 7 that corresponds to a board row. 
 	 * @param col an integer between 0 and 7 that corresponds to a board column.
-	 * @param board the {@link Chessboard} object to be referenced.
-	 * @return {@link ArrayList} of integer pairs denoting legal ending positions on the board 
+	 * @param board the {@link ChessBoard} object to be referenced.
+	 * @return ArrayList of integer pairs denoting legal ending positions on the board 
 	 * in row, col} format.
-	 * @see {@link Chess.checkForMate} - this method is called from with in the checkForMate() 
-	 * method.
-	 * 		{@link Chessboard} - this method takes in a type of Chessboard.
+ 	 *
 	 */
 	protected abstract List<int[]> allLegalMoves(int row, int col, ChessBoard board);
 	
@@ -86,8 +63,8 @@ public abstract class Piece {
 	 * position on the board.
 	 * @param endCol an integer between 0 and 7 that corresponds to the column of the ending 
 	 * position on the board.
-	 * @param board the {@link Chessboard} object to be referenced.
-	 * @return {@link boolean} determining whether the move passed in is legal.
+	 * @param board the {@link ChessBoard} object to be referenced.
+	 * @return boolean determining whether the move passed in is legal.
 	 */
 	protected abstract boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board);
 	
@@ -102,8 +79,8 @@ public abstract class Piece {
 	 * on the board.
 	 * @param endCol an integer between 0 and 7 that corresponds to the column of the ending position 
 	 * on the board.
-	 * @param board the {@link Chessboard} object to be referenced.
-	 * @return {@link boolean} determining whether this move is able to take place.
+	 * @param board the {@link ChessBoard} object to be referenced.
+	 * @return boolean determining whether this move is able to take place.
 	 */
 	protected abstract boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board);
 }

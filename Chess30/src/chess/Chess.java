@@ -19,9 +19,9 @@ public class Chess{
  	*/	
  	private static boolean gameOver = false;
  	/**
-	 * Enum declared in {@link Piece} to keep track of whose turn it is.
+	 * Enum to keep track of whose turn it is.
  	*/
-	protected static Piece.Player turn = Piece.Player.WHITE;
+	protected static Player turn = Player.WHITE;
 	/**
 	 * boolean to keep track of draw requests between turns.
  	*/
@@ -47,9 +47,9 @@ public class Chess{
 	private static void removeEnpassant() {
 		int i = 0;
 		//if current turn is white, remove any GhostPawn's from rank 3.
-		if(turn == Piece.Player.WHITE) {
+		if(turn == Player.WHITE) {
 			while(i < 8) {
-				if(board.getPiece(5, i) != null && board.getPiece(5, i).getName() == Piece.PieceName.GHOST) {
+				if(board.getPiece(5, i) != null && board.getPiece(5, i).getName() == PieceName.GHOST) {
 					board.setPiece(5, i, null);
 					break;
 				}
@@ -59,7 +59,7 @@ public class Chess{
 		//if current turn in Black, remove any GhostPawn's from rank 6
 		else {
 			while(i < 8) {
-				if(board.getPiece(2,  i) != null && board.getPiece(2, i).getName() == Piece.PieceName.GHOST) {
+				if(board.getPiece(2,  i) != null && board.getPiece(2, i).getName() == PieceName.GHOST) {
 					board.setPiece(2, i, null);
 					break;
 				}
@@ -103,7 +103,7 @@ public class Chess{
 			//if resign then announce winner
 			if(moves[0].equals("resign")) {
 				gameOver = true;
-				if(turn == Piece.Player.WHITE) {
+				if(turn == Player.WHITE) {
 					System.out.println("Black wins");
 				}else {
 					System.out.println("White wins");
@@ -150,7 +150,7 @@ public class Chess{
 	/**
 	 * Takes input of board position (i.e. a1 or e5) and returns array indices that reference positions on board.
 	 * @param move String representing a board position passed in through user input.  
-	 * @return integer array representing the row and column indices on the {@link board} on success. Positions include -1 on error.
+	 * @return integer array representing the row and column indices on the {@link #board} on success. Positions include -1 on error.
 	 */
 	private static int[] getArrayVals(String move) {
 		int row;
@@ -204,7 +204,7 @@ public class Chess{
 	/**
 	 * <p>This method continues checking validity of move.  First, it C]checks to make sure that the piece exists and is the correct color.</p>
 	 * <p>If promotion is flagged, it makes sure that this piece is a pawn and is moving to the correct (final) rank for the color.</p> 
-	 * <p>Next it checks whether this move is valid by calling {@link Piece.isLegalMove} and {@link Piece.coastClear}</p>
+	 * <p>Next it checks whether this move is valid by calling {@link Piece#isLegalMove} and {@link Piece#coastClear}</p>
 	 * <p>Finally, it checks to make sure that if the square the piece is trying to move to contains another piece, that it is of the opposite color.
 	 * 
 	 * @param piece A chess piece inherited from the {@link Piece} object 
@@ -227,12 +227,12 @@ public class Chess{
 		}
 		
 		//if promotion got flagged and this piece is not a pawn, illegal move
-		if(promote && piece.getName() != Piece.PieceName.PAWN){
+		if(promote && piece.getName() != PieceName.PAWN){
 			promote = false;
 			return false;
 		}
 		//if promotion got flagged and pawn is not moving to last row, illegal move.
-		if(promote && ((piece.getColor() == Piece.Player.WHITE && endRow != 0) || (piece.getColor() == Piece.Player.BLACK && endRow != 7))) {
+		if(promote && ((piece.getColor() == Player.WHITE && endRow != 0) || (piece.getColor() == Player.BLACK && endRow != 7))) {
 			promote = false;
 			return false;				
 		}
@@ -254,15 +254,15 @@ public class Chess{
 	}
 	
 	/**
-	 * Method checks for promotion and sets up promotion if not requested when pawn moves to last row.  Calls {@link promote}.
+	 * Method checks for promotion and sets up promotion if not requested when pawn moves to last row.  Calls {@link #promote}.
 	 * @param piece A chess piece inherited from the {@link Piece} object
 	 * @param row An integer between 0-7 representing the starting row of a move.
 	 * @param moves an integer array holding the user input
 	 * @return a {@link Piece} object that pawn was promoted to.
 	 */
 	private static Piece checkForPromotion(Piece piece, int row, String[] moves) {
-		if(piece.getName() == Piece.PieceName.PAWN) {
-			if((turn == Piece.Player.WHITE && row == 1) || (turn == Piece.Player.BLACK && row == 6)) {
+		if(piece.getName() == PieceName.PAWN) {
+			if((turn == Player.WHITE && row == 1) || (turn == Player.BLACK && row == 6)) {
 				promote = true;
 			}
 		}
@@ -282,7 +282,7 @@ public class Chess{
 	}
 	
 	/**
-	 * Called from {@link checkForPromotion}.  Takes in a string of what to promote to and returns that new piece.
+	 * Called from {@link #checkForPromotion}.  Takes in a string of what to promote to and returns that new piece.
 	 * @param strPiece string reperesentation of piece requested.
 	 * @return {@link Piece} object requested.
 	 */
@@ -315,7 +315,7 @@ public class Chess{
 	/**
 	 * If the King is requesting a castle, checks to see if it can.  First it checks to make sure it is not currently in Check.   Next we make a copy
 	 * of the board and move the piece over one square and verify that the King is not check (because the King cannot move through check).  If he is 
-	 * in check, we revert the board and return a -1.  Otherwise, we perform the castle by calling {@link performCastle} method and we return 0 to 
+	 * in check, we revert the board and return a -1.  Otherwise, we perform the castle by calling {@link #performCastle} method and we return 0 to 
 	 * signal that we successfully castled.
 	 * 
 	 * @param piece A chess piece inherited from the {@link Piece} object 
@@ -327,24 +327,24 @@ public class Chess{
 	 */
 	private static int checkForCastle(Piece piece, int startRow, int endRow, int startCol, int endCol) {
 		//check for Castle
-		if(piece.getName() == Piece.PieceName.KING && Math.abs(startCol - endCol) == 2) {
+		if(piece.getName() == PieceName.KING && Math.abs(startCol - endCol) == 2) {
 			//if not in check, then you're good.
-			if((turn == Piece.Player.BLACK && !blackCheck(board)) || turn == Piece.Player.WHITE && !whiteCheck(board)){
+			if((turn == Player.BLACK && !blackCheck(board)) || turn == Player.WHITE && !whiteCheck(board)){
 				//check to see if squares between are in check
 				if(startCol - endCol == 2) {
 					//Queen Side Castle
 					ChessBoard tempBoard = board.makeCopy();
 					tempBoard.setPiece(startRow,  startCol - 1, piece);
-					if(turn == Piece.Player.WHITE){
+					if(turn == Player.WHITE){
 						WhiteKing[1]--;	
 					}else{
 						BlackKing[1]--;
 					}
-					if(turn == Piece.Player.WHITE && blackCheck(tempBoard)){
+					if(turn == Player.WHITE && blackCheck(tempBoard)){
 						BlackKing[1]++;
 						return -1;
 					}
-					if(turn == Piece.Player.WHITE && whiteCheck(tempBoard)) {
+					if(turn == Player.WHITE && whiteCheck(tempBoard)) {
 						WhiteKing[1]++;
 						return -1;
 					}
@@ -353,16 +353,16 @@ public class Chess{
 					//King Side Castle
 					ChessBoard tempBoard = board.makeCopy();
 					tempBoard.setPiece(startRow,  startCol + 1, piece);
-					if(turn == Piece.Player.WHITE){
+					if(turn == Player.WHITE){
 						WhiteKing[1]++;	
 					}else{
 						BlackKing[1]++;
 					}
-					if(turn == Piece.Player.BLACK && blackCheck(tempBoard)){
+					if(turn == Player.BLACK && blackCheck(tempBoard)){
 						BlackKing[1]--;
 						return -1;
 					}
-					if(turn == Piece.Player.WHITE && whiteCheck(tempBoard)) {
+					if(turn == Player.WHITE && whiteCheck(tempBoard)) {
 						WhiteKing[1]--;
 						return -1;
 					}
@@ -416,7 +416,7 @@ public class Chess{
 	 * @param endCol an integer representing the column that the piece was in.
 	 */
 	private static void enforceEnpassant(int endCol) {
-		if(turn == Piece.Player.WHITE) {
+		if(turn == Player.WHITE) {
 			board.setPiece(3, endCol, null);
 		}
 		else {
@@ -426,15 +426,15 @@ public class Chess{
 	
 	/**
 	 * <p>Checks for white in Check by going through the entire board and checking to see if any black piece can reach the King.</p>
-	 * <p>Uses {@link Piece.isLegalMove} and {@link Piece.coastClear} to validate moves.</p>
-	 * @param board A {@link Chessboard} object of the board that we are looking for check on.
+	 * <p>Uses {@link Piece#isLegalMove} and {@link Piece#coastClear} to validate moves.</p>
+	 * @param board A {@link ChessBoard} object of the board that we are looking for check on.
 	 * @return a boolean telling whether or not white is in check.
 	 */
 	private static boolean whiteCheck(ChessBoard board) {
 		for(int i = 0; i < board.ROWS; i++) {
 			for(int j = 0; j < board.COLS; j++) {
 				Piece piece = board.getPiece(i, j);
-				if(piece != null && piece.getColor() == Piece.Player.BLACK) {
+				if(piece != null && piece.getColor() == Player.BLACK) {
 					if(piece.isLegalMove(i, j, WhiteKing[0], WhiteKing[1], board) && piece.coastClear(i, j, WhiteKing[0], WhiteKing[1], board)) {
 						return true;
 					}
@@ -446,15 +446,15 @@ public class Chess{
 	
 	/**
 	 * <p>Checks for black in Check by going through the entire board and checking to see if any white piece can reach the King.</p>
-	 * <p>Uses {@link Piece.isLegalMove} and {@link Piece.coastClear} to validate moves.</p>
-	 * @param board A {@link Chessboard} object of the board that we are looking for check on.
+	 * <p>Uses {@link Piece#isLegalMove} and {@link Piece#coastClear} to validate moves.</p>
+	 * @param board A {@link ChessBoard} object of the board that we are looking for check on.
 	 * @return a boolean telling whether or not black is in check.
 	 */
 	private static boolean blackCheck(ChessBoard board) {
 		for(int i = 0; i < board.ROWS; i++) {
 			for(int j = 0; j < board.COLS; j++) {
 				Piece piece = board.getPiece(i, j);
-				if(piece != null && piece.getColor() == Piece.Player.WHITE) {
+				if(piece != null && piece.getColor() == Player.WHITE) {
 					if(piece.isLegalMove(i, j, BlackKing[0], BlackKing[1], board) && piece.coastClear(i, j, BlackKing[0], BlackKing[1], board)) {
 						return true;
 					}
@@ -466,7 +466,7 @@ public class Chess{
 	
 	/**
 	 * Checks for Checkmate/StaleMate.  This method goes through the entire board, grabs every piece of the opposite color, and moves it
-	 * to every place returned from {@link Piece.allLegalMoves} on a new temporary board. It then calls {@link whiteCheck} or {@link blackCheck}
+	 * to every place returned from {@link Piece#allLegalMoves} on a new temporary board. It then calls {@link #whiteCheck} or {@link #blackCheck}
 	 * depending on the turn.  If it returns false, then there exists a move where the player will not be in check, so we return false for checkmate/stalemate.
 	 * @return boolean telling whether or not checkmate or stalemate currently exists.
 	 */
@@ -486,8 +486,8 @@ public class Chess{
 							if((tempBoard.getPiece(move[0], move[1]) == null || tempBoard.getPiece(move[0], move[1]).getColor() == turn) && tempPiece.isLegalMove(i,  j,  move[0],  move[1],  tempBoard) && tempPiece.coastClear(i,  j,  move[0],  move[1],  tempBoard)) {
 								tempBoard.setPiece(move[0],  move[1],  tempPiece);
 								tempBoard.setPiece(i,  j,  null);
-								if(tempPiece.getName() == Piece.PieceName.KING) {
-									if(turn == Piece.Player.WHITE) {
+								if(tempPiece.getName() == PieceName.KING) {
+									if(turn == Player.WHITE) {
 										BlackKing = move;
 									}else {
 										WhiteKing = move;
@@ -495,16 +495,16 @@ public class Chess{
 								}
 								//now check to see if there's still check
 								boolean check = false;
-								if(turn == Piece.Player.WHITE) {
+								if(turn == Player.WHITE) {
 									check = blackCheck(tempBoard);
-									if(tempPiece.getName() == Piece.PieceName.KING) {
+									if(tempPiece.getName() == PieceName.KING) {
 										BlackKing[0] = i;
 										BlackKing[1] = j;
 									}
 								}
 								else{
 									check = whiteCheck(tempBoard);
-									if(tempPiece.getName() == Piece.PieceName.KING) {
+									if(tempPiece.getName() == PieceName.KING) {
 										WhiteKing[0] = i;
 										WhiteKing[1] = j;
 									}
@@ -528,11 +528,11 @@ public class Chess{
 	 */
 	private static void changeTurns() {
 		//Change turns			
-		if(turn == Piece.Player.WHITE) {
-			turn = Piece.Player.BLACK;
+		if(turn == Player.WHITE) {
+			turn = Player.BLACK;
 		}
 		else {
-			turn = Piece.Player.WHITE;
+			turn = Player.WHITE;
 		}
 	}
 	
@@ -545,7 +545,7 @@ public class Chess{
 			
 			//in case pawn double moved last time, remove en passant.
 			removeEnpassant();
-			if(turn == Piece.Player.WHITE) {
+			if(turn == Player.WHITE) {
 				System.out.print("White's move: ");
 			}else {
 				System.out.print("Black's move: ");
@@ -599,7 +599,7 @@ public class Chess{
 			ChessBoard oldBoard = board.makeCopy();
 			
 			//check for promotion
-			if(piece.getName() == Piece.PieceName.PAWN) {
+			if(piece.getName() == PieceName.PAWN) {
 				piece = checkForPromotion(piece, startRow, moves);
 			}
 			
@@ -625,14 +625,14 @@ public class Chess{
 				board.setPiece(startRow, startCol, null);
 				
 				//if captured en passant, then enforce.
-				if(piece.getName() == Piece.PieceName.PAWN && oldPiece != null && oldPiece.getName() == Piece.PieceName.GHOST) {
+				if(piece.getName() == PieceName.PAWN && oldPiece != null && oldPiece.getName() == PieceName.GHOST) {
 					enforceEnpassant(endCol);
 				}
 			}
 
 			//update King's location so that we can check for Check
-			if(piece.getName() == Piece.PieceName.KING) {
-				if(turn == Piece.Player.WHITE) {
+			if(piece.getName() == PieceName.KING) {
+				if(turn == Player.WHITE) {
 					WhiteKing[0] = endRow;
 					WhiteKing[1] = endCol;
 				}
@@ -647,15 +647,15 @@ public class Chess{
 			boolean blackCheck = blackCheck(board);
 
 			//if current color in check, return error and revert move
-			if((turn == Piece.Player.WHITE && whiteCheck) || (turn == Piece.Player.BLACK && blackCheck)) {
+			if((turn == Player.WHITE && whiteCheck) || (turn == Player.BLACK && blackCheck)) {
 				illegalMove();
 				
 				//put board back to the one we saved earlier
 				board = oldBoard.makeCopy();
 				
 				//if King was moved, change locations back.
-				if(piece.getName() == Piece.PieceName.KING) {
-					if(turn == Piece.Player.WHITE) {
+				if(piece.getName() == PieceName.KING) {
+					if(turn == Player.WHITE) {
 						WhiteKing[0] = startRow;
 						WhiteKing[1] = startCol;
 					}
@@ -667,13 +667,13 @@ public class Chess{
 				continue;
 			}
 			//if other color in check, check for checkmate, then return either "Check" or "Checkmate"
-			else if((turn == Piece.Player.WHITE && blackCheck) || (turn == Piece.Player.BLACK && whiteCheck)) {
+			else if((turn == Player.WHITE && blackCheck) || (turn == Player.BLACK && whiteCheck)) {
 				//check for checkmate
 				boolean checkMate = checkForMate();
 				if(checkMate) {
 					System.out.println(board.getBoard());
 
-					if(turn == Piece.Player.WHITE) {
+					if(turn == Player.WHITE) {
 						System.out.println("Checkmate\nWhite wins");
 					}else {
 						System.out.println("Checkmate\nBlack wins");
