@@ -3,6 +3,7 @@ package chess;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Queen  piece to be used in Chess game.  Contains attributes and methods that are inherited from the abstract class {@link Piece}.
  * @author alh220
@@ -15,16 +16,16 @@ public class Queen extends Piece {
 	 * Creates new Queen and sets the color and name.
 	 * @param color a string ("White" or "Black") representing which player the piece belongs to.
 	 */
-	public Queen(String color) {
+	public Queen(Player color) {
 		this.color = color;
-		this.name = "Queen";
+		this.name = PieceName.QUEEN;
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getColor() {
+	protected Player getColor() {
 		return this.color;
 	}
 
@@ -32,7 +33,7 @@ public class Queen extends Piece {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getName() {
+	protected PieceName getName() {
 		return this.name;
 	}
 	
@@ -126,7 +127,7 @@ public class Queen extends Piece {
 			int i = startCol;
 			while(i <= endCol) {
 				if(board.getPiece(startRow, i) != null) {
-					if(!board.getPiece(startRow, i).getName().equals("ghost")) {
+					if(board.getPiece(startRow, i).getName() != PieceName.GHOST) {
 						return false;
 					}
 				}
@@ -147,7 +148,7 @@ public class Queen extends Piece {
 			int i = startRow;
 			while(i <= endRow) {
 				if(board.getPiece(i, startCol) != null) {
-					if(!board.getPiece(i, startCol).getName().equals("ghost")) {
+					if(board.getPiece(i, startCol).getName() != PieceName.GHOST) {
 						return false;
 					}
 				}
@@ -195,7 +196,7 @@ public class Queen extends Piece {
 			
 			while(i <= endRow) {
 				if(board.getPiece(i, j) != null) {
-					if(!board.getPiece(i, j).getName().equals("ghost")) {
+					if(board.getPiece(i, j).getName() != PieceName.GHOST) {
 						return false;
 					}
 				}
@@ -215,7 +216,7 @@ public class Queen extends Piece {
 	 */
 	@Override
 	public String toString() {
-		if(this.color == "White") {
+		if(this.color == Player.WHITE) {
 			return "wQ";
 		}
 		else {

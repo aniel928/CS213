@@ -14,16 +14,16 @@ public class Bishop extends Piece {
 	 * Creates new Bishop and sets the color and name.
 	 * @param color a string ("White" or "Black") representing which player the piece belongs to.
 	 */
-	public Bishop(String color) {
+	public Bishop(Player color) {
 		this.color = color;
-		this.name = "Bishop";
+		this.name = PieceName.BISHOP;
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getColor() {
+	protected Player getColor() {
 		return this.color;
 	}
 	
@@ -31,7 +31,7 @@ public class Bishop extends Piece {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getName() {
+	protected PieceName getName() {
 		return this.name;
 	}
 
@@ -135,7 +135,7 @@ public class Bishop extends Piece {
 		
 			while(i <= endRow) {
 				if(board.getPiece(i, j) != null) {
-					if(!board.getPiece(i, j).getName().equals("ghost")) {
+					if(board.getPiece(i, j).getName() != PieceName.GHOST ) {
 						return false;
 					}
 				}
@@ -155,7 +155,7 @@ public class Bishop extends Piece {
 	 */
 	@Override
 	public String toString() {
-		if(this.color == "White") {
+		if(this.color == Player.WHITE) {
 			return "wB";
 		}
 		else {

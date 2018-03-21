@@ -12,15 +12,16 @@ import java.util.Scanner;
  * @see Piece
  * 
  */
+
 public class Chess{
 	/**
 	 * boolean to keep track of whether game is still going
  	*/	
  	private static boolean gameOver = false;
  	/**
-	 * String to keep track of whose turn it is.
+	 * Enum declared in {@link Piece} to keep track of whose turn it is.
  	*/
-	protected static String turn = "White";
+	protected static Piece.Player turn = Piece.Player.WHITE;
 	/**
 	 * boolean to keep track of draw requests between turns.
  	*/
@@ -46,9 +47,9 @@ public class Chess{
 	private static void removeEnpassant() {
 		int i = 0;
 		//if current turn is white, remove any GhostPawn's from rank 3.
-		if(turn.equals("White")) {
+		if(turn == Piece.Player.WHITE) {
 			while(i < 8) {
-				if(board.getPiece(5, i) != null && board.getPiece(5, i).getName().equals("ghost")) {
+				if(board.getPiece(5, i) != null && board.getPiece(5, i).getName() == Piece.PieceName.GHOST) {
 					board.setPiece(5, i, null);
 					break;
 				}
@@ -58,7 +59,7 @@ public class Chess{
 		//if current turn in Black, remove any GhostPawn's from rank 6
 		else {
 			while(i < 8) {
-				if(board.getPiece(2,  i) != null && board.getPiece(2, i).getName().equals("ghost")) {
+				if(board.getPiece(2,  i) != null && board.getPiece(2, i).getName() == Piece.PieceName.GHOST) {
 					board.setPiece(2, i, null);
 					break;
 				}
@@ -102,7 +103,7 @@ public class Chess{
 			//if resign then announce winner
 			if(moves[0].equals("resign")) {
 				gameOver = true;
-				if(turn.equals("White")) {
+				if(turn == Piece.Player.WHITE) {
 					System.out.println("Black wins");
 				}else {
 					System.out.println("White wins");
@@ -221,17 +222,17 @@ public class Chess{
 		}
 		
 		//does it belong to this player?
-		if(!piece.getColor().equals(turn)) {
+		if(piece.getColor() != turn) {
 			return false;
 		}
 		
 		//if promotion got flagged and this piece is not a pawn, illegal move
-		if(promote && !piece.getName().equals("Pawn")){
+		if(promote && piece.getName() != Piece.PieceName.PAWN){
 			promote = false;
 			return false;
 		}
 		//if promotion got flagged and pawn is not moving to last row, illegal move.
-		if(promote && ((piece.getColor().equals("White") && endRow != 0) || (piece.getColor().equals("Black") && endRow != 7))) {
+		if(promote && ((piece.getColor() == Piece.Player.WHITE && endRow != 0) || (piece.getColor() == Piece.Player.BLACK && endRow != 7))) {
 			promote = false;
 			return false;				
 		}
@@ -245,7 +246,7 @@ public class Chess{
 		}
 		
 		//check if another piece occupies destination (must be opposite color)
-		if(board.getPiece(endRow,  endCol) != null && board.getPiece(endRow, endCol).getColor().equals(turn)) {
+		if(board.getPiece(endRow,  endCol) != null && board.getPiece(endRow, endCol).getColor() == turn) {
 			return false;
 		}
 		
@@ -260,8 +261,8 @@ public class Chess{
 	 * @return a {@link Piece} object that pawn was promoted to.
 	 */
 	private static Piece checkForPromotion(Piece piece, int row, String[] moves) {
-		if(piece.getName().equals("Pawn")) {
-			if((turn.equals("White") && row == 1) || (turn.equals("Black") && row == 6)) {
+		if(piece.getName() == Piece.PieceName.PAWN) {
+			if((turn == Piece.Player.WHITE && row == 1) || (turn == Piece.Player.BLACK && row == 6)) {
 				promote = true;
 			}
 		}
@@ -326,24 +327,24 @@ public class Chess{
 	 */
 	private static int checkForCastle(Piece piece, int startRow, int endRow, int startCol, int endCol) {
 		//check for Castle
-		if(piece.getName().equals("King") && Math.abs(startCol - endCol) == 2) {
+		if(piece.getName() == Piece.PieceName.KING && Math.abs(startCol - endCol) == 2) {
 			//if not in check, then you're good.
-			if((turn.equals("Black") && !blackCheck(board)) || turn.equals("White") && !whiteCheck(board)){
+			if((turn == Piece.Player.BLACK && !blackCheck(board)) || turn == Piece.Player.WHITE && !whiteCheck(board)){
 				//check to see if squares between are in check
 				if(startCol - endCol == 2) {
 					//Queen Side Castle
 					ChessBoard tempBoard = board.makeCopy();
 					tempBoard.setPiece(startRow,  startCol - 1, piece);
-					if(turn.equals("White")){
+					if(turn == Piece.Player.WHITE){
 						WhiteKing[1]--;	
 					}else{
 						BlackKing[1]--;
 					}
-					if(turn.equals("Black") && blackCheck(tempBoard)){
+					if(turn == Piece.Player.WHITE && blackCheck(tempBoard)){
 						BlackKing[1]++;
 						return -1;
 					}
-					if(turn.equals("White") && whiteCheck(tempBoard)) {
+					if(turn == Piece.Player.WHITE && whiteCheck(tempBoard)) {
 						WhiteKing[1]++;
 						return -1;
 					}
@@ -352,16 +353,16 @@ public class Chess{
 					//King Side Castle
 					ChessBoard tempBoard = board.makeCopy();
 					tempBoard.setPiece(startRow,  startCol + 1, piece);
-					if(turn.equals("White")){
+					if(turn == Piece.Player.WHITE){
 						WhiteKing[1]++;	
 					}else{
 						BlackKing[1]++;
 					}
-					if(turn.equals("Black") && blackCheck(tempBoard)){
+					if(turn == Piece.Player.BLACK && blackCheck(tempBoard)){
 						BlackKing[1]--;
 						return -1;
 					}
-					if(turn.equals("White") && whiteCheck(tempBoard)) {
+					if(turn == Piece.Player.WHITE && whiteCheck(tempBoard)) {
 						WhiteKing[1]--;
 						return -1;
 					}
@@ -415,7 +416,7 @@ public class Chess{
 	 * @param endCol an integer representing the column that the piece was in.
 	 */
 	private static void enforceEnpassant(int endCol) {
-		if(turn.equals("White")) {
+		if(turn == Piece.Player.WHITE) {
 			board.setPiece(3, endCol, null);
 		}
 		else {
@@ -433,7 +434,7 @@ public class Chess{
 		for(int i = 0; i < board.ROWS; i++) {
 			for(int j = 0; j < board.COLS; j++) {
 				Piece piece = board.getPiece(i, j);
-				if(piece != null && piece.getColor().equals("Black")) {
+				if(piece != null && piece.getColor() == Piece.Player.BLACK) {
 					if(piece.isLegalMove(i, j, WhiteKing[0], WhiteKing[1], board) && piece.coastClear(i, j, WhiteKing[0], WhiteKing[1], board)) {
 						return true;
 					}
@@ -453,7 +454,7 @@ public class Chess{
 		for(int i = 0; i < board.ROWS; i++) {
 			for(int j = 0; j < board.COLS; j++) {
 				Piece piece = board.getPiece(i, j);
-				if(piece != null && piece.getColor().equals("White")) {
+				if(piece != null && piece.getColor() == Piece.Player.WHITE) {
 					if(piece.isLegalMove(i, j, BlackKing[0], BlackKing[1], board) && piece.coastClear(i, j, BlackKing[0], BlackKing[1], board)) {
 						return true;
 					}
@@ -476,17 +477,17 @@ public class Chess{
 				//grab the piece
 				Piece tempPiece = board.getPiece(i, j);
 				//if it's a piece of the opposite color, get all of it's moves
-				if(tempPiece != null  && !tempPiece.getColor().equals(turn)) {
+				if(tempPiece != null  && tempPiece.getColor() != turn) {
 					List <int[]> moves = tempPiece.allLegalMoves(i, j, board);
 					//for each move, create a temporary board and move the piece
 					if(moves != null) {
 						for(int[] move : moves) {
 							ChessBoard tempBoard = board.makeCopy();
-							if((tempBoard.getPiece(move[0], move[1]) == null || tempBoard.getPiece(move[0], move[1]).getColor().equals(turn)) && tempPiece.isLegalMove(i,  j,  move[0],  move[1],  tempBoard) && tempPiece.coastClear(i,  j,  move[0],  move[1],  tempBoard)) {
+							if((tempBoard.getPiece(move[0], move[1]) == null || tempBoard.getPiece(move[0], move[1]).getColor() == turn) && tempPiece.isLegalMove(i,  j,  move[0],  move[1],  tempBoard) && tempPiece.coastClear(i,  j,  move[0],  move[1],  tempBoard)) {
 								tempBoard.setPiece(move[0],  move[1],  tempPiece);
 								tempBoard.setPiece(i,  j,  null);
-								if(tempPiece.getName().equals("King")) {
-									if(turn.equals("White")) {
+								if(tempPiece.getName() == Piece.PieceName.KING) {
+									if(turn == Piece.Player.WHITE) {
 										BlackKing = move;
 									}else {
 										WhiteKing = move;
@@ -494,16 +495,16 @@ public class Chess{
 								}
 								//now check to see if there's still check
 								boolean check = false;
-								if(turn.equals("White")) {
+								if(turn == Piece.Player.WHITE) {
 									check = blackCheck(tempBoard);
-									if(tempPiece.getName().equals("King")) {
+									if(tempPiece.getName() == Piece.PieceName.KING) {
 										BlackKing[0] = i;
 										BlackKing[1] = j;
 									}
 								}
 								else{
 									check = whiteCheck(tempBoard);
-									if(tempPiece.getName().equals("King")) {
+									if(tempPiece.getName() == Piece.PieceName.KING) {
 										WhiteKing[0] = i;
 										WhiteKing[1] = j;
 									}
@@ -527,11 +528,11 @@ public class Chess{
 	 */
 	private static void changeTurns() {
 		//Change turns			
-		if(turn.equals("White")) {
-			turn = "Black";
+		if(turn == Piece.Player.WHITE) {
+			turn = Piece.Player.BLACK;
 		}
 		else {
-			turn = "White";
+			turn = Piece.Player.WHITE;
 		}
 	}
 	
@@ -544,8 +545,11 @@ public class Chess{
 			
 			//in case pawn double moved last time, remove en passant.
 			removeEnpassant();
-			
-			System.out.print(turn + "'s move: ");
+			if(turn == Piece.Player.WHITE) {
+				System.out.print("White's move: ");
+			}else {
+				System.out.print("Black's move: ");
+			}
 
 			//Get the user input and split it out into portions
 			String move = scanner.nextLine();
@@ -595,7 +599,7 @@ public class Chess{
 			ChessBoard oldBoard = board.makeCopy();
 			
 			//check for promotion
-			if(piece.getName().equals("Pawn")) {
+			if(piece.getName() == Piece.PieceName.PAWN) {
 				piece = checkForPromotion(piece, startRow, moves);
 			}
 			
@@ -621,14 +625,14 @@ public class Chess{
 				board.setPiece(startRow, startCol, null);
 				
 				//if captured en passant, then enforce.
-				if(piece.getName().equals("Pawn") && oldPiece != null && oldPiece.getName().equals("ghost")) {
+				if(piece.getName() == Piece.PieceName.PAWN && oldPiece != null && oldPiece.getName() == Piece.PieceName.GHOST) {
 					enforceEnpassant(endCol);
 				}
 			}
 
 			//update King's location so that we can check for Check
-			if(piece.getName().equals("King")) {
-				if(turn.equals("White")) {
+			if(piece.getName() == Piece.PieceName.KING) {
+				if(turn == Piece.Player.WHITE) {
 					WhiteKing[0] = endRow;
 					WhiteKing[1] = endCol;
 				}
@@ -643,15 +647,15 @@ public class Chess{
 			boolean blackCheck = blackCheck(board);
 
 			//if current color in check, return error and revert move
-			if((turn.equals("White") && whiteCheck) || (turn.equals("Black") && blackCheck)) {
+			if((turn == Piece.Player.WHITE && whiteCheck) || (turn == Piece.Player.BLACK && blackCheck)) {
 				illegalMove();
 				
 				//put board back to the one we saved earlier
 				board = oldBoard.makeCopy();
 				
 				//if King was moved, change locations back.
-				if(piece.getName().equals("King")) {
-					if(turn.equals("White")) {
+				if(piece.getName() == Piece.PieceName.KING) {
+					if(turn == Piece.Player.WHITE) {
 						WhiteKing[0] = startRow;
 						WhiteKing[1] = startCol;
 					}
@@ -663,13 +667,17 @@ public class Chess{
 				continue;
 			}
 			//if other color in check, check for checkmate, then return either "Check" or "Checkmate"
-			else if((turn.equals("White") && blackCheck) || (turn.equals("Black") && whiteCheck)) {
+			else if((turn == Piece.Player.WHITE && blackCheck) || (turn == Piece.Player.BLACK && whiteCheck)) {
 				//check for checkmate
 				boolean checkMate = checkForMate();
 				if(checkMate) {
 					System.out.println(board.getBoard());
 
-					System.out.println("Checkmate\n"+turn+" wins");
+					if(turn == Piece.Player.WHITE) {
+						System.out.println("Checkmate\nWhite wins");
+					}else {
+						System.out.println("Checkmate\nBlack wins");
+					}
 					gameOver = true;
 				}else {
 					System.out.println(board.getBoard());

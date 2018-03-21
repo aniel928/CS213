@@ -15,16 +15,16 @@ public class Knight extends Piece {
 	 * Creates new Knight and sets the color and name.
 	 * @param color a string ("White" or "Black") representing which player the piece belongs to.
 	 */
-	public Knight(String color) {
+	public Knight(Player color) {
 		this.color = color;
-		this.name = "Knight";
+		this.name = PieceName.KNIGHT;
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getColor() {
+	protected Player getColor() {
 		return this.color;
 	}
 
@@ -32,7 +32,7 @@ public class Knight extends Piece {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getName() {
+	protected PieceName getName() {
 		return this.name;
 	}
 	
@@ -111,7 +111,7 @@ public class Knight extends Piece {
 	 */
 	@Override
 	public String toString() {
-		if(this.color == "White") {
+		if(this.color == Player.WHITE) {
 			return "wN";
 		}
 		else {

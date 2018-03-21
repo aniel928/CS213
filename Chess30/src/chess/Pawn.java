@@ -3,6 +3,7 @@ package chess;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Pawn  piece to be used in Chess game.  Contains attributes and methods that are inherited from the abstract class {@link Piece}.
  * @author alh220
@@ -15,16 +16,16 @@ public class Pawn extends Piece {
 	 * Creates new Pawn and sets the color and name.
 	 * @param color a string ("White" or "Black") representing which player the piece belongs to.
 	 */
-	public Pawn(String color) {
+	public Pawn(Player color) {
 		this.color = color;
-		this.name = "Pawn";
+		this.name = PieceName.PAWN;
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getColor() {
+	protected Player getColor() {
 		return this.color;
 	}
 
@@ -32,7 +33,7 @@ public class Pawn extends Piece {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getName() {
+	protected PieceName getName() {
 		return this.name;
 	}
 	
@@ -42,7 +43,7 @@ public class Pawn extends Piece {
 	@Override
 	protected List<int[]> allLegalMoves(int row, int col, ChessBoard board){
 		List<int[]> moves = new ArrayList<int[]>();
-		if(this.color == "White") {
+		if(this.color == Player.WHITE) {
 			//first move
 			if(row == 6) {
 				if(board.getPiece(row - 2, col) == null) {
@@ -55,13 +56,13 @@ public class Pawn extends Piece {
 				moves.add(arr);
 			}
 			if(col > 0) {
-				if(board.getPiece(row - 1, col - 1) != null && !board.getPiece(row - 1, col - 1).getName().equals("ghost")) {
+				if(board.getPiece(row - 1, col - 1) != null && board.getPiece(row - 1, col - 1).getName() != PieceName.GHOST) {
 					int[] arr = {row - 1, col - 1};
 					moves.add(arr);
 				}
 			}
 			if(col < 7) {
-				if(board.getPiece(row - 1, col + 1) != null && !board.getPiece(row - 1, col + 1).getName().equals("ghost")) {
+				if(board.getPiece(row - 1, col + 1) != null && board.getPiece(row - 1, col + 1).getName() != PieceName.GHOST) {
 					int[] arr = {row - 1, col + 1};
 					moves.add(arr);
 				}
@@ -80,13 +81,13 @@ public class Pawn extends Piece {
 				moves.add(arr);
 			}
 			if(col > 0) {
-				if(board.getPiece(row + 1, col - 1) != null && !board.getPiece(row + 1, col - 1).getName().equals("ghost")) {	
+				if(board.getPiece(row + 1, col - 1) != null && board.getPiece(row + 1, col - 1).getName() != PieceName.GHOST) {	
 					int[] arr = {row + 1, col - 1};
 					moves.add(arr);
 				}
 			}
 			if(col < 7) {
-				if(board.getPiece(row + 1, col + 1) != null && !board.getPiece(row + 1, col + 1).getName().equals("ghost")) {
+				if(board.getPiece(row + 1, col + 1) != null && board.getPiece(row + 1, col + 1).getName() != PieceName.GHOST) {
 					int[] arr = {row + 1, col + 1};
 					moves.add(arr);
 				}
@@ -101,7 +102,7 @@ public class Pawn extends Piece {
 	@Override
 	protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {	
 		//if White pawn
-		if(this.color.equals("White")) {
+		if(this.color == Player.WHITE) {
 			//cover first move - white
 			if(startCol == endCol && startRow == 6 && endRow == 4) {
 				if(board.getPiece(endRow, endCol) != null) {
@@ -110,7 +111,7 @@ public class Pawn extends Piece {
 				return true;
 			}
 			if(startCol == endCol && (startRow == (endRow + 1))){
-				if(board.getPiece(endRow, endCol) != null && board.getPiece(endRow,  endCol).color.equals("Black")) {
+				if(board.getPiece(endRow, endCol) != null && board.getPiece(endRow,  endCol).color == Player.BLACK) {
 					return false;
 				}
 				return true;
@@ -119,7 +120,7 @@ public class Pawn extends Piece {
 			if(((startCol == (endCol - 1)) || (startCol == endCol + 1)) && (startRow == (endRow + 1))) {
 				if(board.getPiece(endRow, endCol) == null) {
 					return false;
-				}if(board.getPiece(endRow, endCol).color.equals("White")) {
+				}if(board.getPiece(endRow, endCol).color == Player.WHITE) {
 					return false;
 				}
 				return true;
@@ -135,13 +136,13 @@ public class Pawn extends Piece {
 				return true;
 			}
 			if(startCol == endCol && (startRow == (endRow - 1))){
-				if(board.getPiece( endRow, endCol) != null && board.getPiece(endRow, endCol).color.equals("White")) {
+				if(board.getPiece( endRow, endCol) != null && board.getPiece(endRow, endCol).color == Player.WHITE) {
 					return false;
 				}
 				return true;
 			}
 			if(((startCol == (endCol - 1)) || (startCol == endCol + 1)) && (startRow == (endRow - 1))) {
-				if(board.getPiece(endRow, endCol) == null || board.getPiece(endRow, endCol).color.equals("Black")) {
+				if(board.getPiece(endRow, endCol) == null || board.getPiece(endRow, endCol).color == Player.BLACK) {
 					return false;
 				}
 				return true;
@@ -155,7 +156,7 @@ public class Pawn extends Piece {
 	 */
 	@Override
 	protected boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
-		if(this.color.equals("White")){
+		if(this.color == Player.WHITE){
 			if(startRow == 6 && endRow == 4) {
 				if(board.getPiece(5, startCol) != null) {
 					return false;
@@ -181,7 +182,7 @@ public class Pawn extends Piece {
 	 */
 	@Override
 	public String toString() {
-		if(this.color == "White") {
+		if(this.color == Player.WHITE) {
 			return "wp";
 		}
 		else {

@@ -15,16 +15,16 @@ public class Rook extends Piece {
 	 * Creates new Rook and sets the color and name.
 	 * @param color a string ("White" or "Black") representing which player the piece belongs to.
 	 */
-	public Rook(String color) {
+	public Rook(Player color) {
 		this.color = color;
-		this.name = "Rook";
+		this.name = PieceName.ROOK;
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getColor() {
+	protected Player getColor() {
 		return this.color;
 	}
 
@@ -32,7 +32,7 @@ public class Rook extends Piece {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getName() {
+	protected PieceName getName() {
 		return this.name;
 	}
 	
@@ -87,7 +87,7 @@ public class Rook extends Piece {
 			int i = startCol;
 			while(i <= endCol) {
 				if(board.getPiece(startRow, i) != null) {
-					if(!board.getPiece(startRow, i).getName().equals("ghost")) {
+					if(board.getPiece(startRow, i).getName() != PieceName.GHOST) {
 						return false;
 					}
 				}
@@ -107,7 +107,7 @@ public class Rook extends Piece {
 			int i = startRow;
 			while(i <= endRow) {
 				if(board.getPiece(i, startCol) != null) {
-					if(!board.getPiece(i, startCol).getName().equals("ghost")) {
+					if(board.getPiece(i, startCol).getName() != PieceName.GHOST) {
 						return false;
 					}
 				}
@@ -123,7 +123,7 @@ public class Rook extends Piece {
 	 */
 	@Override
 	public String toString() {
-		if(this.color == "White") {
+		if(this.color == Player.WHITE) {
 			return "wR";
 		}
 		else {

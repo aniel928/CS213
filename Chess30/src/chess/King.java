@@ -3,6 +3,7 @@ package chess;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * King piece to be used in Chess game.  Contains attributes and methods that are inherited from the abstract class {@link Piece}.
  * @author alh220
@@ -15,16 +16,16 @@ public class King extends Piece {
 	 * Creates new King and sets the color and name.
 	 * @param color a string ("White" or "Black") representing which player the piece belongs to.
 	 */
-	public King(String color) {
+	public King(Player color) {
 		this.color = color;
-		this.name = "King";
+		this.name = PieceName.KING;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getColor() {
+	protected Player getColor() {
 		return this.color;
 	}
 
@@ -32,7 +33,7 @@ public class King extends Piece {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getName() {
+	protected PieceName getName() {
 		return this.name;
 	}
 	
@@ -43,7 +44,7 @@ public class King extends Piece {
 	protected List<int[]> allLegalMoves(int row, int col, ChessBoard board){
 		List<int[]> moves = new ArrayList<int[]>();
 		if(!this.moved) {
-			if(this.color.equals("White")) {
+			if(this.color == Player.WHITE) {
 				int[] arr = {7, 2}; 
 				moves.add(arr);
 				int[] arr2 = {7, 6};
@@ -101,7 +102,7 @@ public class King extends Piece {
 			//right side of board
 			if(endCol == 6) {
 				if(board.getPiece(startRow,  7) != null) {
-					if(board.getPiece(startRow,7).getName().equals("Rook") && !board.getPiece(startRow, 7).moved) {
+					if(board.getPiece(startRow,7).getName() == PieceName.ROOK && !board.getPiece(startRow, 7).moved) {
 						return true;
 					}
 				}
@@ -109,7 +110,7 @@ public class King extends Piece {
 			//left side of board.
 			if(endCol == 2) {
 				if(board.getPiece(startRow,  0) != null) {
-					if(board.getPiece(startRow,  0).getName().equals("Rook") && !board.getPiece(startRow,  0).moved) {
+					if(board.getPiece(startRow,  0).getName() == PieceName.ROOK && !board.getPiece(startRow,  0).moved) {
 						return true;
 					}
 				}
@@ -142,7 +143,7 @@ public class King extends Piece {
 	 */
 	@Override
 	public String toString() {
-		if(this.color == "White") {
+		if(this.color == Player.WHITE) {
 			return "wK";
 		}
 		else {

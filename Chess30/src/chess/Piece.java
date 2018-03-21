@@ -11,17 +11,38 @@ import java.util.List;
  *
  */
 public abstract class Piece {
-	
 	/**
-	 * A {@link String} storing which team the piece belongs to. (e.g. "White" or "Black")
+	 * Color of player for Chess game
+	 * @author alh220
+	 * @author jmuccino
+	 * 
 	 */
-	protected String color;
+	enum Player
+	{
+	    WHITE, BLACK;
+	}
+	 
+	/**
+	 * Possible names of chess pieces.
+	 * @author alh220
+	 * @author jmuccino
+	 *
+	 */
+	enum PieceName
+	{
+	    KING, QUEEN, BISHOP, KNIGHT, ROOK, PAWN, GHOST;
+	}
+	 
+	/**
+	 * An enum declared in {@link Chess} storing which player the piece belongs to. (e.g. "White" or "Black")
+	 */
+	protected Player color;
 	
 	/**
 	 * A {@link String} storing the name of the piece so we can easily figure out what 
 	 * it is in an array of abstract Pieces. (e.g. "Pawn", "Bishop", etc.)
 	 */
-	protected String name;
+	protected PieceName name;
 	
 	/**
 	 * A {@link Boolean} that stores whether or not the piece has moved.  
@@ -32,13 +53,13 @@ public abstract class Piece {
 	 * Getter method to return which team the piece belongs to.
 	 * @return {@link Piece.color}
 	 */
-	protected abstract String getColor();
+	protected abstract Player getColor();
 	
 	/**
 	 * Getter method to return the name of the piece.
 	 * @return {@link Piece.name}
 	 */
-	protected abstract String getName();
+	protected abstract PieceName getName();
 	
 	/**
 	 * Takes in starting position of move, as well as the board the move pertains to. Returns a 
@@ -72,7 +93,7 @@ public abstract class Piece {
 	
 	/**
 	 * Takes in starting and ending positions, as well as the board to determine if a particular
-	 * move is free to move or is being blocked by another piece on the board. 
+	 * piece is free to move or is being blocked by another piece on the board. 
 	 * @param startRow an integer between 0 and 7 that corresponds to the row of the starting 
 	 * position on the board.
 	 * @param startCol an integer between 0 and 7 that corresponds to the column of the starting 

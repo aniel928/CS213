@@ -14,41 +14,41 @@ public class ChessBoard {
 	 * Initializes the chessboard to the standard starting position
 	 */
 	protected void initializeBoard() {
-		positions[0][0] = new Rook("Black");
-		positions[0][1] = new Knight("Black");
-		positions[0][2] = new Bishop("Black");
-		positions[0][3] = new Queen("Black");
-		positions[0][4] = new King("Black");
-		positions[0][5] = new Bishop("Black");
-		positions[0][6] = new Knight("Black");
-		positions[0][7] = new Rook("Black");
+		positions[0][0] = new Rook(Piece.Player.BLACK);
+		positions[0][1] = new Knight(Piece.Player.BLACK);
+		positions[0][2] = new Bishop(Piece.Player.BLACK);
+		positions[0][3] = new Queen(Piece.Player.BLACK);
+		positions[0][4] = new King(Piece.Player.BLACK);
+		positions[0][5] = new Bishop(Piece.Player.BLACK);
+		positions[0][6] = new Knight(Piece.Player.BLACK);
+		positions[0][7] = new Rook(Piece.Player.BLACK);
 
-		positions[1][0] = new Pawn("Black");
-		positions[1][1] = new Pawn("Black");
-		positions[1][2] = new Pawn("Black");
-		positions[1][3] = new Pawn("Black");
-		positions[1][4] = new Pawn("Black");
-		positions[1][5] = new Pawn("Black");
-		positions[1][6] = new Pawn("Black");
-		positions[1][7] = new Pawn("Black");
+		positions[1][0] = new Pawn(Piece.Player.BLACK);
+		positions[1][1] = new Pawn(Piece.Player.BLACK);
+		positions[1][2] = new Pawn(Piece.Player.BLACK);
+		positions[1][3] = new Pawn(Piece.Player.BLACK);
+		positions[1][4] = new Pawn(Piece.Player.BLACK);
+		positions[1][5] = new Pawn(Piece.Player.BLACK);
+		positions[1][6] = new Pawn(Piece.Player.BLACK);
+		positions[1][7] = new Pawn(Piece.Player.BLACK);
 
-		positions[6][0] = new Pawn("White");
-		positions[6][1] = new Pawn("White");
-		positions[6][2] = new Pawn("White");
-		positions[6][3] = new Pawn("White");
-		positions[6][4] = new Pawn("White");
-		positions[6][5] = new Pawn("White");
-		positions[6][6] = new Pawn("White");
-		positions[6][7] = new Pawn("White");
+		positions[6][0] = new Pawn(Piece.Player.WHITE);
+		positions[6][1] = new Pawn(Piece.Player.WHITE);
+		positions[6][2] = new Pawn(Piece.Player.WHITE);
+		positions[6][3] = new Pawn(Piece.Player.WHITE);
+		positions[6][4] = new Pawn(Piece.Player.WHITE);
+		positions[6][5] = new Pawn(Piece.Player.WHITE);
+		positions[6][6] = new Pawn(Piece.Player.WHITE);
+		positions[6][7] = new Pawn(Piece.Player.WHITE);
 		
-		positions[7][0] = new Rook("White");
-		positions[7][1] = new Knight("White");
-		positions[7][2] = new Bishop("White");
-		positions[7][3] = new Queen("White");
-		positions[7][4] = new King("White");
-		positions[7][5] = new Bishop("White");
-		positions[7][6] = new Knight("White");
-		positions[7][7] = new Rook("White");
+		positions[7][0] = new Rook(Piece.Player.WHITE);
+		positions[7][1] = new Knight(Piece.Player.WHITE);
+		positions[7][2] = new Bishop(Piece.Player.WHITE);
+		positions[7][3] = new Queen(Piece.Player.WHITE);
+		positions[7][4] = new King(Piece.Player.WHITE);
+		positions[7][5] = new Bishop(Piece.Player.WHITE);
+		positions[7][6] = new Knight(Piece.Player.WHITE);
+		positions[7][7] = new Rook(Piece.Player.WHITE);
 	}
 	
 	/** 
@@ -63,7 +63,7 @@ public class ChessBoard {
 		for(int i = 0; i< ROWS; i++) {
 			for(int j = 0; j< COLS; j++) {
 				//if there is a piece that is not a GhostPawn, get it's toString representation.
-				if(positions[i][j] != null && !positions[i][j].getName().equals("ghost")) {
+				if(positions[i][j] != null && positions[i][j].getName() != Piece.PieceName.GHOST) {
 					board += positions[i][j].toString()+ " ";
 				}
 				//otherwise figure out if it's brown or white and print a brown or white square

@@ -17,8 +17,8 @@ public class GhostPawn extends Piece {
 	 * Creates new GhostPawn and sets the color and name.
 	 * @param color a string ("White" or "Black") representing which player the piece belongs to.
 	 */
-	public GhostPawn(String color) {
-		this.name = "ghost";
+	public GhostPawn(Player color) {
+		this.name = PieceName.GHOST;
 		this.color = color;
 	}
 	
@@ -26,7 +26,7 @@ public class GhostPawn extends Piece {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getColor() {
+	protected Player getColor() {
 		return this.color;
 	}
 
@@ -34,7 +34,7 @@ public class GhostPawn extends Piece {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getName() {
+	protected PieceName getName() {
 		return this.name;
 	}
 	
