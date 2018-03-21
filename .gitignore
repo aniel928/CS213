@@ -2,3 +2,5 @@
 /.recommenders/
 .classpath
 /Chess30/bin/
+.DS_Store
+/Chess30/.DS_Store
