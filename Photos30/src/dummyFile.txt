@@ -1,0 +1,1 @@
+//This is literally just to stop git from combining src and each subfolder into src.application, src.controller, src.java, etc.
