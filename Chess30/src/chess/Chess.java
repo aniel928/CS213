@@ -127,7 +127,7 @@ public class Chess{
 		}
 	  
 		//If we're here, then user didn't accept draw. Change draw back to false. (Unless of course this user just requested a draw)
-		if(!(moves.length == 3 && moves[2].equals("draw"))) {
+		if(!(moves.length == 3 && moves[2].equals("draw?"))) {
 			draw = false;
 		}
 		
