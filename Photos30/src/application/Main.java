@@ -1,23 +1,46 @@
 package application;
 	
+import java.io.IOException;
+
+import controller.PhotoController;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.AnchorPane;
 
 
 public class Main extends Application {
+	private static Stage stage;
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			BorderPane root = new BorderPane();
-			Scene scene = new Scene(root,400,400);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			primaryStage.setScene(scene);
-			primaryStage.show();
+			stage = primaryStage;
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/view/login.fxml"));
+			
+			AnchorPane root = (AnchorPane)loader.load();
+			
+			PhotoController photoController = loader.getController();
+			photoController.start(stage);
+			
+			Scene scene = new Scene(root);
+			
+			stage.setTitle("Log In");
+			
+			stage.setScene(scene);
+			
+			stage.show(); 
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static void changeScene(String sceneName) throws IOException {
+		Parent root  = FXMLLoader.load(Main.class.getResource(sceneName));
+		stage.setScene(new Scene(root));
 	}
 	
 	public static void main(String[] args) {
