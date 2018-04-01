@@ -20,10 +20,12 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import model.User;
+import model.UserState;
 
 public class UserHomeController implements Initializable{
 	
 	private List<User> userList = new ArrayList<>();
+	@FXML private Text welcomeMessage;
 	@FXML private Text albumLabel;
 	@FXML private TextField albumField;
 	@FXML private Button albumButton;
@@ -71,7 +73,8 @@ public class UserHomeController implements Initializable{
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
-		//figure out which user this is.
+		User currentUser = UserState.getCurrentUser();
+		welcomeMessage.setText("Welcome, "+ currentUser.getUserName() + "!");
 	}
 	
 	

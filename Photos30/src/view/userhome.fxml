@@ -33,7 +33,7 @@
             <RowConstraints maxHeight="75.0" minHeight="10.0" prefHeight="44.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Text fill="#a6bef8" strokeType="OUTSIDE" strokeWidth="0.0" text=" Welcome, username!" wrappingWidth="401.388671875" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+            <Text fx:id="welcomeMessage" fill="#a6bef8" strokeType="OUTSIDE" strokeWidth="0.0" text=" Welcome, username!" wrappingWidth="401.388671875" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="TOP">
                <font>
                   <Font name="Verdana" size="36.0" />
                </font>

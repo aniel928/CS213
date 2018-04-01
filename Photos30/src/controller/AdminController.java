@@ -2,7 +2,6 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -20,6 +19,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import model.User;
+import model.UserState;
 
 public class AdminController implements Initializable{
 	private static ObservableList<String> obsList = FXCollections.observableArrayList();;
@@ -31,7 +31,7 @@ public class AdminController implements Initializable{
 	@FXML private Text userNameLabel;
 	@FXML private TextField newUsername;
 	
-	private List<User> userList = new ArrayList<>();
+	private List<User> userList;
 	
 	/**
 	 * Change scene to either admin screen or user home screen.
@@ -63,7 +63,7 @@ public class AdminController implements Initializable{
 	
 	@FXML
 	public void createUser() {
-		String uName = newUsername.getText();
+		String uName = newUsername.getText().toLowerCase();
 		System.out.println("uName");
 		User user = new User(uName);
 		int index = findUserIndex(uName);
@@ -77,9 +77,6 @@ public class AdminController implements Initializable{
 			newUsername.setText("");
 			userNameLabel.setVisible(false);
 			newUserSaveButton.setVisible(false);
-		}
-		else {
-			System.out.println("Nope");
 		}
 	}
 	
@@ -126,6 +123,7 @@ public class AdminController implements Initializable{
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		userList = UserState.getAllUsers();
 		// TODO Auto-generated method stub
 		if(userList.size() == 0) {
 			userList.add(new User("admin"));
