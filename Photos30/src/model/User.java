@@ -25,4 +25,8 @@ public class User {
 	public List<Album> getAlbums(){
 		return this.albumList;
 	}
+	
+	public void setAlbums(List<Album> albums) {
+		this.albumList = albums;
+	}
 }

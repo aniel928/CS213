@@ -62,7 +62,7 @@
                   <Font size="18.0" />
                </font>
             </Button>
-            <Button alignment="CENTER" contentDisplay="RIGHT" defaultButton="true" mnemonicParsing="false" onAction="#renameAlbum" opacity="0.94" style="-fx-background-color: #7189FF;" text="Rename Album" textAlignment="CENTER" textFill="#f8f4f4" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+            <Button alignment="CENTER" contentDisplay="RIGHT" defaultButton="true" mnemonicParsing="false" onAction="#showRenameFields" opacity="0.94" style="-fx-background-color: #7189FF;" text="Rename Album" textAlignment="CENTER" textFill="#f8f4f4" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                <font>
                   <Font size="18.0" />
                </font>
@@ -93,11 +93,21 @@
                   <Font size="18.0" />
                </font>
             </Button>
-            <Text fill="#ee0707" strokeType="OUTSIDE" strokeWidth="0.0" text="Album Name Already Exists!" textAlignment="CENTER" visible="false" wrappingWidth="497.5263671875" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="3">
+            <Text fx:id="albumExistsError" fill="#ee0707" strokeType="OUTSIDE" strokeWidth="0.0" text="Album Name Already Exists!" textAlignment="CENTER" visible="false" wrappingWidth="497.5263671875" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="3">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Text>
+            <Button fx:id="renameButton" mnemonicParsing="false" onAction="#renameAlbum" text="Save" visible="false" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <TextField fx:id="renameField" visible="false" onAction="#renameAlbum" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="4">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextField>
          </children>
       </GridPane>
    </children>
