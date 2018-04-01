@@ -1,8 +1,11 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
 	private String userName;
-	
+	private List<Album> albumList = new ArrayList<>();
 	/**
 	 * Create new user.
 	 * @param userName String representing username.
@@ -13,5 +16,13 @@ public class User {
 
 	public String getUserName() {
 		return this.userName;
+	}
+	
+	public void addAlbum(Album name) {
+		albumList.add(name);
+	}
+	
+	public List<Album> getAlbums(){
+		return this.albumList;
 	}
 }

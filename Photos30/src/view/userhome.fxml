@@ -46,12 +46,12 @@
                   <Font size="18.0" />
                </font>
             </Button>
-            <TableView editable="true" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+            <TableView fx:id="albumTableView" editable="true" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.halignment="LEFT" GridPane.rowIndex="1">
                <columns>
-                  <TableColumn prefWidth="361.0" style="fx-alignment: LEFT;" text="Album Name" />
-                  <TableColumn prefWidth="84.0" style="fx-alignment: LEFT;" text="# of Photos" />
-                  <TableColumn prefWidth="139.0" style="fx-alignment: LEFT;" text="Earliest Date" />
-                  <TableColumn prefWidth="158.0" style="fx-alignment: LEFT;" text="Latest Date" />
+                  <TableColumn fx:id="albumNameCol" prefWidth="361.0" style="fx-alignment: LEFT;" text="Album Name" />
+                  <TableColumn fx:id="numPhotosCol" prefWidth="84.0" style="fx-alignment: LEFT;" text="# of Photos" /> 
+                  <TableColumn fx:id="firstDateCol" prefWidth="139.0" style="fx-alignment: LEFT;" text="Earliest Date" />
+                  <TableColumn fx:id="lastDateCol" prefWidth="158.0" style="fx-alignment: LEFT;" text="Latest Date" />
                </columns>
                <effect>
                   <InnerShadow />
