@@ -2,7 +2,8 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -10,20 +11,24 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="577.0" prefWidth="420.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PhotoController">
+<AnchorPane xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminController">
    <children>
-      <GridPane layoutX="-2.0" layoutY="-2.0" prefHeight="579.0" prefWidth="427.0" style="-fx-background-color: #444444;">
+      <GridPane alignment="CENTER" prefHeight="638.0" prefWidth="603.0" style="-fx-background-color: #444444;">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="1.0" prefWidth="31.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.0" minWidth="100.0" prefWidth="178.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.0" minWidth="10.0" prefWidth="166.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.0" minWidth="0.0" prefWidth="0.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="332.0" minWidth="100.0" prefWidth="149.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="204.0" minWidth="10.0" prefWidth="91.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="287.0" minWidth="10.0" prefWidth="162.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="142.0" minWidth="10.0" prefWidth="142.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="10.0" prefWidth="32.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints maxHeight="75.0" minHeight="1.0" prefHeight="75.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="75.0" minHeight="10.0" prefHeight="75.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="452.0" minHeight="10.0" prefHeight="451.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="98.0" minHeight="10.0" prefHeight="58.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="89.0" minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="89.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Text fill="#a6bef8" strokeType="OUTSIDE" strokeWidth="0.0" text=" Welcome, admin!" wrappingWidth="359.388671875" GridPane.halignment="LEFT" GridPane.valignment="TOP">
@@ -34,22 +39,34 @@
                   <Insets top="10.0" />
                </GridPane.margin>
             </Text>
-            <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" opacity="0.94" style="-fx-background-color: #55bb55;" text="Add New User" textAlignment="CENTER" textFill="#f8f4f4" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2">
+            <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#showAdminFields" opacity="0.94" style="-fx-background-color: #55bb55;" text="Add New User" textAlignment="CENTER" textFill="#f8f4f4" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="2">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-            <TitledPane alignment="CENTER" collapsible="false" contentDisplay="CENTER" minHeight="0.0" minWidth="0.0" prefHeight="428.0" prefWidth="327.0" text="Users" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </TitledPane>
-            <Button mnemonicParsing="false" opacity="0.94" prefHeight="35.0" prefWidth="143.0" style="-fx-background-color: #bb5555;" text="Delete User" textFill="#f8f4f4" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+            <Button mnemonicParsing="false" onAction="#deleteUser" opacity="0.94" prefHeight="35.0" prefWidth="143.0" style="-fx-background-color: #bb5555;" text="Delete User" textFill="#f8f4f4" GridPane.columnIndex="5" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" onAction="#logout" style="-fx-background-color: a6bef8;" text="LogOut" textAlignment="RIGHT" GridPane.columnIndex="3" GridPane.halignment="RIGHT" />
+            <Button mnemonicParsing="false" onAction="#logout" style="-fx-background-color: a6bef8;" text="LogOut" textAlignment="RIGHT" GridPane.columnIndex="5" GridPane.halignment="RIGHT" />
+            <ListView fx:id="userListView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.columnSpan="4" GridPane.rowIndex="1" />
+            <TextField fx:id="newUsername" onAction="#createUser" visible="false" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+            <Text fx:id="userNameLabel" fill="#aeadad" strokeType="OUTSIDE" strokeWidth="0.0" text="Username:" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Text>
+            <Button fx:id="newUserSaveButton" mnemonicParsing="false" onAction="#createUser" text="Save" visible="false" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Text fx:id="userExistsError" fill="#f20303" strokeType="OUTSIDE" strokeWidth="0.0" text="Username already taken!" visible="false" GridPane.columnIndex="2" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Text>
          </children>
       </GridPane>
    </children>

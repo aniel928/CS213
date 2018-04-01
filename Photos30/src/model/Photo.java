@@ -1,5 +1,8 @@
 package model;
 
 public class Photo {
- //Package can't be empty for git
+ //cal.set(Calendar.MILLISECOND,0);
+	public Photo() {
+		
+	}
 }

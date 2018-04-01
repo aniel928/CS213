@@ -2,7 +2,7 @@ package application;
 	
 import java.io.IOException;
 
-import controller.PhotoController;
+import controller.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
@@ -22,8 +22,8 @@ public class Main extends Application {
 			
 			AnchorPane root = (AnchorPane)loader.load();
 			
-			PhotoController photoController = loader.getController();
-			photoController.start(stage);
+			LoginController loginController = loader.getController();
+			loginController.start(stage);
 			
 			Scene scene = new Scene(root);
 			
