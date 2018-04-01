@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -72,7 +73,6 @@ public class UserHomeController implements Initializable{
 	
 	public void renameAlbum() {
 		albumExistsError.setVisible(false);
-		Album oldAlbum = albumTableView.getSelectionModel().getSelectedItem();
 		String oldName = albumTableView.getSelectionModel().getSelectedItem().getAlbumName();
 		String albumName = renameField.getText();
 		List<Album> albums = currentUser.getAlbums();
@@ -88,23 +88,29 @@ public class UserHomeController implements Initializable{
 		renameButton.setVisible(false);
 
 		//change
-		Album newAlbum = null;
 		for(Album a : albums) {
 			if(a.getAlbumName().equals(oldName)) {
 				a.setAlbumName(albumName);
-				newAlbum = a;
 				break;
 			}
-		}
-		currentUser.setAlbums(albums);
-		int index = obsAlbumList.indexOf(oldAlbum);
-		obsAlbumList.set(index, newAlbum);
-		
-		
+		}		
 	}
 	
 	public void deleteAlbum() {
-		
+		if(albumTableView.getSelectionModel().getSelectedIndex() == -1) {
+			Alert alert = new Alert(AlertType.ERROR, "Please select an item.");
+			alert.showAndWait();
+		}
+		else {
+			Alert alert = new Alert(AlertType.WARNING, "You are about to delete "+albumTableView.getSelectionModel().getSelectedItem().getAlbumName() + ".  This action cannot be undone.  Would you like to continue?", ButtonType.YES, ButtonType.CANCEL);
+			alert.showAndWait();
+			
+			if (alert.getResult() == ButtonType.YES) {
+				Album album = albumTableView.getSelectionModel().getSelectedItem();
+				currentUser.getAlbums().remove(album);
+				obsAlbumList.remove(album);
+			}
+		}
 	}
 	
 	public void openAlbum() {
