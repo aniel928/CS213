@@ -1,5 +1,6 @@
 package model;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -16,9 +17,19 @@ public class Photo {
 	//tags for this photo
 	Map<String, List<String>> tags = new HashMap<>();
 	
-	public Photo(String path, Calendar timestamp, String caption) {
-		setPhotoURL(path);
-		
+	public Photo(File file, String caption) {
+		setPhotoURL(file.toString());
+		setCaption(caption);
+		setTimestamp(file.lastModified());
+	}
+	
+	//timestamp 
+	private long timestamp;
+	public void setTimestamp(long value) {
+		timestamp = value;
+	}
+	public Object getTimestampL() {
+		return timestamp;
 	}
 	
 	//PhotoURL Property and Methods
@@ -51,19 +62,6 @@ public class Photo {
 		return caption;
 	}
 	
-	//timestamp property and methods.
-	private ObjectProperty<Calendar> timestamp;
-	public void setTimestamp(Object value) {
-		timestampProperty().set((Calendar) value);
-	}
-	public Object getTimestampL() {
-		return timestampProperty().get();
-	}
-	public ObjectProperty<Calendar> timestampProperty() {
-		if(timestamp == null) {
-			timestamp = new SimpleObjectProperty<Calendar>(this, "timestamp");
-		}
-		return timestamp;
-	}
+	
 
 }

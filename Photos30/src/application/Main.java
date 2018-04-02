@@ -43,6 +43,10 @@ public class Main extends Application {
 		stage.setScene(new Scene(root));
 	}
 	
+	public static Stage getStage() {
+		return stage;
+	}
+	
 	public static void main(String[] args) {
 		launch(args);
 	}

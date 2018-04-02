@@ -18,6 +18,14 @@ public class Album {
 		setFirstDate(null);
 		setLastDate(null);
 	}
+	
+	public void addPhoto(Photo photo) {
+		photos.add(photo);
+	}
+	
+	public List<Photo> getPhotos(){
+		return this.photos;
+	}
 
 	// album name
 	private StringProperty albumName;
@@ -40,6 +48,7 @@ public class Album {
 		numPhotosProperty().set(value);
 	}
 	public Integer getNumPhotos() {
+		numPhotosProperty().set(photos.size());;
 		return numPhotosProperty().get();
 	}
 	public IntegerProperty numPhotosProperty() {
@@ -55,6 +64,8 @@ public class Album {
 		firstDateProperty().set(value);
 	}
 	public String getFirstDate() {
+		//go through photos to find last date
+		//do lastDateProperty().set(value);
 		return firstDateProperty().get();
 	}
 	public StringProperty firstDateProperty() {
@@ -70,6 +81,8 @@ public class Album {
 		lastDateProperty().set(value);
 	}
 	public String getlastDate() {
+		//go through photos to find last date
+		//do lastDateProperty().set(value);
 		return lastDateProperty().get();
 	}
 	public StringProperty lastDateProperty() {

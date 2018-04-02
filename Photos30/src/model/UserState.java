@@ -6,6 +6,7 @@ import java.util.List;
 public class UserState {
 	private static User currentUser;
 	private static List<User> userList = new ArrayList<>();
+	private static Album currentAlbum;
 	
 	public static User getCurrentUser() {
 		return currentUser;
@@ -21,5 +22,13 @@ public class UserState {
 	
 	public static void setAllUsers(List<User> users) {
 		userList = users;
+	}
+	
+	public static Album getCurrentAlbum() {
+		return currentAlbum;
+	}
+	
+	public static void setCurrentAlbum(Album album) {
+		currentAlbum = album;
 	}
 }

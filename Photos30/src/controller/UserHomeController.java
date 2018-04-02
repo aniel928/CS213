@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -60,15 +61,16 @@ public class UserHomeController implements Initializable{
 				return;
 			}
 		}
-		Album al = new Album(albumName);
-		currentUser.addAlbum(al);
-		obsAlbumList.add(al);
+		
+		
+		Album album = new Album(albumName);
+		currentUser.addAlbum(album);
+		obsAlbumList.add(album);
 		albumLabel.setVisible(false);
 		albumField.setVisible(false);
 		albumButton.setVisible(false);
-		for(Album album : currentUser.getAlbums()) {
-			System.out.println(album.getAlbumName());
-		}
+
+		albumTableView.getSelectionModel().select(album);
 	}
 	
 	public void renameAlbum() {
@@ -78,7 +80,7 @@ public class UserHomeController implements Initializable{
 		List<Album> albums = currentUser.getAlbums();
 		//check for dupes
 		for(Album a : albums) {
-			if(a.getAlbumName().toLowerCase().equals(albumName.toLowerCase())) {
+			if(a.getAlbumName().toLowerCase().equals(albumName.toLowerCase()) && albumTableView.getSelectionModel().getSelectedItem() != a) {
 				albumExistsError.setVisible(true);
 				return;
 			}
@@ -113,12 +115,19 @@ public class UserHomeController implements Initializable{
 		}
 	}
 	
-	public void openAlbum() {
+	public void openAlbum() throws IOException {
+		if(albumTableView.getSelectionModel().getSelectedIndex() == -1) {
+			Alert alert = new Alert(AlertType.ERROR, "Please select an item.");
+			alert.showAndWait();
+		}else {
+			UserState.setCurrentAlbum(albumTableView.getSelectionModel().getSelectedItem());
+			Main.changeScene("/view/albumdetails.fxml");
+		}
 		
 	}
 	
-	public void search() {
-		
+	public void search() throws IOException {
+		Main.changeScene("/view/search.fxml");
 	}
 	
 	
@@ -157,6 +166,7 @@ public class UserHomeController implements Initializable{
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		currentUser = UserState.getCurrentUser();
+		UserState.setCurrentAlbum(null);
 		welcomeMessage.setText("Welcome, "+ currentUser.getUserName() + "!");
 		
 		albumNameCol.setCellValueFactory(new PropertyValueFactory<Album, String>("albumName"));
