@@ -15,7 +15,7 @@
 
 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="628.0" prefWidth="837.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserHomeController">
    <children>
-      <GridPane layoutX="-1.0" layoutY="-2.0" prefHeight="635.0" prefWidth="845.0" style="-fx-background-color: #444444;">
+      <GridPane layoutX="-1.0" layoutY="-2.0" prefHeight="635.0" prefWidth="845.0" style="-fx-background-color: #777777;">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="167.0" minWidth="1.0" prefWidth="130.0" />
@@ -103,7 +103,7 @@
                   <Font size="18.0" />
                </font>
             </Button>
-            <TextField fx:id="renameField" visible="false" onAction="#renameAlbum" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="4">
+            <TextField fx:id="renameField" onAction="#renameAlbum" visible="false" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="4">
                <font>
                   <Font size="18.0" />
                </font>

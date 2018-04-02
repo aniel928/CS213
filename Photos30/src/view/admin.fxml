@@ -13,7 +13,7 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminController">
    <children>
-      <GridPane alignment="CENTER" prefHeight="638.0" prefWidth="603.0" style="-fx-background-color: #444444;">
+      <GridPane alignment="CENTER" prefHeight="638.0" prefWidth="603.0" style="-fx-background-color: #777777;">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="1.0" prefWidth="31.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.0" minWidth="0.0" prefWidth="0.0" />

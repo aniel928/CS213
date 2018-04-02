@@ -1,7 +1,7 @@
 package model;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import javafx.beans.property.IntegerProperty;
@@ -11,7 +11,8 @@ import javafx.beans.property.StringProperty;
 
 public class Album {
 	List<Photo> photos = new ArrayList<>();
-	
+	private Long firstTimeStamp = 0L;
+	private Long lastTimeStamp = 0L;
 	public Album(String name) {
 		setAlbumName(name);
 		setNumPhotos(0);
@@ -22,6 +23,14 @@ public class Album {
 	public void addPhoto(Photo photo) {
 		photos.add(photo);
 		setNumPhotos(getNumPhotos());
+		if(firstTimeStamp == 0 || photo.getTimestamp() < firstTimeStamp) {
+			firstTimeStamp = photo.getTimestamp();
+			firstDateProperty().set(DateFormat.getDateInstance().format(firstTimeStamp));
+		}
+		if(photo.getTimestamp() > lastTimeStamp) {
+			lastTimeStamp = photo.getTimestamp();
+			lastDateProperty().set(DateFormat.getDateInstance().format(lastTimeStamp));
+		}
 	}
 	
 	public void removePhoto(Photo photo) {
@@ -70,8 +79,6 @@ public class Album {
 		firstDateProperty().set(value);
 	}
 	public String getFirstDate() {
-		//go through photos to find last date
-		//do lastDateProperty().set(value);
 		return firstDateProperty().get();
 	}
 	public StringProperty firstDateProperty() {
@@ -88,6 +95,7 @@ public class Album {
 	}
 	public String getlastDate() {
 		//go through photos to find last date
+		
 		//do lastDateProperty().set(value);
 		return lastDateProperty().get();
 	}
@@ -96,6 +104,11 @@ public class Album {
 			lastDate = new SimpleStringProperty(this, "lastDate");
 			}
 			return lastDate;
-		}
+	}
+	
+	@Override
+	public String toString() {
+		return this.getAlbumName();
+	}
 	
 }

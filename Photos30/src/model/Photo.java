@@ -1,7 +1,6 @@
 package model;
 
 import java.io.File;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +13,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class Photo {
- //cal.set(Calendar.MILLISECOND,0);
 	private ObjectProperty<ImageView> image;
 	public void setImage(ImageView value) {
 		imageProperty().set(value);
@@ -34,12 +32,20 @@ public class Photo {
 	//tags for this photo
 	Map<String, List<String>> tags = new HashMap<>();
 	
+	//regular constructor
 	public Photo(File file, String caption) {
 		setPhotoURL(file.toURI().toString());
 		setCaption(caption);
 		setTimestamp(file.lastModified());
-		System.out.println(photoURLProperty().get());
 		setImage(new ImageView(new Image(photoURLProperty().get(), 60, 60, true, true)));
+	}
+	
+	//make a copy constructor.
+	public Photo(Photo originalPhoto) {
+		setPhotoURL(originalPhoto.getPhotoURL());
+		setCaption(originalPhoto.getCaption());
+		setTimestamp(originalPhoto.getTimestamp());
+		setImage(originalPhoto.getImage());
 	}
 	
 	//timestamp 
@@ -47,7 +53,7 @@ public class Photo {
 	public void setTimestamp(long value) {
 		timestamp = value;
 	}
-	public Object getTimestampL() {
+	public long getTimestamp() {
 		return timestamp;
 	}
 	
@@ -71,7 +77,7 @@ public class Photo {
 	public void setCaption(String value) {
 		captionProperty().set(value);
 	}
-	public String getCaptionL() {
+	public String getCaption() {
 		return captionProperty().get();
 	}
 	public StringProperty captionProperty() {

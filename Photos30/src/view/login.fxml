@@ -11,7 +11,7 @@
 
 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="372.0" prefWidth="606.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
    <children>
-      <GridPane layoutX="-2.0" layoutY="-2.0" prefHeight="375.0" prefWidth="608.0" style="-fx-background-color: #444444;">
+      <GridPane layoutX="-2.0" layoutY="-2.0" prefHeight="375.0" prefWidth="608.0" style="-fx-background-color: #777777;">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

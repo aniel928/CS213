@@ -1,6 +1,5 @@
 package controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -167,7 +166,12 @@ public class UserHomeController implements Initializable{
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		currentUser = UserState.getCurrentUser();
 		UserState.setCurrentAlbum(null);
-		welcomeMessage.setText(currentUser.getUserName() + "'s albums");
+		if(currentUser.getUserName().equals("stock")) {
+			welcomeMessage.setText("Stock Photo Albums");
+		}
+		else{
+			welcomeMessage.setText(currentUser.getUserName() + "'s albums");
+		}
 		
 		albumNameCol.setCellValueFactory(new PropertyValueFactory<Album, String>("albumName"));
 		numPhotosCol.setCellValueFactory(new PropertyValueFactory<Album, Integer>("numPhotos"));
