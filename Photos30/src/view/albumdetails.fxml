@@ -49,7 +49,7 @@
                   <InnerShadow />
                </effect>
             </Button>
-            <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" opacity="0.94" style="-fx-background-color: #f2a2a2;" text="Delete Photo" textAlignment="RIGHT" textFill="#5b5858" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+            <Button alignment="CENTER_RIGHT" onAction="#deletePhoto" contentDisplay="RIGHT" mnemonicParsing="false" opacity="0.94" style="-fx-background-color: #f2a2a2;" text="Delete Photo" textAlignment="RIGHT" textFill="#5b5858" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                <font>
                   <Font size="18.0" />
                </font>

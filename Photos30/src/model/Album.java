@@ -21,6 +21,12 @@ public class Album {
 	
 	public void addPhoto(Photo photo) {
 		photos.add(photo);
+		setNumPhotos(getNumPhotos());
+	}
+	
+	public void removePhoto(Photo photo) {
+		photos.remove(photo);
+		setNumPhotos(getNumPhotos());
 	}
 	
 	public List<Photo> getPhotos(){

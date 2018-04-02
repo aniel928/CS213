@@ -167,7 +167,7 @@ public class UserHomeController implements Initializable{
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		currentUser = UserState.getCurrentUser();
 		UserState.setCurrentAlbum(null);
-		welcomeMessage.setText("Welcome, "+ currentUser.getUserName() + "!");
+		welcomeMessage.setText(currentUser.getUserName() + "'s albums");
 		
 		albumNameCol.setCellValueFactory(new PropertyValueFactory<Album, String>("albumName"));
 		numPhotosCol.setCellValueFactory(new PropertyValueFactory<Album, Integer>("numPhotos"));

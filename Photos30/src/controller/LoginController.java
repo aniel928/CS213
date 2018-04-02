@@ -33,7 +33,7 @@ public class LoginController {
 	 */
 	public void login(ActionEvent event) throws IOException {
 		//if user is admin, open admin screen
-		if(username.getText().equals("admin")) {
+		if(username.getText().toLowerCase().equals("admin")) {
 			//open admin screen
 			Main.changeScene("/view/admin.fxml");			
 		}
@@ -44,7 +44,7 @@ public class LoginController {
 		//otherwise make sure user exists and if they do set current user and change screen, if not throw error.
 		else {
 			for(User user : UserState.getAllUsers()) {
-				if(user.getUserName().equals(username.getText())) {
+				if(user.getUserName().toLowerCase().equals(username.getText().toLowerCase())) {
 					UserState.setCurrentUser(user);
 					Main.changeScene("/view/userhome.fxml");
 				}

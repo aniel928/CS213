@@ -65,6 +65,7 @@ public class AdminController implements Initializable{
 	@FXML
 	public void createUser() {
 		String uName = newUsername.getText().toLowerCase().replaceAll("\\s","");
+		uName = uName.substring(0,1).toUpperCase() + uName.substring(1).toLowerCase();
 		System.out.println("uName");
 		User user = new User(uName);
 		int index = findUserIndex(uName);

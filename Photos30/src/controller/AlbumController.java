@@ -50,9 +50,7 @@ public class AlbumController implements Initializable {
 	}
 	
 	@FXML
-	private void openFile() throws IOException {
-		
-		
+	private void openFile() throws IOException {		
 		FileChooser fileChooser = new FileChooser();
 		
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image files", "*.jpg", "*.jpeg", "*.png");
@@ -87,6 +85,19 @@ public class AlbumController implements Initializable {
 			saveButton.setVisible(false);
 			currentAlbum.addPhoto(photo);
 			obsPhotoList.add(photo);
+		}
+	}
+	
+	@FXML
+	public void deletePhoto() {
+		if(table.getSelectionModel().getSelectedIndex() == -1) {
+			Alert alert = new Alert(AlertType.ERROR, "Please select an item.");
+			alert.showAndWait();
+		}
+		else {
+			Photo photo = table.getSelectionModel().getSelectedItem();
+			currentAlbum.removePhoto(photo);
+			obsPhotoList.remove(photo);
 		}
 	}
 	
