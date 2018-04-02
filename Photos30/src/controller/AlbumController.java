@@ -1,15 +1,10 @@
 package controller;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import javax.imageio.ImageIO;
 
 import application.Main;
 import javafx.collections.FXCollections;
@@ -24,6 +19,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import model.Album;
@@ -37,7 +33,7 @@ public class AlbumController implements Initializable {
 	private ObservableList<Photo> obsPhotoList;
 	@FXML private TableView<Photo> table;
 	@FXML private TableColumn<Photo, String> captionCol;
-	@FXML private TableColumn<Photo, String> photoCol;
+	@FXML private TableColumn<Photo, ImageView> photoCol;
 	@FXML private Text albumTitle;
 	@FXML private Text captionLabel;
 	@FXML private Text photoExists;
@@ -67,19 +63,26 @@ public class AlbumController implements Initializable {
 		captionLabel.setVisible(true);
 		captionField.setVisible(true);
 		saveButton.setVisible(true);
-		
-		
 
 	}
 
 	public void newPhoto() {
+		photoExists.setVisible(false);
 		if(captionField.getText().equals("")) {
 			Alert alert = new Alert(AlertType.ERROR, "Please enter a caption.");
 			alert.showAndWait();
 		}
 		else {
+			//check for duplicate photo
+			for(Photo photo : currentAlbum.getPhotos()) {
+				if(photo.photoURLProperty().get().equals(file.toURI().toString())) {
+					photoExists.setVisible(true);
+					return;
+				}
+			}
 			Photo photo = new Photo(file, captionField.getText());
 			captionLabel.setVisible(false);
+			captionField.setText("");
 			captionField.setVisible(false);
 			saveButton.setVisible(false);
 			currentAlbum.addPhoto(photo);
@@ -93,7 +96,7 @@ public class AlbumController implements Initializable {
 		UserState.setCurrentAlbum(null);
 		albumTitle.setText(currentAlbum.getAlbumName());
 		
-		photoCol.setCellValueFactory(new PropertyValueFactory<Photo, String>("photoURL"));
+		photoCol.setCellValueFactory(new PropertyValueFactory<Photo, ImageView>("image"));
 		captionCol.setCellValueFactory(new PropertyValueFactory<Photo, String>("caption"));
 		
 		obsPhotoList = FXCollections.observableArrayList(currentAlbum.getPhotos());

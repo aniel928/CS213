@@ -10,17 +10,36 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class Photo {
  //cal.set(Calendar.MILLISECOND,0);
+	private ObjectProperty<ImageView> image;
+	public void setImage(ImageView value) {
+		imageProperty().set(value);
+	}
+	public ImageView getImage() {
+		return imageProperty().get();
+	}
+	public ObjectProperty<ImageView> imageProperty() {
+		if(image == null) {
+			image = new SimpleObjectProperty<ImageView>(this, "image");
+		}
+		return image;
+	}
+	
+	
 	
 	//tags for this photo
 	Map<String, List<String>> tags = new HashMap<>();
 	
 	public Photo(File file, String caption) {
-		setPhotoURL(file.toString());
+		setPhotoURL(file.toURI().toString());
 		setCaption(caption);
 		setTimestamp(file.lastModified());
+		System.out.println(photoURLProperty().get());
+		setImage(new ImageView(new Image(photoURLProperty().get(), 60, 60, true, true)));
 	}
 	
 	//timestamp 
