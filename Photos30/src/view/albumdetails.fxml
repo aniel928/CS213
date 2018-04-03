@@ -144,7 +144,7 @@
                   <InnerShadow />
                </effect>
             </Button>
-            <Button alignment="CENTER" contentDisplay="RIGHT" defaultButton="true" mnemonicParsing="false" onAction="#editCaption" opacity="0.94" style="-fx-background-color: #f5a234;" text="Open Photo" textAlignment="CENTER" textFill="#5b5858" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+            <Button alignment="CENTER" contentDisplay="RIGHT" defaultButton="true" mnemonicParsing="false" onAction="#openPhoto" opacity="0.94" style="-fx-background-color: #f5a234;" text="Open Photo" textAlignment="CENTER" textFill="#5b5858" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                <font>
                   <Font size="18.0" />
                </font>

@@ -7,6 +7,7 @@ public class UserState {
 	private static User currentUser;
 	private static List<User> userList = new ArrayList<>();
 	private static Album currentAlbum;
+	private static Photo currentPhoto;
 	
 	public static User getCurrentUser() {
 		return currentUser;
@@ -30,5 +31,13 @@ public class UserState {
 	
 	public static void setCurrentAlbum(Album album) {
 		currentAlbum = album;
+	}
+	
+	public static Photo getCurrentPhoto(){
+		return currentPhoto;
+	}
+	
+	public static void setCurrentPhoto(Photo photo) {
+		currentPhoto = photo;
 	}
 }

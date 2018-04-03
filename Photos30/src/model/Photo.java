@@ -1,9 +1,8 @@
 package model;
 
 import java.io.File;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -13,31 +12,17 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class Photo {
-	private ObjectProperty<ImageView> image;
-	public void setImage(ImageView value) {
-		imageProperty().set(value);
-	}
-	public ImageView getImage() {
-		return imageProperty().get();
-	}
-	public ObjectProperty<ImageView> imageProperty() {
-		if(image == null) {
-			image = new SimpleObjectProperty<ImageView>(this, "image");
-		}
-		return image;
-	}
-	
-	
 	
 	//tags for this photo
-	Map<String, List<String>> tags = new HashMap<>();
+	List<Tag> tags = new ArrayList<>();	
 	
 	//regular constructor
 	public Photo(File file, String caption) {
 		setPhotoURL(file.toURI().toString());
 		setCaption(caption);
 		setTimestamp(file.lastModified());
-		setImage(new ImageView(new Image(photoURLProperty().get(), 60, 60, true, true)));
+		setThumbnail(new ImageView(new Image(photoURLProperty().get(), 60, 60, true, true)));
+		setImage(new ImageView(new Image(photoURLProperty().get(), 300, 300, true, true)));
 	}
 	
 	//make a copy constructor.
@@ -45,10 +30,12 @@ public class Photo {
 		setPhotoURL(originalPhoto.getPhotoURL());
 		setCaption(originalPhoto.getCaption());
 		setTimestamp(originalPhoto.getTimestamp());
+		setThumbnail(originalPhoto.getThumbnail());
 		setImage(originalPhoto.getImage());
+		setAllTags(originalPhoto.getAllTags());
 	}
 	
-	//timestamp 
+	//timestamp (not property)
 	private long timestamp;
 	public void setTimestamp(long value) {
 		timestamp = value;
@@ -72,6 +59,37 @@ public class Photo {
 		return photoURL;
 	}
 	
+	//thumbnail property
+	private ObjectProperty<ImageView> thumbnail;
+	public void setThumbnail(ImageView value) {
+		thumbnailProperty().set(value);
+	}
+	public ImageView getThumbnail() {
+		return thumbnailProperty().get();
+	}
+	public ObjectProperty<ImageView> thumbnailProperty() {
+		if(thumbnail == null) {
+			thumbnail = new SimpleObjectProperty<ImageView>(this, "thumbnail");
+		}
+		return thumbnail;
+	}
+	
+	//image property
+	private ObjectProperty<ImageView> image;
+	public void setImage(ImageView value) {
+		imageProperty().set(value);
+	}
+	public ImageView getImage() {
+		return imageProperty().get();
+	}
+	public ObjectProperty<ImageView> imageProperty() {
+		if(image == null) {
+			image = new SimpleObjectProperty<ImageView>(this, "image");
+		}
+		return image;
+	}
+	
+	
 	//Caption property and methods
 	private StringProperty caption;
 	public void setCaption(String value) {
@@ -87,6 +105,11 @@ public class Photo {
 		return caption;
 	}
 	
+	public List<Tag> getAllTags(){
+		return tags;
+	}
 	
-
+	public void setAllTags(List<Tag> newTags) {
+		tags = newTags;
+	}
 }

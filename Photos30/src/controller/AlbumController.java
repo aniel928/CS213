@@ -193,10 +193,14 @@ public class AlbumController implements Initializable {
 		hideAll();
 	}
 	
-	public void showTags() {
+	public void showTags() throws IOException {
 		if(table.getSelectionModel().getSelectedIndex() == -1) {
 			Alert alert = new Alert(AlertType.ERROR, "Please select an item.");
 			alert.showAndWait();
+		}
+		else {
+			UserState.setCurrentPhoto(table.getSelectionModel().getSelectedItem());
+			Main.newStage("/view/tags.fxml");
 		}
 	}
 	
@@ -207,15 +211,30 @@ public class AlbumController implements Initializable {
 		}
 	}
 	
+	public void openPhoto() throws IOException {
+		if(table.getSelectionModel().getSelectedIndex() == -1) {
+			Alert alert = new Alert(AlertType.ERROR, "Please select an item.");
+			alert.showAndWait();
+		}
+		else {
+			UserState.setCurrentPhoto(table.getSelectionModel().getSelectedItem());
+			Main.changeScene("/view/photo.fxml");
+		}
+	}
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		//get user state and set album name
 		currentAlbum = UserState.getCurrentAlbum();
-		UserState.setCurrentAlbum(null);
+		if(UserState.getCurrentPhoto() != null) {
+			table.getSelectionModel().select(UserState.getCurrentPhoto());
+			UserState.setCurrentPhoto(null);
+		}
+		
 		albumTitle.setText(currentAlbum.getAlbumName());
 		
 		//set table view columns
-		photoCol.setCellValueFactory(new PropertyValueFactory<Photo, ImageView>("image"));
+		photoCol.setCellValueFactory(new PropertyValueFactory<Photo, ImageView>("thumbnail"));
 		captionCol.setCellValueFactory(new PropertyValueFactory<Photo, String>("caption"));
 		
 		//set list

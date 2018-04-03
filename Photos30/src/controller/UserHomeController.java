@@ -165,7 +165,10 @@ public class UserHomeController implements Initializable{
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		currentUser = UserState.getCurrentUser();
-		UserState.setCurrentAlbum(null);
+		if(UserState.getCurrentAlbum() != null) {
+			albumTableView.getSelectionModel().select(UserState.getCurrentAlbum());
+			UserState.setCurrentAlbum(null);
+		}
 		if(currentUser.getUserName().equals("stock")) {
 			welcomeMessage.setText("Stock Photo Albums");
 		}

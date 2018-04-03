@@ -30,8 +30,8 @@ public class Main extends Application {
 			stage.setTitle("Log In");
 			
 			stage.setScene(scene);
-			
-			stage.show(); 
+			stage.centerOnScreen();
+			stage.show();
 			
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -42,6 +42,14 @@ public class Main extends Application {
 		Parent root  = FXMLLoader.load(Main.class.getResource(sceneName));
 		stage.setScene(new Scene(root));
 		stage.centerOnScreen();
+	}
+	
+	public static void newStage(String sceneName) throws IOException{
+		Parent root = FXMLLoader.load(Main.class.getResource(sceneName));
+		Stage newStage = new Stage();
+		newStage.setScene(new Scene(root));
+		newStage.centerOnScreen();
+		newStage.show();
 	}
 	
 	public static Stage getStage() {
