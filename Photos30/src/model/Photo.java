@@ -2,8 +2,13 @@ package model;
 
 import java.io.File;
 import java.io.Serializable;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -18,7 +23,6 @@ public class Photo implements Serializable {
 	private String caption;
 	//list of all tags
 	private List<Tag> tags = new ArrayList<>();	
-	
 /*
  * CONSTRUCTOR(S)
  */
@@ -34,6 +38,10 @@ public class Photo implements Serializable {
 	
 	public long getTimestamp() {
 		return timestamp;
+	}
+	
+	public LocalDateTime getTime(){
+		return Instant.ofEpochMilli(this.timestamp).atZone(ZoneId.systemDefault()).toLocalDate().atStartOfDay();
 	}
 	
 	public String getPhotoURL() {

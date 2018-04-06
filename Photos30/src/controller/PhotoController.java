@@ -84,7 +84,6 @@ public class PhotoController implements Initializable {
 		//set table view columns
 		tagCol.setCellValueFactory(new PropertyValueFactory<Tag, String>("tag"));
 		valueCol.setCellValueFactory(new PropertyValueFactory<Tag, String>("value"));
-		obsTagList.addAll(currentPhoto.getAllTags());
 		
 		tagTable.setItems(obsTagList);
 	}

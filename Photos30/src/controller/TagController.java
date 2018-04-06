@@ -56,7 +56,14 @@ public class TagController implements Initializable {
 			alert.showAndWait();
 		}
 		else{
-			Tag tag = new Tag(tagField.getText(), valueField.getText());
+			for(Tag tag : currentPhoto.getAllTags()) {
+				if(tag.getTag().equals(tagField.getText().toLowerCase()) && tag.getValue().equals(valueField.getText().toLowerCase())){
+					Alert alert = new Alert(AlertType.ERROR, "Tag already exists for this photo!");
+					alert.showAndWait();
+					return;
+				}
+			}
+			Tag tag = new Tag(tagField.getText().toLowerCase(), valueField.getText().toLowerCase());
 			currentPhoto.getAllTags().add(tag);
 			obsTagList.add(tag);
 			showTagFields();
