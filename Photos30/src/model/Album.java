@@ -1,109 +1,80 @@
 package model;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-
-public class Album {
-	List<Photo> photos = new ArrayList<>();
-	private Long firstTimeStamp = 0L;
-	private Long lastTimeStamp = 0L;
+public class Album implements Serializable {
+	//auto-generated serialization ID:
+	private static final long serialVersionUID = -5765672915061151624L;
+	//name of album
+	private String albumName;
+	//earliest timestamp
+	private List<Photo> photos = new ArrayList<>();
+	
+	
+/*
+ * CONSTRUCTOR(S)	
+ */
 	public Album(String name) {
 		setAlbumName(name);
-		setNumPhotos(0);
-		setFirstDate(null);
-		setLastDate(null);
 	}
 	
-	public void addPhoto(Photo photo) {
-		photos.add(photo);
-		setNumPhotos(getNumPhotos());
-		if(firstTimeStamp == 0 || photo.getTimestamp() < firstTimeStamp) {
-			firstTimeStamp = photo.getTimestamp();
-			firstDateProperty().set(DateFormat.getDateInstance().format(firstTimeStamp));
-		}
-		if(photo.getTimestamp() > lastTimeStamp) {
-			lastTimeStamp = photo.getTimestamp();
-			lastDateProperty().set(DateFormat.getDateInstance().format(lastTimeStamp));
-		}
+/*
+ * GETTERS
+ */
+	
+	public String getAlbumName() {
+		return this.albumName;
 	}
 	
-	public void removePhoto(Photo photo) {
-		photos.remove(photo);
-		setNumPhotos(getNumPhotos());
+	public Integer getNumPhotos() {
+		return photos.size();
+	}
+	
+	public String getFirstDate() {
+		long min = 0;
+		for(Photo photo : photos) {
+			if(min == 0 || photo.getTimestamp() < min) {
+				min = photo.getTimestamp();
+			}
+		}
+		return DateFormat.getDateInstance().format(min);
+	}
+	
+	public String getLastDate() {
+		long max = 0;
+		for(Photo photo: photos) {
+			if(photo.getTimestamp() > max) {
+				max = photo.getTimestamp();
+			}
+		}
+		return DateFormat.getDateInstance().format(max);
 	}
 	
 	public List<Photo> getPhotos(){
 		return this.photos;
 	}
-
-	// album name
-	private StringProperty albumName;
+	
+	
+/*
+ * SETTERS
+ */
 	public void setAlbumName(String value) {
-		albumNameProperty().set(value);
-	}
-	public String getAlbumName() {
-		return albumNameProperty().get();
-	}
-	public StringProperty albumNameProperty() {
-		if(albumName == null) {
-			albumName = new SimpleStringProperty(this, "albumName");
-		}
-		return albumName;
+		this.albumName = value;
 	}
 	
-	// numPhotos
-	private IntegerProperty numPhotos;
-	public void setNumPhotos(Integer value) {
-		numPhotosProperty().set(value);
-	}
-	public Integer getNumPhotos() {
-		numPhotosProperty().set(photos.size());;
-		return numPhotosProperty().get();
-	}
-	public IntegerProperty numPhotosProperty() {
-		if(numPhotos == null) {
-			numPhotos = new SimpleIntegerProperty(this, "numPhotos");
-		}
-		return numPhotos;
-	}
-
-	// first date
-	private StringProperty firstDate;
-	public void setFirstDate(String value) {
-		firstDateProperty().set(value);
-	}
-	public String getFirstDate() {
-		return firstDateProperty().get();
-	}
-	public StringProperty firstDateProperty() {
-		if(firstDate == null) {
-			firstDate = new SimpleStringProperty(this, "firstDate");
-		}
-		return firstDate;
+	
+/*
+ * HELPER METHODS
+ */
+	public void addPhoto(Photo photo) {
+		photos.add(photo);
 	}
 	
-	// last date
-	private StringProperty lastDate;
-	public void setLastDate(String value) {
-		lastDateProperty().set(value);
-	}
-	public String getlastDate() {
-		//go through photos to find last date
-		
-		//do lastDateProperty().set(value);
-		return lastDateProperty().get();
-	}
-	public StringProperty lastDateProperty() {
-		if(lastDate == null) {
-			lastDate = new SimpleStringProperty(this, "lastDate");
-			}
-			return lastDate;
+	public void removePhoto(Photo photo) {
+		photos.remove(photo);
 	}
 	
 	@Override

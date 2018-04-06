@@ -1,5 +1,9 @@
 package model;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,4 +44,12 @@ public class UserState {
 	public static void setCurrentPhoto(Photo photo) {
 		currentPhoto = photo;
 	}
+	
+	public static void saveFile() throws IOException{
+		ObjectOutputStream oos = new ObjectOutputStream(
+		new FileOutputStream("data" + File.separator + "users.dat"));
+		oos.writeObject(userList);
+		oos.close();
+	}	
+	
 }

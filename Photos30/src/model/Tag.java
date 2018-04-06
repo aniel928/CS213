@@ -1,47 +1,43 @@
 package model;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import java.io.Serializable;
 
-public class Tag {
+public class Tag implements Serializable {
+	//auto-generated serialization ID:
+	private static final long serialVersionUID = 4300979057337404473L;
+	//Tag name
+	private String tag;
+	//Value of tag
+	private String value;
 	
-	//regular constructor
+/*
+ * CONSTRUCTOR(S)
+ */
 	public Tag(String tag, String value) {
-		tagProperty().set(tag);
-		valueProperty().set(value);
+		setTag(tag);
+		setValue(value);
 	}
 	
-	//Caption property and methods
-	private StringProperty tag;
-	public void setTagn(String value) {
-		tagProperty().set(value);
-	}
+/*
+ * GETTERS
+ */
 	public String getTag() {
-		return tagProperty().get();
-	}
-	public StringProperty tagProperty() {
-		if(tag == null) {
-			tag = new SimpleStringProperty(this, "tag");
-		}
-		return tag;
-	}
-
-	
-	//Caption property and methods
-	private StringProperty value;
-	public void setValue(String val) {
-		valueProperty().set(val);
+		return this.tag;
 	}
 	public String getValue() {
-		return valueProperty().get();
+		return this.value;
+	}	
+	
+/*
+ * SETTERS	
+ */
+	
+	public void setTag(String value) {
+		this.tag = value;
 	}
-	public StringProperty valueProperty() {
-		if(value == null) {
-			value = new SimpleStringProperty(this, "value");
-		}
-		return value;
+	public void setValue(String value) {
+		this.value = value;
 	}
-
 	
 
 }

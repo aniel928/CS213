@@ -1,11 +1,20 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User {
+public class User implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2524019894349643234L;
+	
 	private String userName;
+	
 	private List<Album> albumList = new ArrayList<>();
+	
 	/**
 	 * Create new user.
 	 * @param userName String representing username.

@@ -10,7 +10,10 @@ import javafx.stage.Stage;
 import model.User;
 import model.UserState;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,12 +21,16 @@ public class LoginController {
 	@FXML private TextField username;
 	@FXML private Text invalidUserError;
 	
-	public void start(Stage mainStage) throws IOException {
+	@SuppressWarnings("unchecked")
+	public void start(Stage mainStage) throws IOException, ClassNotFoundException {
 		//load list of users from file.
 		List<User> users = new ArrayList<>();
 		users.add(new User("admin"));
-		users.add(new User("stock"));
+		
+		ObjectInputStream ois = new ObjectInputStream(new FileInputStream("data" + File.separator + "users.dat"));
+		users = (List<User>) ois.readObject();
 		UserState.setAllUsers(users);
+		ois.close();
 	}
 	
 	/**

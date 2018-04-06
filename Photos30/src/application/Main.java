@@ -4,8 +4,11 @@ import java.io.IOException;
 
 import controller.*;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+import model.UserState;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -28,9 +31,24 @@ public class Main extends Application {
 			Scene scene = new Scene(root);
 			
 			stage.setTitle("Log In");
-			
 			stage.setScene(scene);
 			stage.centerOnScreen();
+			
+			
+			//set listener for window closing
+			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+				public void handle(WindowEvent we) {
+					try {
+						UserState.saveFile();
+		        	} catch (IOException e) {
+						// TODO Auto-generated catch block
+		        		System.err.println(e.getMessage());
+						e.printStackTrace();
+					}
+				}
+		      });
+			
+			
 			stage.show();
 			
 		} catch(Exception e) {

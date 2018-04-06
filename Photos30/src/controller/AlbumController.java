@@ -28,7 +28,6 @@ import model.Photo;
 import model.UserState;
 
 public class AlbumController implements Initializable {
-	private File file;
 	private Album currentAlbum;
 	private ObservableList<Photo> obsPhotoList;
 	@FXML private TableView<Photo> table;
@@ -74,32 +73,13 @@ public class AlbumController implements Initializable {
 		
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image files", "*.jpg", "*.jpeg", "*.png");
 		fileChooser.getExtensionFilters().add(extFilter);
-		file = fileChooser.showOpenDialog(Main.getStage());
+		File file = fileChooser.showOpenDialog(Main.getStage());
 		if(file != null) {
-			System.out.println(file);
-			String filename = file.toURI().toString();
-			String shortFileName = filename.substring(filename.lastIndexOf('/')+1);
-			
-			hideAll();
-			photoError.setText(shortFileName);
-			photoError.setVisible(true);
-			captionLabel.setVisible(true);
-			captionField.setVisible(true);
-			captionField.requestFocus();
-			saveButton.setVisible(true);
-		}
-		
-	}
-
-	public void newPhoto() {
-		if(captionField.getText().equals("")) {
-			Alert alert = new Alert(AlertType.ERROR, "Please enter a caption.");
-			alert.showAndWait();
-		}
-		else {
-			//check for duplicate photo
+	
+			//check for duplicate photo;
 			for(Photo photo : currentAlbum.getPhotos()) {
-				if(photo.photoURLProperty().get().equals(file.toURI().toString())) {
+				if(photo.getPhotoURL().equals(file.toURI().toString())) {
+				//if(photo.photoURLProperty().get().equals(file.toURI().toString())) {
 					photoError.setText("This photo is already in this album!");
 					photoError.setVisible(true);
 					return;
@@ -113,13 +93,18 @@ public class AlbumController implements Initializable {
 		}
 	}
 	
+	public void newPhoto() {
+		
+	}
 	@FXML
 	public void deletePhoto() {
+		hideAll();
 		if(table.getSelectionModel().getSelectedIndex() == -1) {
 			Alert alert = new Alert(AlertType.ERROR, "Please select an item.");
 			alert.showAndWait();
 		}
 		else {
+			//TODO: are you sure you want to delete error.
 			Photo photo = table.getSelectionModel().getSelectedItem();
 			currentAlbum.removePhoto(photo);
 			obsPhotoList.remove(photo);
@@ -132,11 +117,16 @@ public class AlbumController implements Initializable {
 			alert.showAndWait();
 		}
 		else {
-			captionLabel.setVisible(true);
-			editCaptionField.setVisible(true);
-			saveEditButton.setVisible(true);
-			editCaptionField.setText(table.getSelectionModel().getSelectedItem().getCaption());
-			editCaptionField.requestFocus();
+			if(captionLabel.isVisible()) {
+				hideAll();
+			}else {
+				hideAll();
+				captionLabel.setVisible(true);
+				editCaptionField.setVisible(true);
+				saveEditButton.setVisible(true);
+				editCaptionField.setText(table.getSelectionModel().getSelectedItem().getCaption());
+				editCaptionField.requestFocus();
+			}
 		}
 	}
 	
@@ -153,9 +143,14 @@ public class AlbumController implements Initializable {
 			alert.showAndWait();
 		}
 		else {
-			hideAll();
-			moveButton.setVisible(true);
-			photoAlbums.setVisible(true);
+			if(moveButton.isVisible()){
+				hideAll();
+			}
+			else{
+				hideAll();
+				moveButton.setVisible(true);
+				photoAlbums.setVisible(true);
+			}
 		}
 	}
 	
@@ -176,15 +171,19 @@ public class AlbumController implements Initializable {
 			alert.showAndWait();
 		}
 		else {
-			hideAll();
-			copyButton.setVisible(true);
-			photoAlbums.setVisible(true);
+			if(copyButton.isVisible()) {
+				hideAll();
+			}else {
+				hideAll();
+				copyButton.setVisible(true);
+				photoAlbums.setVisible(true);
+			}
 		}
 	}
 	
 	public void copyPhoto() {
 		//make a copy first
-		Photo photo = new Photo(table.getSelectionModel().getSelectedItem());
+		Photo photo = table.getSelectionModel().getSelectedItem();
 		
 		Album album = photoAlbums.getSelectionModel().getSelectedItem();
 		
@@ -194,6 +193,7 @@ public class AlbumController implements Initializable {
 	}
 	
 	public void showTags() throws IOException {
+		hideAll();
 		if(table.getSelectionModel().getSelectedIndex() == -1) {
 			Alert alert = new Alert(AlertType.ERROR, "Please select an item.");
 			alert.showAndWait();
@@ -205,6 +205,7 @@ public class AlbumController implements Initializable {
 	}
 	
 	public void showSlideShow() {
+		hideAll();
 		if(table.getSelectionModel().getSelectedIndex() == -1) {
 			Alert alert = new Alert(AlertType.ERROR, "Implement logic here.");
 			alert.showAndWait();

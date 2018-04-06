@@ -126,11 +126,10 @@ public class UserHomeController implements Initializable{
 	}
 	
 	public void search() throws IOException {
-		Main.changeScene("/view/search.fxml");
+		Alert alert = new Alert(AlertType.ERROR, "Implement search logic.");
+		alert.showAndWait();
+//		Main.changeScene("/view/search.fxml");
 	}
-	
-	
-	
 	
 	@FXML
 	public void showAddFields(){
