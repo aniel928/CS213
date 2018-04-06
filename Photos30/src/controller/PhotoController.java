@@ -72,8 +72,6 @@ public class PhotoController implements Initializable {
 		//set list
 		obsTagList.clear();
 		obsTagList.addAll(currentPhoto.getAllTags());
-		tagTable.refresh();
-		
 	}
 	
 	@Override
