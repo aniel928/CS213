@@ -95,6 +95,7 @@ public class UserHomeController implements Initializable{
 				break;
 			}
 		}		
+		albumTableView.refresh();
 	}
 	
 	public void deleteAlbum() {

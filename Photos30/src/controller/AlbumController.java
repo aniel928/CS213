@@ -135,6 +135,7 @@ public class AlbumController implements Initializable {
 		Photo photo = table.getSelectionModel().getSelectedItem();
 		photo.setCaption(editCaptionField.getText());
 		hideAll();
+		table.refresh();
 	}
 	
 	public void moveFields() {
