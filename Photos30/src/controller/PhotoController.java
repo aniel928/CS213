@@ -86,5 +86,6 @@ public class PhotoController implements Initializable {
 		valueCol.setCellValueFactory(new PropertyValueFactory<Tag, String>("value"));
 		
 		tagTable.setItems(obsTagList);
+		tagTable.getSelectionModel().select(0);
 	}
 }

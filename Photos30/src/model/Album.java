@@ -21,6 +21,11 @@ public class Album implements Serializable {
 		setAlbumName(name);
 	}
 	
+	public Album(String name, List<Photo> photos) {
+		setAlbumName(name);
+		this.photos = photos;
+	}
+	
 /*
  * GETTERS
  */

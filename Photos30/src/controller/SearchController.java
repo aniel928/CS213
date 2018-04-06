@@ -41,7 +41,7 @@ public class SearchController implements Initializable {
 	}
 	
 	@FXML
-	public void search() {
+	public void search() throws IOException {
 		int numOfTags = getNumberOfTags();
 		System.out.println("Number of tags: " + numOfTags);
 		//if there are tags filled out and "all" or "any" are not selected, throw error.
@@ -128,9 +128,10 @@ public class SearchController implements Initializable {
 		
 		
 		if(results != null && results.size() != 0) {
-			for(Photo result : results) {
-				System.out.println(result.getPhotoURL());
-			}
+			
+			UserState.setSearchResults(results);
+			Main.changeScene("/view/searchresults.fxml");
+			
 		}else {
 			Alert alert = new Alert(AlertType.INFORMATION, "No photos match this criteria.  Try expanding your search paraemters.");
 			alert.showAndWait();

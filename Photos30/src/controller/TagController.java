@@ -97,6 +97,7 @@ public class TagController implements Initializable {
 		
 		//set list
 		obsTagList = FXCollections.observableArrayList(currentPhoto.getAllTags());
-		table.setItems(obsTagList);		
+		table.setItems(obsTagList);	
+		table.getSelectionModel().select(0);
 	}
 }

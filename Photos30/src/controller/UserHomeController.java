@@ -183,6 +183,7 @@ public class UserHomeController implements Initializable{
 		
 		obsAlbumList = FXCollections.observableArrayList(currentUser.getAlbums());
 		albumTableView.setItems(obsAlbumList);
+		albumTableView.getSelectionModel().select(0);
 	}
 	
 	

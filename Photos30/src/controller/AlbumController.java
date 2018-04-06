@@ -205,12 +205,9 @@ public class AlbumController implements Initializable {
 		}
 	}
 	
-	public void showSlideShow() {
+	public void showSlideShow() throws IOException {
 		hideAll();
-		if(table.getSelectionModel().getSelectedIndex() == -1) {
-			Alert alert = new Alert(AlertType.ERROR, "Implement logic here.");
-			alert.showAndWait();
-		}
+		openPhoto();
 	}
 	
 	public void openPhoto() throws IOException {
@@ -247,5 +244,8 @@ public class AlbumController implements Initializable {
 		ObservableList<Album> albums = FXCollections.observableArrayList(UserState.getCurrentUser().getAlbums());
 		albums.remove(currentAlbum);
 		photoAlbums.setItems(albums);
+		
+		table.getSelectionModel().select(0);
+		
 	}
 }

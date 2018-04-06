@@ -12,6 +12,7 @@ public class UserState {
 	private static List<User> userList = new ArrayList<>();
 	private static Album currentAlbum;
 	private static Photo currentPhoto;
+	private static List<Photo> searchResults;
 	
 	public static User getCurrentUser() {
 		return currentUser;
@@ -51,5 +52,13 @@ public class UserState {
 		oos.writeObject(userList);
 		oos.close();
 	}	
+	
+	public static void setSearchResults(List<Photo> photos) {
+		searchResults = photos;
+	}
+	
+	public static List<Photo> getSearchResults(){
+		return searchResults;
+	}
 	
 }
