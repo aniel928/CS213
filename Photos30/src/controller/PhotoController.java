@@ -22,7 +22,7 @@ import model.UserState;
 
 public class PhotoController implements Initializable {
 	private Photo currentPhoto;
-	private ObservableList<Tag> obsTagList;
+	private ObservableList<Tag> obsTagList = FXCollections.observableArrayList();
 	@FXML private ImageView photoDisplay;
 	@FXML private TableView<Tag> tagTable;
 	@FXML private TableColumn<Tag, String> tagCol;
@@ -38,21 +38,56 @@ public class PhotoController implements Initializable {
 		Main.changeScene("/view/albumdetails.fxml");
 	}
 	
+	public void leftPhoto() {
+		int index = UserState.getCurrentAlbum().getPhotos().indexOf(currentPhoto);
+		if(index == 0) {
+			index = UserState.getCurrentAlbum().getPhotos().size() - 1;
+		}
+		else {
+			index--;
+		}
+		
+		currentPhoto = UserState.getCurrentAlbum().getPhotos().get(index);
+		
+		setPhoto();
+	}
+	
+	public void rightPhoto() {
+		int index = UserState.getCurrentAlbum().getPhotos().indexOf(currentPhoto);
+		if(index == UserState.getCurrentAlbum().getPhotos().size() - 1) {
+			index = 0;
+		}
+		else {
+			index++;
+		}
+		currentPhoto = UserState.getCurrentAlbum().getPhotos().get(index);
+		setPhoto();
+	}
+	
+	private void setPhoto() {
+		photoDisplay.setImage(currentPhoto.getImage().getImage());
+		caption.setText(currentPhoto.getCaption());
+		timestamp.setText(DateFormat.getDateInstance().format(currentPhoto.getTimestamp()));
+		
+		//set list
+		obsTagList.clear();
+		obsTagList.addAll(currentPhoto.getAllTags());
+		tagTable.refresh();
+		
+	}
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		//get user state and set album name
 		currentPhoto = UserState.getCurrentPhoto();
 		
-		photoDisplay.setImage(currentPhoto.getImage().getImage());
-		caption.setText(currentPhoto.getCaption());
-		timestamp.setText(DateFormat.getDateInstance().format(currentPhoto.getTimestamp()));
+		setPhoto();
 		
 		//set table view columns
 		tagCol.setCellValueFactory(new PropertyValueFactory<Tag, String>("tag"));
 		valueCol.setCellValueFactory(new PropertyValueFactory<Tag, String>("value"));
+		obsTagList.addAll(currentPhoto.getAllTags());
 		
-		//set list
-		obsTagList = FXCollections.observableArrayList(currentPhoto.getAllTags());
 		tagTable.setItems(obsTagList);
 	}
 }
