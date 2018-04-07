@@ -68,6 +68,14 @@ public class Main extends Application {
 		newStage.setScene(new Scene(root));
 		newStage.centerOnScreen();
 		newStage.show();
+		
+		//set listener for window closing
+		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			public void handle(WindowEvent we) {
+				UserState.timer.cancel();
+			}
+	      });
+		
 	}
 	
 	public static Stage getStage() {

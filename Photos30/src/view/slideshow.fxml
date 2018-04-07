@@ -20,7 +20,7 @@
           <RowConstraints maxHeight="650.0" minHeight="10.0" prefHeight="628.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <ImageView fx:id="photoDisplay" fitHeight="575.0" fitWidth="576.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="photoDisplay" fitHeight="575.0" fitWidth="784.0" pickOnBounds="true" preserveRatio="true">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>

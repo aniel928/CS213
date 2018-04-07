@@ -6,8 +6,10 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 public class UserState {
+	public static Timer timer = new Timer();
 	private static User currentUser;
 	private static List<User> userList = new ArrayList<>();
 	private static Album currentAlbum;
