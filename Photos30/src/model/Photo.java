@@ -60,7 +60,7 @@ public class Photo implements Serializable {
 	}
 	//create ImageView from image path for photo display
 	public ImageView getImage() {
-		return new ImageView(new Image(getPhotoURL(), 300, 300, true, true));
+		return new ImageView(new Image(getPhotoURL(), 1000, 1000, true, true));
 	}
 	
 	

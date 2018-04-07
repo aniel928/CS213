@@ -206,8 +206,7 @@ public class AlbumController implements Initializable {
 	}
 	
 	public void showSlideShow() throws IOException {
-		hideAll();
-		openPhoto();
+		Main.newStage("/view/slideshow.fxml");
 	}
 	
 	public void openPhoto() throws IOException {
