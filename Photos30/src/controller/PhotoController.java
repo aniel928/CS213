@@ -9,8 +9,10 @@ import application.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -29,6 +31,9 @@ public class PhotoController implements Initializable {
 	@FXML private TableColumn<Tag, String> valueCol;
 	@FXML private Text timestamp;
 	@FXML private Text caption;
+	@FXML private Button leftArrow;
+	@FXML private Button rightArrow;
+	@FXML private Button backButton;
 	
 	public void logout(ActionEvent event) throws IOException {
 		Main.changeScene("/view/login.fxml");
@@ -67,7 +72,7 @@ public class PhotoController implements Initializable {
 	private void setPhoto() {
 		photoDisplay.setImage(currentPhoto.getImage().getImage());
 		caption.setText(currentPhoto.getCaption());
-		timestamp.setText(DateFormat.getDateInstance().format(currentPhoto.getTimestamp()));
+		timestamp.setText(DateFormat.getDateTimeInstance().format(currentPhoto.getTimestamp()));
 		
 		//set list
 		obsTagList.clear();
@@ -78,7 +83,20 @@ public class PhotoController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		//get user state and set album name
 		currentPhoto = UserState.getCurrentPhoto();
-		
+		if(UserState.getCurrentAlbum() == null) {
+			leftArrow.setVisible(false);
+			rightArrow.setVisible(false);
+			backButton.setOnAction(new EventHandler<ActionEvent>() {
+	            @Override public void handle(ActionEvent e) {
+	               try {
+	            	   Main.changeScene("/view/searchresults.fxml");
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+	            }
+	        });
+		}
 		setPhoto();
 		
 		//set table view columns

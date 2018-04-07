@@ -6,6 +6,7 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -29,12 +30,12 @@
           <RowConstraints maxHeight="99.0" minHeight="10.0" prefHeight="56.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Text fill="#a6bef8" strokeType="OUTSIDE" strokeWidth="0.0" text="Search Criteria" GridPane.columnSpan="2">
+            <Text fill="#a6bef8" strokeType="OUTSIDE" strokeWidth="0.0" text="Search Criteria" wrappingWidth="344.359375" GridPane.columnSpan="2">
                <GridPane.margin>
-                  <Insets left="20.0" />
+                  <Insets left="35.0" />
                </GridPane.margin>
                <font>
-                  <Font size="36.0" />
+                  <Font name="Verdana Bold" size="36.0" />
                </font>
             </Text>
             <Button mnemonicParsing="false" onAction="#logout" style="-fx-background-color: afbef8;" text="Log Out" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="RIGHT">
@@ -44,6 +45,9 @@
                <font>
                   <Font size="18.0" />
                </font>
+               <effect>
+                  <InnerShadow />
+               </effect>
             </Button>
             <Button mnemonicParsing="false" onAction="#home" style="-fx-background-color: #afbef8;" text="Home" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
                <opaqueInsets>
@@ -55,11 +59,17 @@
                <font>
                   <Font size="18.0" />
                </font>
+               <effect>
+                  <InnerShadow />
+               </effect>
             </Button>
             <Button mnemonicParsing="false" onAction="#search" text="Search" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                <font>
                   <Font size="18.0" />
                </font>
+               <effect>
+                  <InnerShadow />
+               </effect>
             </Button>
             <VBox prefHeight="455.0" prefWidth="493.0" style="-fx-background-color: #cccccc;" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
@@ -86,6 +96,9 @@
                            <HBox.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </HBox.margin>
+                           <effect>
+                              <InnerShadow />
+                           </effect>
                         </DatePicker>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" to ">
                            <HBox.margin>
@@ -99,6 +112,9 @@
                            <HBox.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </HBox.margin>
+                           <effect>
+                              <InnerShadow />
+                           </effect>
                         </DatePicker>
                      </children>
                   </HBox>
@@ -111,6 +127,9 @@
                            <font>
                               <Font size="18.0" />
                            </font>
+                           <effect>
+                              <InnerShadow />
+                           </effect>
                         </TextField>
                         <TextField fx:id="value1" alignment="CENTER" prefHeight="27.0" prefWidth="203.0" promptText="Value">
                            <HBox.margin>
@@ -119,6 +138,9 @@
                            <font>
                               <Font size="18.0" />
                            </font>
+                           <effect>
+                              <InnerShadow />
+                           </effect>
                         </TextField>
                      </children>
                   </HBox>
@@ -141,6 +163,9 @@
                            </font>
                         </TextField>
                      </children>
+                     <effect>
+                        <InnerShadow />
+                     </effect>
                   </HBox>
                   <HBox prefHeight="58.0" prefWidth="499.0">
                      <children>
@@ -151,6 +176,9 @@
                            <font>
                               <Font size="18.0" />
                            </font>
+                           <effect>
+                              <InnerShadow />
+                           </effect>
                         </TextField>
                         <TextField fx:id="value3" alignment="CENTER" prefHeight="27.0" prefWidth="203.0" promptText="Value">
                            <HBox.margin>
@@ -159,6 +187,9 @@
                            <font>
                               <Font size="18.0" />
                            </font>
+                           <effect>
+                              <InnerShadow />
+                           </effect>
                         </TextField>
                      </children>
                   </HBox>
@@ -171,6 +202,9 @@
                            <font>
                               <Font size="18.0" />
                            </font>
+                           <effect>
+                              <InnerShadow />
+                           </effect>
                         </TextField>
                         <TextField fx:id="value4" alignment="CENTER" prefHeight="27.0" prefWidth="203.0" promptText="Value">
                            <HBox.margin>
@@ -179,6 +213,9 @@
                            <font>
                               <Font size="18.0" />
                            </font>
+                           <effect>
+                              <InnerShadow />
+                           </effect>
                         </TextField>
                      </children>
                   </HBox>
@@ -191,6 +228,9 @@
                            <font>
                               <Font size="18.0" />
                            </font>
+                           <effect>
+                              <InnerShadow />
+                           </effect>
                         </TextField>
                         <TextField fx:id="value5" alignment="CENTER" prefHeight="27.0" prefWidth="203.0" promptText="Value">
                            <HBox.margin>
@@ -199,6 +239,9 @@
                            <font>
                               <Font size="18.0" />
                            </font>
+                           <effect>
+                              <InnerShadow />
+                           </effect>
                         </TextField>
                      </children>
                   </HBox>
@@ -212,24 +255,36 @@
                               <Font name="Verdana Bold" size="13.0" />
                            </font>
                         </Text>
-                        <RadioButton fx:id="all" mnemonicParsing="false" text="All Tags">
+                        <RadioButton fx:id="all" mnemonicParsing="false" selected="true" text="All Tags">
                            <toggleGroup>
                               <ToggleGroup fx:id="match" />
                            </toggleGroup>
                            <HBox.margin>
                               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                            </HBox.margin>
+                           <effect>
+                              <InnerShadow />
+                           </effect>
                         </RadioButton>
                         <RadioButton fx:id="any" mnemonicParsing="false" prefHeight="18.0" prefWidth="152.0" text="Any Tags" toggleGroup="$match">
                            <HBox.margin>
                               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                            </HBox.margin>
+                           <effect>
+                              <InnerShadow />
+                           </effect>
                         </RadioButton>
                      </children>
                   </HBox>
                </children>
+               <effect>
+                  <InnerShadow />
+               </effect>
             </VBox>
          </children>
+         <effect>
+            <InnerShadow />
+         </effect>
       </GridPane>
    </children>
 </AnchorPane>

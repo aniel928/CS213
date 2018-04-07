@@ -1,6 +1,7 @@
 package application;
 	
 import java.io.IOException;
+import java.util.Timer;
 
 import controller.*;
 import javafx.application.Application;
@@ -39,7 +40,9 @@ public class Main extends Application {
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				public void handle(WindowEvent we) {
 					try {
+						UserState.timer.cancel();
 						UserState.saveFile();
+						
 		        	} catch (IOException e) {
 						// TODO Auto-generated catch block
 		        		System.err.println(e.getMessage());
@@ -65,16 +68,19 @@ public class Main extends Application {
 	public static void newStage(String sceneName) throws IOException{
 		Parent root = FXMLLoader.load(Main.class.getResource(sceneName));
 		Stage newStage = new Stage();
+		//set listener for window closing
+		if(sceneName.equals("/view/slideshow.fxml")) {
+			UserState.timer = new Timer();
+			newStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+				public void handle(WindowEvent we) {
+					UserState.timer.cancel();
+					UserState.timer = new Timer();
+				}
+			});
+		}
 		newStage.setScene(new Scene(root));
 		newStage.centerOnScreen();
 		newStage.show();
-		
-		//set listener for window closing
-		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-			public void handle(WindowEvent we) {
-				UserState.timer.cancel();
-			}
-	      });
 		
 	}
 	

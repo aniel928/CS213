@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Timer;
 import java.util.TimerTask;
 
 import javafx.event.ActionEvent;
@@ -18,9 +19,10 @@ public class SlideShowController implements Initializable {
 	@FXML private ImageView photoDisplay;
 	
 	public void close(ActionEvent event) throws IOException{
-		Stage stage  = (Stage) ((Node) event.getSource()).getScene().getWindow();
-	    stage.close();
 	    UserState.timer.cancel();
+	    UserState.timer = new Timer();
+	    Stage stage  = (Stage) ((Node) event.getSource()).getScene().getWindow();
+	    stage.close();
 	}
 	
 	

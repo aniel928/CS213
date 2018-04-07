@@ -33,9 +33,9 @@
             <RowConstraints maxHeight="75.0" minHeight="10.0" prefHeight="44.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Text fx:id="welcomeMessage" fill="#a6bef8" strokeType="OUTSIDE" strokeWidth="0.0" text=" Welcome, username!" wrappingWidth="401.388671875" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+            <Text fx:id="welcomeMessage" fill="#a6bef8" strokeType="OUTSIDE" strokeWidth="0.0" text=" Welcome, username!" wrappingWidth="666.388671875" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="TOP">
                <font>
-                  <Font name="Verdana" size="36.0" />
+                  <Font name="Verdana Bold" size="36.0" />
                </font>
                <GridPane.margin>
                   <Insets top="10.0" />
@@ -45,13 +45,16 @@
                <font>
                   <Font size="18.0" />
                </font>
+               <effect>
+                  <InnerShadow />
+               </effect>
             </Button>
             <TableView fx:id="albumTableView" editable="true" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.halignment="LEFT" GridPane.rowIndex="1">
                <columns>
-                  <TableColumn fx:id="albumNameCol" prefWidth="361.0" style="fx-alignment: LEFT;" text="Album Name" />
-                  <TableColumn fx:id="numPhotosCol" prefWidth="84.0" style="fx-alignment: LEFT;" text="# of Photos" /> 
-                  <TableColumn fx:id="firstDateCol" prefWidth="139.0" style="fx-alignment: LEFT;" text="Earliest Date" />
-                  <TableColumn fx:id="lastDateCol" prefWidth="158.0" style="fx-alignment: LEFT;" text="Latest Date" />
+                  <TableColumn fx:id="albumNameCol" prefWidth="273.0" style="fx-alignment: LEFT;" text="Album Name" />
+                  <TableColumn fx:id="numPhotosCol" prefWidth="83.0" style="fx-alignment: LEFT;" text="# of Photos" /> 
+                  <TableColumn fx:id="firstDateCol" prefWidth="200.0" style="fx-alignment: LEFT;" text="Earliest Date" />
+                  <TableColumn fx:id="lastDateCol" prefWidth="186.0" style="fx-alignment: LEFT;" text="Latest Date" />
                </columns>
                <effect>
                   <InnerShadow />
@@ -61,22 +64,40 @@
                <font>
                   <Font size="18.0" />
                </font>
+               <effect>
+                  <InnerShadow />
+               </effect>
             </Button>
             <Button alignment="CENTER" contentDisplay="RIGHT" defaultButton="true" mnemonicParsing="false" onAction="#showRenameFields" opacity="0.94" style="-fx-background-color: #7189FF;" text="Rename Album" textAlignment="CENTER" textFill="#f8f4f4" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                <font>
                   <Font size="18.0" />
                </font>
+               <effect>
+                  <InnerShadow />
+               </effect>
             </Button>
-            <Button mnemonicParsing="false" onAction="#logout" style="-fx-background-color: #a6bef8;" text="LogOut" GridPane.columnIndex="5" GridPane.halignment="RIGHT" />
+            <Button mnemonicParsing="false" onAction="#logout" style="-fx-background-color: #a6bef8;" text="Log Out" GridPane.columnIndex="5" GridPane.halignment="RIGHT">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <effect>
+                  <InnerShadow />
+               </effect></Button>
             <Button mnemonicParsing="false" onAction="#openAlbum" style="-fx-background-color: #e5f8a2;" text="Open Album" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                <font>
                   <Font size="18.0" />
                </font>
+               <effect>
+                  <InnerShadow />
+               </effect>
             </Button>
             <Button mnemonicParsing="false" onAction="#search" style="-fx-background-color: #000;" text="Search" textFill="#fffefe" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                <font>
                   <Font size="18.0" />
                </font>
+               <effect>
+                  <InnerShadow />
+               </effect>
             </Button>
             <TextField fx:id="albumField" onAction="#createAlbum" prefHeight="27.0" prefWidth="397.0" visible="false" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="4">
                <font>
@@ -109,6 +130,9 @@
                </font>
             </TextField>
          </children>
+         <effect>
+            <InnerShadow />
+         </effect>
       </GridPane>
    </children>
 </AnchorPane>

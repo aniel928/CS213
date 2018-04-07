@@ -45,7 +45,10 @@ public class Album implements Serializable {
 				min = photo.getTimestamp();
 			}
 		}
-		return DateFormat.getDateInstance().format(min);
+		if(min == 0) {
+			return null;
+		}
+		return DateFormat.getDateTimeInstance().format(min);
 	}
 	
 	public String getLastDate() {
@@ -55,7 +58,10 @@ public class Album implements Serializable {
 				max = photo.getTimestamp();
 			}
 		}
-		return DateFormat.getDateInstance().format(max);
+		if(max == 0) {
+			return null;
+		}
+		return DateFormat.getDateTimeInstance().format(max);
 	}
 	
 	public List<Photo> getPhotos(){

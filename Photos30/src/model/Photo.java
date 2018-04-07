@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 public class Photo implements Serializable {
 	//auto-generated serialization ID:
@@ -56,11 +58,19 @@ public class Photo implements Serializable {
 	
 	//create ImageView from image path for TableView in album
 	public ImageView getThumbnail() {
-		return new ImageView(new Image(getPhotoURL(), 60, 60, true, true));
+		return new ImageView(new Image(getPhotoURL(), 150, 150, true, true));
 	}
 	//create ImageView from image path for photo display
 	public ImageView getImage() {
 		return new ImageView(new Image(getPhotoURL()));
+	}
+	
+	public TextFlow getCaptionFlow() {
+		TextFlow tf = new TextFlow();
+		Text t = new Text(caption);
+		tf.getChildren().add(t);
+		tf.setPrefHeight(10);
+		return tf;
 	}
 	
 /*

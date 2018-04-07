@@ -22,6 +22,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import model.Album;
 import model.Photo;
@@ -31,7 +32,7 @@ public class AlbumController implements Initializable {
 	private Album currentAlbum;
 	private ObservableList<Photo> obsPhotoList;
 	@FXML private TableView<Photo> table;
-	@FXML private TableColumn<Photo, String> captionCol;
+	@FXML private TableColumn<Photo, TextFlow> captionCol;
 	@FXML private TableColumn<Photo, ImageView> photoCol;
 	@FXML private Text albumTitle;
 	@FXML private Text captionLabel;
@@ -233,7 +234,7 @@ public class AlbumController implements Initializable {
 		
 		//set table view columns
 		photoCol.setCellValueFactory(new PropertyValueFactory<Photo, ImageView>("thumbnail"));
-		captionCol.setCellValueFactory(new PropertyValueFactory<Photo, String>("caption"));
+		captionCol.setCellValueFactory(new PropertyValueFactory<Photo, TextFlow>("captionFlow"));
 		
 		//set list
 		obsPhotoList = FXCollections.observableArrayList(currentAlbum.getPhotos());

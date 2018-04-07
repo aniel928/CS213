@@ -126,11 +126,6 @@ public class AdminController implements Initializable{
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		userList = UserState.getAllUsers();
 		// TODO Auto-generated method stub
-		if(userList.size() == 0) {
-			userList.add(new User("admin"));
-			userList.add(new User("stock"));
-		}
-		System.out.println(userList.size());
 		for(User user : userList) {
 			obsList.add(user.getUserName());
 		}
