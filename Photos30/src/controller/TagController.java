@@ -80,6 +80,7 @@ public class TagController implements Initializable {
 			alert.showAndWait();
 		}	
 		else {
+			
 			Tag tag = table.getSelectionModel().getSelectedItem();
 			currentPhoto.getAllTags().remove(tag);
 			obsTagList.remove(tag);

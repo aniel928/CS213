@@ -165,10 +165,7 @@ public class UserHomeController implements Initializable{
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		currentUser = UserState.getCurrentUser();
-		if(UserState.getCurrentAlbum() != null) {
-			albumTableView.getSelectionModel().select(UserState.getCurrentAlbum());
-			UserState.setCurrentAlbum(null);
-		}
+		
 		if(currentUser.getUserName().equals("stock")) {
 			welcomeMessage.setText("Stock Photo Albums");
 		}
@@ -183,7 +180,12 @@ public class UserHomeController implements Initializable{
 		
 		obsAlbumList = FXCollections.observableArrayList(currentUser.getAlbums());
 		albumTableView.setItems(obsAlbumList);
-		albumTableView.getSelectionModel().select(0);
+		if(UserState.getCurrentAlbum() != null) {
+			albumTableView.getSelectionModel().select(UserState.getCurrentAlbum());
+			UserState.setCurrentAlbum(null);
+		} else {
+			albumTableView.getSelectionModel().select(0);
+		}
 	}
 	
 	
