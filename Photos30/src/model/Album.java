@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class Album implements Serializable {
 	//auto-generated serialization ID:
@@ -21,9 +22,9 @@ public class Album implements Serializable {
 		setAlbumName(name);
 	}
 	
-	public Album(String name, List<Photo> photos) {
+	public Album(String name, Set<Photo> photos) {
 		setAlbumName(name);
-		this.photos = photos;
+		this.photos.addAll(photos);
 	}
 	
 /*

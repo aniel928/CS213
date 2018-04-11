@@ -4,9 +4,7 @@ package controller;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -24,33 +22,72 @@ import model.Photo;
 import model.Tag;
 import model.UserState;
 
+/**
+ * Logic for search criteria screen. Take information filled out in criteria and perform search.
+ * 
+ * @author alh220
+ * @author jmuccino
+ *
+ */
 public class SearchController implements Initializable {
+	/**
+	 * Radio button to determine that all tags entered should match.  Logical AND>
+	 */
 	@FXML RadioButton all;
+	/**
+	 * Radio button to determine that any tags entered could match.  Logical OR.
+	 */
 	@FXML RadioButton any;
+	/**
+	 * Start date of search results (optional field).
+	 */
 	@FXML DatePicker startDate;
+	/**
+	 * End date of search results (optional field).
+	 */
 	@FXML DatePicker endDate;
+	/**
+	 * 5 tag fields that pair with a value to search on (all are optional).
+	 */
 	@FXML TextField tag1, tag2, tag3, tag4, tag5;
+	/**
+	 * 5 value fields that pair with a tag to search on (all are optional).
+	 */
 	@FXML TextField value1, value2, value3, value4, value5;
 	
+	/**
+	 * Return to login screen.
+	 * 
+	 * @param event passed in via button click.
+	 * @throws IOException
+	 */
 	public void logout(ActionEvent event) throws IOException {
 		Main.changeScene("/view/login.fxml");
 	}
 	
+	/**
+	 * Return to user home screen.
+	 * 
+	 * @param event passed in via button click.
+	 * @throws IOException
+	 */
 	public void home(ActionEvent event) throws IOException{
 		Main.changeScene("/view/userhome.fxml");
 	}
 	
+	/**
+	 * Called upon button click.  Determines which fields are filled in and which method to call depending
+	 * on which fields are filled in.
+	 * @throws IOException
+	 */
 	@FXML
 	public void search() throws IOException {
 		int numOfTags = getNumberOfTags();
-		System.out.println("Number of tags: " + numOfTags);
-		//if there are tags filled out and "all" or "any" are not selected, throw error.
-		if(numOfTags != 0 && !(all.isSelected() || any.isSelected())) {
-			Alert alert = new Alert(AlertType.ERROR, "Please select matching type.");
-			alert.showAndWait();
-			return;
-		}
+		
+		//check to see how many tags are filled in
 		int status = checkTags(numOfTags);
+		
+		//iff bad stuff happened throw an error and return. 
 		if(status != 0) {
 			Alert alert = null;
 			if(status == -1) {
@@ -63,9 +100,12 @@ public class SearchController implements Initializable {
 			alert.showAndWait();
 			return;
 		}
-		LocalDateTime start = null, end = null;
-		String[][] tags = new String[numOfTags][2];
+		
+		//set up array of all tags
+		
+		String[][] tags = null;
 		if(numOfTags > 0) {
+			tags = new String[numOfTags][2];
 			System.out.println("one tag");
 			tags[0][0] = tag1.getText();
 			tags[0][1] = value1.getText();
@@ -88,6 +128,8 @@ public class SearchController implements Initializable {
 			tags[4][1] = value5.getText();
 		}
 		
+		//set dates to search on (move back to midnight for easy searching)
+		LocalDateTime start = null, end = null;
 		if(startDate.getValue() != null) {
 			start = startDate.getValue().atStartOfDay();
 		}
@@ -95,75 +137,97 @@ public class SearchController implements Initializable {
 			end = endDate.getValue().atStartOfDay();
 		}
 		
-		
+		//if only one is filled out throw error.
 		if((start == null && end != null) || (start != null && end == null)) {
 			Alert alert = new Alert(AlertType.ERROR, "Please either fill out both start and end date, or neither.");
 			alert.showAndWait();
 			return;
 		}
 		
-		List<Photo> results;
+		//create a set (to eliminate potential duplicates across albums)
+		Set<Photo> results;
 		
+		//add anything that matches to set.
 		if(any.isSelected() && numOfTags > 0) {
 			results = searchAny(start, end, tags);
 		}
+		//add all photos to set.
 		else if(numOfTags == 0 && start == null && end == null) {
 			System.out.println("Return all photos!!");
 			results = allPhotos();
 		}
+		//add all photos that match dates
 		else if(numOfTags == 0) {
 			System.out.println("Search Dates only");
 			results = searchDatesOnly(start, end);
 		}
-		
+		//add all photos that match ALL tags
 		else if(start == null && end == null) {
 			System.out.println("Search Tags Only");
 			results = searchTagsOnly(tags);
 		}
-		
+		//add all photos that match ALL tags and ALL dates.
 		else {
 			System.out.println("SEARCH IT ALL!!!!");
 			results = searchBoth(start, end, tags);
 		}
 		
-		
+		//If there are results, display them
 		if(results != null && results.size() != 0) {
 			
 			UserState.setSearchResults(results);
 			Main.changeScene("/view/searchresults.fxml");
 			
-		}else {
+		}
+		//Otherwise throw error
+		else {
 			Alert alert = new Alert(AlertType.INFORMATION, "No photos match this criteria.  Try expanding your search paraemters.");
 			alert.showAndWait();
 		}
 	}
 	
-	private List<Photo> searchAny(LocalDateTime start, LocalDateTime end, String[][] tags) {
-		List<Photo> photos = new ArrayList<>();
-		Set<Photo> photoSet = new HashSet<>();
+	/**
+	 * if photo matches dates and matches ANY tag, add to set.
+	 * 
+	 * @param start beginning date (set back to midnight)
+	 * @param end ending date (set back to midnight)
+	 * @param tags array of all tag values (up to 5 total)
+	 * @return set of all photos that match these results
+	 */
+	private Set<Photo> searchAny(LocalDateTime start, LocalDateTime end, String[][] tags) {
+		Set<Photo> photos = new HashSet<>();
 		for(Album album : UserState.getCurrentUser().getAlbums()) {
+			//Must match the date range.  If it doesn't skip this photo
 			for(Photo photo : album.getPhotos()) {
 				if(start != null & end != null) {
 					if(photo.getTime().compareTo(start) < 0 || photo.getTime().compareTo(end) > 0) {
 						continue;
 					}
 				}
+				//As long as it's in the date range, it can match any of the tags (at least one)  Once it matches, add and exit.
 				for(Tag tag : photo.getAllTags()) {
 					for(int i=0; i< tags.length; i++) {
 						if(tag.getTag().equals(tags[i][0]) && tag.getValue().equals(tags[i][0])) {
-							photoSet.add(photo);
+							photos.add(photo);
 							continue;
 						}
 					}
 				}
 			}
 		}
-		photos.addAll(photoSet);
+		
 		return photos;
 	}
 
-	private List<Photo> searchBoth(LocalDateTime start, LocalDateTime end, String[][] tags) {
-		List<Photo> photos = new ArrayList<>();
+	/**
+	 * If photo matches dates and ALL tags, add to set.
+	 * @param start beginning date (set back to midnight)
+	 * @param end ending date (set back to midnight)
+	 * @param tags array of all tag values (up to 5 total)
+	 * @return set of all photos that match these results
+	 */
+	private Set<Photo> searchBoth(LocalDateTime start, LocalDateTime end, String[][] tags) {
+		Set<Photo> photos = new HashSet<>();
 		
 		for(Album album : UserState.getCurrentUser().getAlbums()) {
 			for(Photo photo : album.getPhotos()) {
@@ -185,8 +249,14 @@ public class SearchController implements Initializable {
 		return photos;
 	}
 
-	private List<Photo> searchTagsOnly(String[][] tags) {
-		List<Photo> photos = new ArrayList<>();
+	/**
+	 * Search only tags, not dates.  Must match ALL tags.
+	 * 
+	 * @param tags array of all tag values (up to 5 total)
+	 * @return set of all photos that match these results
+	 */
+	private Set<Photo> searchTagsOnly(String[][] tags) {
+		Set<Photo> photos = new HashSet<>();
 		
 		for(Album album : UserState.getCurrentUser().getAlbums()) {
 			for(Photo photo : album.getPhotos()) {
@@ -206,8 +276,15 @@ public class SearchController implements Initializable {
 		return photos;
 	}
 
-	private List<Photo> searchDatesOnly(LocalDateTime start, LocalDateTime end) {
-		List<Photo> photos = new ArrayList<>();
+	/**
+	 * Search only based on dates, not based on tags.
+	 * 
+	 * @param start beginning date (set back to midnight)
+	 * @param end ending date (set back to midnight)
+	 * @return set of all photos that match these results
+	 */
+	private Set<Photo> searchDatesOnly(LocalDateTime start, LocalDateTime end) {
+		Set<Photo> photos = new HashSet<>();
 		for(Album album : UserState.getCurrentUser().getAlbums()) {
 			for(Photo photo : album.getPhotos()) {
 				System.out.println(start.toString());
@@ -221,14 +298,23 @@ public class SearchController implements Initializable {
 		return photos;
 	}
 
-	private List<Photo> allPhotos() {
-		List<Photo> photos = new ArrayList<>();
+	/**
+	 * Returns all photos in all albums belonging to the user.
+	 * @return set of all photos that match these results.
+	 */
+	private Set<Photo> allPhotos() {
+		Set<Photo> photos = new HashSet<>();
 		for(Album album : UserState.getCurrentUser().getAlbums()) {
 			photos.addAll(album.getPhotos());
 		}
 		return photos;
 	}
 
+	/** 
+	 * Helper method to figure out how many tag pairs are filled out.   
+	 * 
+	 * @return number of tag pairs filled out (a number between 0 and 5). 
+	 */
 	private int getNumberOfTags() {
 		if(tag1.getText().isEmpty()) {
 			return 0;
@@ -245,6 +331,14 @@ public class SearchController implements Initializable {
 		}
 	}
 	
+	/**
+	 * Check to make sure that all fields are passed in correctly
+	 * 
+	 * @param numOfTags how many tags are filled out properly (starting at top, one row at a time).
+	 * @return 0 on success 
+	 * 		  -1 if tag/value pairs are not both filled out, 
+	 * 		  -2 if rows are not filled in from top to bottom (e.g. row 4 has a tag/value pair, but row 1, 2, or 3 doesn't) 
+	 */
 	private int checkTags(int numOfTags) {
 		if(numOfTags == 0 && !(tag1.getText().isEmpty() && tag2.getText().isEmpty() && tag3.getText().isEmpty() && tag4.getText().isEmpty() && tag5.getText().isEmpty())) {
 			return -2;
@@ -282,6 +376,9 @@ public class SearchController implements Initializable {
 		return 0;
 	}
 	
+	/**
+	 * Method called at first load of screen.  Nothing in here yet.  Keeping it in for future use.
+	 */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		//add Tags later then replace text fields with combo box.

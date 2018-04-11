@@ -24,33 +24,84 @@ import model.Album;
 import model.User;
 import model.UserState;
 
+/**
+ * Logic for user home screen.  Allows adding/editing/opening of albums and navigates to search functionality.
+ * 
+ * @author alh220
+ * @author jmuccino
+ *
+ */
 public class UserHomeController implements Initializable{
 	
+	/**
+	 * List of all albums belonging to a user.
+	 */
 	private ObservableList<Album> obsAlbumList;
+	/**
+	 * Current user whose albums are being viewed.
+	 */
 	private User currentUser;
+	/**
+	 * Welcomes the current User by name.
+	 */
 	@FXML private Text welcomeMessage;
+	/**
+	 * label for adding/editing an album
+	 */
 	@FXML private Text albumLabel;
+	/**
+	 * Error message to indicate issue in adding/renaming album.
+	 */
 	@FXML private Text albumExistsError;
+	/**
+	 * Field to add a new album
+	 */
 	@FXML private TextField albumField;
+	/**
+	 * Button that executes adding the new album.
+	 */
 	@FXML private Button albumButton;
+	/** 
+	 * Field to rename an album.
+	 */
 	@FXML private TextField renameField;
+	/**
+	 * Button that executes renaming the album.
+	 */
 	@FXML private Button renameButton;
+	/**
+	 * Table to hold all albums for this user.
+	 */
 	@FXML private TableView<Album> albumTableView;
+	/**
+	 * Column to hold album names.
+	 */
 	@FXML private TableColumn<Album, String> albumNameCol;
+	/**
+	 * Column to hold photo count per album.
+	 */
 	@FXML private TableColumn<Album, Integer> numPhotosCol;
+	/** 
+	 * Column to hold low end of date range.
+	 */
 	@FXML private TableColumn<Album, String> firstDateCol;
+	/** 
+	 * Column to hold high end of date range.
+	 */
 	@FXML private TableColumn<Album, String> lastDateCol;
 	
 	/**
-	 * Change scene to either admin screen or user home screen.
-	 * @param event
+	 * Return back to login screen.
+	 * @param event passed in via button click
 	 * @throws IOException
 	 */
-
 	public void logout(ActionEvent event) throws IOException {
 		Main.changeScene("/view/login.fxml");
 	}
 	
+	/**
+	 * Checks to make sure album doesn't already exists then adds new album.
+	 */
 	public void createAlbum() {
 		albumExistsError.setVisible(false);
 		String albumName = albumField.getText();
@@ -71,7 +122,9 @@ public class UserHomeController implements Initializable{
 
 		albumTableView.getSelectionModel().select(album);
 	}
-	
+	/**
+	 * Checks to make sure name doesn't already exist for a different album, then changes name of album.
+	 */
 	public void renameAlbum() {
 		albumExistsError.setVisible(false);
 		String oldName = albumTableView.getSelectionModel().getSelectedItem().getAlbumName();
@@ -98,6 +151,9 @@ public class UserHomeController implements Initializable{
 		albumTableView.refresh();
 	}
 	
+	/** 
+	 * Removes album from user list of albums.
+	 */
 	public void deleteAlbum() {
 		if(albumTableView.getSelectionModel().getSelectedIndex() == -1) {
 			Alert alert = new Alert(AlertType.ERROR, "Please select an item.");
@@ -115,6 +171,10 @@ public class UserHomeController implements Initializable{
 		}
 	}
 	
+	/** 
+	 * If album is selected, opens new screen to show album details
+	 * @throws IOException
+	 */
 	public void openAlbum() throws IOException {
 		if(albumTableView.getSelectionModel().getSelectedIndex() == -1) {
 			Alert alert = new Alert(AlertType.ERROR, "Please select an item.");
@@ -126,12 +186,19 @@ public class UserHomeController implements Initializable{
 		
 	}
 	
+
+	/** 
+	 * Opens search criteria screen.
+	 * 
+	 * @throws IOException
+	 */
 	public void search() throws IOException {
-//		Alert alert = new Alert(AlertType.ERROR, "Implement search logic.");
-//		alert.showAndWait();
 		Main.changeScene("/view/search.fxml");
 	}
 	
+	/** 
+	 * Shows fields/buttons to add a new album
+	 */
 	@FXML
 	public void showAddFields(){
 		boolean curr = albumLabel.isVisible();
@@ -144,7 +211,9 @@ public class UserHomeController implements Initializable{
 		renameField.setVisible(false);
 		
 	}
-	
+	/**
+	 * Shows fields/buttons to rename an album.
+	 */
 	@FXML
 	public void showRenameFields() {
 		if(albumTableView.getSelectionModel().getSelectedIndex() != -1) {
@@ -162,6 +231,9 @@ public class UserHomeController implements Initializable{
 		}
 	}
 	
+	/**
+	 * Initial code that runs on screen start.  Finds current user, gets albums and adds them to table.
+	 */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		currentUser = UserState.getCurrentUser();

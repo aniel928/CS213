@@ -21,6 +21,13 @@ import javafx.scene.text.Text;
 import model.User;
 import model.UserState;
 
+/** 
+ * Logic for admin screen.  Add and delete users
+ * 
+ * @author alh220
+ * @author jmuccino
+ *
+ */
 public class AdminController implements Initializable{
 	private static ObservableList<String> obsList = FXCollections.observableArrayList();;
 	@FXML private ListView<String> userListView;
@@ -34,16 +41,20 @@ public class AdminController implements Initializable{
 	private List<User> userList;
 	
 	/**
-	 * Change scene to either admin screen or user home screen.
-	 * @param event
+	 * Switch bag to login Screen
+	 * @param event passed in on user click of button.
 	 * @throws IOException
 	 */
-
 	public void logout(ActionEvent event) throws IOException {
 		obsList.clear();
 		Main.changeScene("/view/login.fxml");
 	}
 	
+	/**
+	 * Method called when new user is saved into list.  Makes sure there are no current users with same username. 
+	 * @param uname currently logged in username
+	 * @return integer representing index in user list
+	 */
 	public int findUserIndex(String uname) {
 		int index = 0;
 		while(index < obsList.size()) {
@@ -61,6 +72,9 @@ public class AdminController implements Initializable{
 		return index;
 	}
 	
+	/*
+	 * creates new user based on username passed in, calls findUserIndex function to determine duplicate usernames
+	 */
 	@FXML
 	public void createUser() {
 		String uName = newUsername.getText().toLowerCase().replaceAll("\\s","");
@@ -81,6 +95,9 @@ public class AdminController implements Initializable{
 		}
 	}
 	
+	/**
+	 * Deletes user / Removes user from user lists. 
+	 */
 	public void deleteUser() {
 		System.out.println("here");
 		int index = userListView.getSelectionModel().getSelectedIndex();
@@ -113,6 +130,9 @@ public class AdminController implements Initializable{
 		}
 	}
 	
+	/**
+	 * Displays hidden fields to add new users. 
+	 */
 	@FXML
 	public void showAdminFields(){
 		newUsername.setVisible(true);
@@ -121,7 +141,10 @@ public class AdminController implements Initializable{
 		newUserSaveButton.setVisible(true);
 	}
 	
-	
+	/**
+	 * Add all users from userlist into listview.  Called upon load of screen.
+	 * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
+	 */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		userList = UserState.getAllUsers();

@@ -26,9 +26,8 @@ public class Photo implements Serializable {
 /*
  * CONSTRUCTOR(S)
  */
-	public Photo(File file, String caption) {
+	public Photo(File file) {
 		setPhotoURL(file.toURI().toString());
-		setCaption(caption);
 		setTimestamp(file.lastModified());
 	}
 	

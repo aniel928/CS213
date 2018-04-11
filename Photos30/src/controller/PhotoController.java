@@ -22,27 +22,82 @@ import model.Photo;
 import model.Tag;
 import model.UserState;
 
+/**
+ * Logic for photo screen.  View photo/caption/tags and move to other photos via a manual slideshow.
+ * 
+ * @author alh220
+ * @author jmuccino
+ *
+ */
 public class PhotoController implements Initializable {
+	/**
+	 * Current photo being viewed.
+	 */
 	private Photo currentPhoto;
+	/**
+	 * List for TableView of tags.
+	 */
 	private ObservableList<Tag> obsTagList = FXCollections.observableArrayList();
+	/**
+	 * ImageView to display photo
+	 */
 	@FXML private ImageView photoDisplay;
+	/**
+	 * Table to store and view tags for a photo
+	 */
 	@FXML private TableView<Tag> tagTable;
+	/**
+	 * Tag column for table of tags
+	 */
 	@FXML private TableColumn<Tag, String> tagCol;
+	/**
+	 * Value column for table of tags.
+	 */
 	@FXML private TableColumn<Tag, String> valueCol;
+	/**
+	 * Time of photo.
+	 */
 	@FXML private Text timestamp;
+	/** 
+	 * Caption of photo.
+	 */
 	@FXML private Text caption;
+	/**
+	 * Button to navigate to previous photo.
+	 */
 	@FXML private Button leftArrow;
+	/**
+	 * Button to navigate to next photo.
+	 */
 	@FXML private Button rightArrow;
+	/**
+	 * Photo to navigate back to album.
+	 */
 	@FXML private Button backButton;
 	
+	/**
+	 * Return to login screen
+	 * 
+	 * @param event passed in via button click.
+	 * @throws IOException
+	 */
 	public void logout(ActionEvent event) throws IOException {
 		Main.changeScene("/view/login.fxml");
 	}
 	
+	/**
+	 * Return to album view screen.
+	 * 
+	 * @param event passed in via button click.
+	 * @throws IOException
+	 */
 	public void album(ActionEvent event) throws IOException{
 		Main.changeScene("/view/albumdetails.fxml");
 	}
 	
+	/**
+	 * Find index of current photo within the album and find the photo with an index lower than it. If at index 0, take the photo at the last index.
+	 */
 	public void leftPhoto() {
 		int index = UserState.getCurrentAlbum().getPhotos().indexOf(currentPhoto);
 		if(index == 0) {
@@ -56,7 +111,9 @@ public class PhotoController implements Initializable {
 		
 		setPhoto();
 	}
-	
+	/**
+	 * Find index of current photo within the album and find the photo with an index higher than it.  If at highest index, take the photo at index 0.
+	 */
 	public void rightPhoto() {
 		int index = UserState.getCurrentAlbum().getPhotos().indexOf(currentPhoto);
 		if(index == UserState.getCurrentAlbum().getPhotos().size() - 1) {
@@ -69,6 +126,9 @@ public class PhotoController implements Initializable {
 		setPhoto();
 	}
 	
+	/**
+	 * Set the image.  Either on first load or after clicking the slideshow buttons that find the next/previous photo.
+	 */
 	private void setPhoto() {
 		photoDisplay.setImage(currentPhoto.getImage().getImage());
 		caption.setText(currentPhoto.getCaption());
@@ -79,6 +139,10 @@ public class PhotoController implements Initializable {
 		obsTagList.addAll(currentPhoto.getAllTags());
 	}
 	
+	/**
+	 * Initial method called on first load of screen.  Finds current photo and determines where call is coming from.  
+	 * If coming from search results (as opposed to album), sets arrows to invisible and rewrites default back button logic.
+	 */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		//get user state and set album name

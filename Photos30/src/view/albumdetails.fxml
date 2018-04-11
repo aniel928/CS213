@@ -83,7 +83,7 @@
                   <Font size="18.0" />
                </font>
             </TextField>
-            <Button fx:id="saveButton" accessibleHelp="Thi" mnemonicParsing="false" onAction="#newPhoto" text="Save" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="4">
+            <Button fx:id="saveButton" accessibleHelp="Thi" mnemonicParsing="false" text="Save" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="4">
                <font>
                   <Font size="18.0" />
                </font>

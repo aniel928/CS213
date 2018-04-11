@@ -40,7 +40,10 @@ public class Main extends Application {
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				public void handle(WindowEvent we) {
 					try {
-						UserState.timer.cancel();
+						if(UserState.timer != null) {
+							UserState.timer.cancel();
+							UserState.timer.purge();
+						}
 						UserState.saveFile();
 						
 		        	} catch (IOException e) {
@@ -73,8 +76,10 @@ public class Main extends Application {
 			UserState.timer = new Timer();
 			newStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				public void handle(WindowEvent we) {
-					UserState.timer.cancel();
-					UserState.timer = new Timer();
+					if(UserState.timer != null) {
+						UserState.timer.cancel();
+						UserState.timer.purge();
+					}
 				}
 			});
 		}

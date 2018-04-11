@@ -20,12 +20,31 @@ import java.util.List;
 public class LoginController {
 	@FXML private TextField username;
 	@FXML private Text invalidUserError;
-	
+
+	/** 
+	 * Method called on first load of program. Retrieves serialized information from file and restores that data.
+	 * 
+	 * @param mainStage
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	@SuppressWarnings("unchecked")
 	public void start(Stage mainStage) throws IOException, ClassNotFoundException {
 		//load list of users from file.
 		List<User> users = new ArrayList<>();
 		users.add(new User("admin"));
+		
+		boolean stockExists = false;
+		for(User user : users) {
+			if(user.getUserName().toLowerCase().equals("stock")) {
+				stockExists = true;
+				break;
+			}
+		}
+		
+		if(!stockExists) {
+			//add all stock photos
+		}
 		
 		ObjectInputStream ois = new ObjectInputStream(new FileInputStream("data" + File.separator + "users.dat"));
 		users = (List<User>) ois.readObject();
@@ -34,7 +53,7 @@ public class LoginController {
 	}
 	
 	/**
-	 * Change scene to either admin screen or user home screen.
+	 * Change screen to display either the Admin screen (User Maintenance), or user home screen (displaying photo albums).
 	 * @param event
 	 * @throws IOException
 	 */

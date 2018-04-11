@@ -6,15 +6,16 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.Timer;
 
 public class UserState {
-	public static Timer timer = new Timer();
+	public static Timer timer = null;
 	private static User currentUser;
 	private static List<User> userList = new ArrayList<>();
 	private static Album currentAlbum;
 	private static Photo currentPhoto;
-	private static List<Photo> searchResults;
+	private static Set<Photo> searchResults;
 	
 	public static User getCurrentUser() {
 		return currentUser;
@@ -55,11 +56,11 @@ public class UserState {
 		oos.close();
 	}	
 	
-	public static void setSearchResults(List<Photo> photos) {
+	public static void setSearchResults(Set<Photo> photos) {
 		searchResults = photos;
 	}
 	
-	public static List<Photo> getSearchResults(){
+	public static Set<Photo> getSearchResults(){
 		return searchResults;
 	}
 	
