@@ -234,6 +234,12 @@ public class AlbumController implements Initializable {
 		Photo photo = table.getSelectionModel().getSelectedItem();
 		Album album = photoAlbums.getSelectionModel().getSelectedItem();
 		
+		for(Photo albumPhoto : album.getPhotos()) {
+			if(albumPhoto == photo) {
+				return;
+			}
+		}
+		
 		album.addPhoto(photo);
 		currentAlbum.removePhoto(photo);
 		obsPhotoList.remove(photo);
@@ -268,6 +274,12 @@ public class AlbumController implements Initializable {
 		Photo photo = table.getSelectionModel().getSelectedItem();
 		
 		Album album = photoAlbums.getSelectionModel().getSelectedItem();
+		
+		for(Photo albumPhoto : album.getPhotos()) {
+			if(albumPhoto == photo) {
+				return;
+			}
+		}
 		
 		album.addPhoto(photo);
 		
