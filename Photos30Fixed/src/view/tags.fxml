@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="469.0" prefWidth="480.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TagController">
+   <children>
+      <GridPane layoutX="-1.0" prefHeight="469.0" prefWidth="481.0" style="-fx-background-color: #777777;">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="25.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="320.0" minWidth="10.0" prefWidth="193.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="320.0" minWidth="10.0" prefWidth="194.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="197.0" minWidth="10.0" prefWidth="48.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" minWidth="10.0" prefWidth="19.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="130.0" minHeight="0.0" prefHeight="32.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="342.0" minHeight="10.0" prefHeight="337.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="77.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="77.0" minHeight="10.0" prefHeight="46.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Text fill="#afbef7" strokeType="OUTSIDE" strokeWidth="0.0" text="Edit Tags" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER">
+               <font>
+                  <Font name="Verdana Bold" size="24.0" />
+               </font>
+            </Text>
+            <TableView fx:id="table" prefHeight="342.0" prefWidth="384.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1">
+              <columns>
+                <TableColumn fx:id="tagCol" prefWidth="192.0" text="Tag" />
+                <TableColumn fx:id="valueCol" prefWidth="241.0" text="Value" />
+              </columns>
+               <effect>
+                  <InnerShadow />
+               </effect>
+            </TableView>
+            <TextField fx:id="tagField" alignment="CENTER" onAction="#addTag" promptText="Tag" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="valueField" alignment="CENTER" onAction="#addTag" promptText="Value" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Button fx:id="saveButton" mnemonicParsing="false" onAction="#addTag" text="Save" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <Button mnemonicParsing="false" onAction="#showTagFields" style="-fx-background-color: #66CC66;" text="Add New" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+               <effect>
+                  <InnerShadow />
+               </effect>
+               <font>
+                  <Font size="18.0" />
+               </font></Button>
+            <Button mnemonicParsing="false" onAction="#deleteTag" style="-fx-background-color: #CC6666;" text="Delete" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+               <effect>
+                  <InnerShadow />
+               </effect>
+               <font>
+                  <Font size="18.0" />
+               </font></Button>
+            <Button mnemonicParsing="false" onAction="#back" text="Back" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" />
+         </children>
+         <effect>
+            <InnerShadow />
+         </effect>
+      </GridPane>
+   </children>
+</AnchorPane>
