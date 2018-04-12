@@ -73,21 +73,11 @@
                   <Font size="18.0" />
                </font>
             </Text>
-            <TextField fx:id="captionField" onAction="#newPhoto" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="4">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </TextField>
             <TextField fx:id="editCaptionField" onAction="#updateCaption" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="4">
                <font>
                   <Font size="18.0" />
                </font>
             </TextField>
-            <Button fx:id="saveButton" accessibleHelp="Thi" mnemonicParsing="false" text="Save" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="4">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Button>
             <Button fx:id="saveEditButton" accessibleHelp="Thi" mnemonicParsing="false" onAction="#updateCaption" text="Save" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="4">
                <font>
                   <Font size="18.0" />

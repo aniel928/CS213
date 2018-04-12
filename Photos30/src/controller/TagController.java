@@ -68,7 +68,7 @@ public class TagController implements Initializable {
 	/**
 	 * Closes current window and brings back to the album view.
 	 * @param event passed in via button click.
-	 * @throws IOException
+	 * @throws IOException exception thrown if loading class fails
 	 */
 	public void back(ActionEvent event) throws IOException { 
 	    Stage stage  = (Stage) ((Node) event.getSource()).getScene().getWindow();

@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import model.Album;
+import model.Photo;
 import model.User;
 import model.UserState;
 
@@ -23,45 +25,67 @@ public class LoginController {
 
 	/** 
 	 * Method called on first load of program. Retrieves serialized information from file and restores that data.
+	 * Builds stock photo library if it doesn't exist on load.
 	 * 
-	 * @param mainStage
-	 * @throws IOException
-	 * @throws ClassNotFoundException
+	 * @param mainStage main stage used to display scenes
+	 * @throws IOException exception thrown if loading class fails
+	 * @throws ClassNotFoundException thrown if class can't be found.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //suppressing the warning for casting the object as a list.
 	public void start(Stage mainStage) throws IOException, ClassNotFoundException {
 		//load list of users from file.
 		List<User> users = new ArrayList<>();
-		users.add(new User("admin"));
 		
-		boolean stockExists = false;
-		for(User user : users) {
-			if(user.getUserName().toLowerCase().equals("stock")) {
-				stockExists = true;
-				break;
-			}
+		//if file exists, set serialized data
+		try {
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream("data" + File.separator + "users.dat"));
+			users = (List<User>) ois.readObject();
+			UserState.setAllUsers(users);
+			ois.close();
+		}catch(Exception e) {
+			//do nothing;
 		}
 		
-		if(!stockExists) {
-			//add all stock photos
+		//if stock doesn't exist, add it.  In case the serialized file gets deleted.
+		if(UserState.getAllUsers().isEmpty()) {
+			User stock = new User("stock");
+			Album album = new Album("Animals");
+			album.addPhoto(new Photo (new File("resources/stock/animals/angryCat.jpg")));
+			album.addPhoto(new Photo (new File("resources/stock/animals/fox.jpg")));
+			album.addPhoto(new Photo (new File("resources/stock/animals/lion.jpg")));
+			album.addPhoto(new Photo (new File("resources/stock/animals/tigerPlays.jpg")));
+			album.addPhoto(new Photo (new File("resources/stock/animals/zebras.jpg")));
+			stock.addAlbum(album);
+
+			album = new Album("Flowers");
+			album.addPhoto(new Photo (new File("resources/stock/flowers/dahilia.jpg")));
+			album.addPhoto(new Photo (new File("resources/stock/flowers/prettyFlower.jpg")));
+			album.addPhoto(new Photo (new File("resources/stock/flowers/rainbowFlowers.jpg")));
+			album.addPhoto(new Photo (new File("resources/stock/flowers/sunflower.jpg")));
+			stock.addAlbum(album);
+			
+			album = new Album("Landscapes");
+			album.addPhoto(new Photo (new File("resources/stock/landscapes/lake.jpg")));
+			album.addPhoto(new Photo (new File("resources/stock/landscapes/mountain.jpg")));
+			album.addPhoto(new Photo (new File("resources/stock/landscapes/pier.jpeg")));
+			album.addPhoto(new Photo (new File("resources/stock/landscapes/waterfall.jpeg")));
+			stock.addAlbum(album);
+			
+			UserState.getAllUsers().add(stock);
 		}
 		
-		ObjectInputStream ois = new ObjectInputStream(new FileInputStream("data" + File.separator + "users.dat"));
-		users = (List<User>) ois.readObject();
-		UserState.setAllUsers(users);
-		ois.close();
 	}
 	
 	/**
 	 * Change screen to display either the Admin screen (User Maintenance), or user home screen (displaying photo albums).
-	 * @param event
-	 * @throws IOException
+	 * @param event passed in on button click
+	 * @throws IOException exception thrown if loading class fails
 	 */
 	public void login(ActionEvent event) throws IOException {
 		//if user is admin, open admin screen
 		if(username.getText().toLowerCase().equals("admin")) {
 			//open admin screen
-			Main.changeScene("/view/admin.fxml");			
+			Main.changeScene("/view/admin.fxml", "Administrator Dashboard");			
 		}
 		//if user is blank, throw error
 		else if(username.getText().isEmpty()){
@@ -72,7 +96,7 @@ public class LoginController {
 			for(User user : UserState.getAllUsers()) {
 				if(user.getUserName().toLowerCase().equals(username.getText().toLowerCase())) {
 					UserState.setCurrentUser(user);
-					Main.changeScene("/view/userhome.fxml");
+					Main.changeScene("/view/userhome.fxml", "User Home");
 				}
 			}
 			invalidUserError.setVisible(true);

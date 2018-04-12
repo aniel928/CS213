@@ -79,20 +79,20 @@ public class PhotoController implements Initializable {
 	 * Return to login screen
 	 * 
 	 * @param event passed in via button click.
-	 * @throws IOException
+	 * @throws IOException exception thrown if loading class fails
 	 */
 	public void logout(ActionEvent event) throws IOException {
-		Main.changeScene("/view/login.fxml");
+		Main.changeScene("/view/login.fxml", "Log In");
 	}
 	
 	/**
 	 * Return to album view screen.
 	 * 
 	 * @param event passed in via button click.
-	 * @throws IOException
+	 * @throws IOException exception thrown if loading class fails
 	 */
 	public void album(ActionEvent event) throws IOException{
-		Main.changeScene("/view/albumdetails.fxml");
+		Main.changeScene("/view/albumdetails.fxml", "Album Details");
 	}
 	
 	/**
@@ -153,7 +153,7 @@ public class PhotoController implements Initializable {
 			backButton.setOnAction(new EventHandler<ActionEvent>() {
 	            @Override public void handle(ActionEvent e) {
 	               try {
-	            	   Main.changeScene("/view/searchresults.fxml");
+	            	   Main.changeScene("/view/searchresults.fxml", "Search Results");
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

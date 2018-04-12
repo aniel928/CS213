@@ -43,11 +43,11 @@ public class AdminController implements Initializable{
 	/**
 	 * Switch bag to login Screen
 	 * @param event passed in on user click of button.
-	 * @throws IOException
+	 * @throws IOException exception thrown if loading class fails
 	 */
 	public void logout(ActionEvent event) throws IOException {
 		obsList.clear();
-		Main.changeScene("/view/login.fxml");
+		Main.changeScene("/view/login.fxml", "Log In");
 	}
 	
 	/**
@@ -78,10 +78,15 @@ public class AdminController implements Initializable{
 	@FXML
 	public void createUser() {
 		String uName = newUsername.getText().toLowerCase().replaceAll("\\s","");
-		uName = uName.substring(0,1).toUpperCase() + uName.substring(1).toLowerCase();
-		System.out.println("uName");
-		User user = new User(uName);
-		int index = findUserIndex(uName);
+		int index = 0;
+		User user = null;
+		if(uName.equals("admin")) {
+			index = -1;
+		}else {
+			uName = uName.substring(0,1).toUpperCase() + uName.substring(1).toLowerCase();
+			user = new User(uName);
+			index = findUserIndex(uName);
+		}
 		if(index != -1) {
 			System.out.println(index);
 			userList.add(index, user);

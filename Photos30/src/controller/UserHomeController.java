@@ -93,10 +93,10 @@ public class UserHomeController implements Initializable{
 	/**
 	 * Return back to login screen.
 	 * @param event passed in via button click
-	 * @throws IOException
+	 * @throws IOException exception thrown if loading class fails
 	 */
 	public void logout(ActionEvent event) throws IOException {
-		Main.changeScene("/view/login.fxml");
+		Main.changeScene("/view/login.fxml", "Log In");
 	}
 	
 	/**
@@ -173,7 +173,7 @@ public class UserHomeController implements Initializable{
 	
 	/** 
 	 * If album is selected, opens new screen to show album details
-	 * @throws IOException
+	 * @throws IOException exception thrown if loading class fails
 	 */
 	public void openAlbum() throws IOException {
 		if(albumTableView.getSelectionModel().getSelectedIndex() == -1) {
@@ -181,7 +181,7 @@ public class UserHomeController implements Initializable{
 			alert.showAndWait();
 		}else {
 			UserState.setCurrentAlbum(albumTableView.getSelectionModel().getSelectedItem());
-			Main.changeScene("/view/albumdetails.fxml");
+			Main.changeScene("/view/albumdetails.fxml", "Album Details");
 		}
 		
 	}
@@ -190,10 +190,10 @@ public class UserHomeController implements Initializable{
 	/** 
 	 * Opens search criteria screen.
 	 * 
-	 * @throws IOException
+	 * @throws IOException exception thrown if loading class fails
 	 */
 	public void search() throws IOException {
-		Main.changeScene("/view/search.fxml");
+		Main.changeScene("/view/search.fxml", "Search Criteria");
 	}
 	
 	/** 

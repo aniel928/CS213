@@ -108,24 +108,24 @@ public class AlbumController implements Initializable {
 	/**
 	 * Return to login screen.
 	 * @param event passed in on user click of button.
-	 * @throws IOException
+	 * @throws IOException exception thrown if loading class fails
 	 */
 	public void logout(ActionEvent event) throws IOException {
-		Main.changeScene("/view/login.fxml");
+		Main.changeScene("/view/login.fxml", "Log In");
 	}
 	
 	/**
 	 * Return to user home screen where all albums are listed.
 	 * @param event passed in on user click of button.
-	 * @throws IOException
+	 * @throws IOException exception thrown if loading class fails
 	 */
 	public void albums(ActionEvent event) throws IOException{
-		Main.changeScene("/view/userhome.fxml");
+		Main.changeScene("/view/userhome.fxml", "Home Screen");
 	}
 	
 	/**
 	 * Triggers window to open to select file.  After ensuring photo doens't already exist in this album, saves file path into Photo model and adds to current TableView.  
-	 * @throws IOException
+	 * @throws IOException exception thrown if loading class fails
 	 */
 	@FXML
 	private void openFile() throws IOException {		
@@ -276,7 +276,7 @@ public class AlbumController implements Initializable {
 	
 	/**
 	 * If item is selected, open a second window to show all tags associated with selected photo.
-	 * @throws IOException
+	 * @throws IOException exception thrown if loading class fails
 	 */
 	public void showTags() throws IOException {
 		hideAll();
@@ -286,21 +286,21 @@ public class AlbumController implements Initializable {
 		}
 		else {
 			UserState.setCurrentPhoto(table.getSelectionModel().getSelectedItem());
-			Main.newStage("/view/tags.fxml");
+			Main.newStage("/view/tags.fxml", "Photo Tags");
 		}
 	}
 
 	/**
 	 * Automatic slideshow (pictures change every 3 seconds)
-	 * @throws IOException
+	 * @throws IOException exception thrown if loading class fails
 	 */
 	public void showSlideShow() throws IOException {
-		Main.newStage("/view/slideshow.fxml");
+		Main.newStage("/view/slideshow.fxml", "Automatic Slideshow");
 	}
 	
 	/**
 	 * If photo is selected, open window to display photo
-	 * @throws IOException
+	 * @throws IOException exception thrown if loading class fails
 	 */
 	public void openPhoto() throws IOException {
 		if(table.getSelectionModel().getSelectedIndex() == -1) {
@@ -309,13 +309,14 @@ public class AlbumController implements Initializable {
 		}
 		else {
 			UserState.setCurrentPhoto(table.getSelectionModel().getSelectedItem());
-			Main.changeScene("/view/photo.fxml");
+			Main.changeScene("/view/photo.fxml", "Photo Display");
 		}
 	}
 	
 	/**
 	 * Code called on initial load of screen.  Sets current album, selects a photo (first on default or previously selected if 
 	 * returning to this screen from photo screen), and sets TableView elements.
+	 * 
 	 */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {

@@ -31,7 +31,7 @@ import model.UserState;
  */
 public class SearchController implements Initializable {
 	/**
-	 * Radio button to determine that all tags entered should match.  Logical AND>
+	 * Radio button to determine that all tags entered should match.  Logical AND.
 	 */
 	@FXML RadioButton all;
 	/**
@@ -59,26 +59,26 @@ public class SearchController implements Initializable {
 	 * Return to login screen.
 	 * 
 	 * @param event passed in via button click.
-	 * @throws IOException
+	 * @throws IOException exception thrown if loading class fails
 	 */
 	public void logout(ActionEvent event) throws IOException {
-		Main.changeScene("/view/login.fxml");
+		Main.changeScene("/view/login.fxml", "Log In");
 	}
 	
 	/**
 	 * Return to user home screen.
 	 * 
 	 * @param event passed in via button click.
-	 * @throws IOException
+	 * @throws IOException exception thrown if loading class fails
 	 */
 	public void home(ActionEvent event) throws IOException{
-		Main.changeScene("/view/userhome.fxml");
+		Main.changeScene("/view/userhome.fxml", "User Home");
 	}
 	
 	/**
 	 * Called upon button click.  Determines which fields are filled in and which method to call depending
 	 * on which fields are filled in.
-	 * @throws IOException
+	 * @throws IOException exception thrown if loading class fails
 	 */
 	@FXML
 	public void search() throws IOException {
@@ -176,7 +176,7 @@ public class SearchController implements Initializable {
 		if(results != null && results.size() != 0) {
 			
 			UserState.setSearchResults(results);
-			Main.changeScene("/view/searchresults.fxml");
+			Main.changeScene("/view/searchresults.fxml", "Search Results");
 			
 		}
 		//Otherwise throw error
@@ -186,6 +186,7 @@ public class SearchController implements Initializable {
 		}
 	}
 	
+
 	/**
 	 * if photo matches dates and matches ANY tag, add to set.
 	 * 
@@ -207,7 +208,7 @@ public class SearchController implements Initializable {
 				//As long as it's in the date range, it can match any of the tags (at least one)  Once it matches, add and exit.
 				for(Tag tag : photo.getAllTags()) {
 					for(int i=0; i< tags.length; i++) {
-						if(tag.getTag().equals(tags[i][0]) && tag.getValue().equals(tags[i][0])) {
+						if(tag.getTag().toLowerCase().equals(tags[i][0]) && tag.getValue().toLowerCase().equals(tags[i][1])) {
 							photos.add(photo);
 							continue;
 						}

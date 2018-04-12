@@ -16,7 +16,8 @@ import model.UserState;
 
 /**
  * Logic for automatic slideshow screen. Displays new photo every 30 seconds
- * @author Anne
+ * @author alh220
+ * @author jmuccino
  *
  */
 public class SlideShowController implements Initializable {
@@ -31,12 +32,11 @@ public class SlideShowController implements Initializable {
 	
 	/**
 	 * On close, cancel and purge timer, then close the stage.
-	 * @param event
-	 * @throws IOException
+	 * @param event passed in on button click.
+	 * @throws IOException exception thrown if loading class fails
 	 */
 	public void close(ActionEvent event) throws IOException{
-	    UserState.timer.cancel();
-	    UserState.timer.purge();
+	    index = -1;
 	    Stage stage  = (Stage) ((Node) event.getSource()).getScene().getWindow();
 	    stage.close();
 	}
@@ -53,8 +53,17 @@ public class SlideShowController implements Initializable {
 		UserState.timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
+				if(index == -1) {
+					UserState.timer.cancel();
+					return;
+				}
 				photoDisplay.setImage(UserState.getCurrentAlbum().getPhotos().get(index).getImage().getImage());
 				photoDisplay.fitWidthProperty().bind(((Stage)photoDisplay.getScene().getWindow()).widthProperty());
+				
+				if(index == -1) {
+					UserState.timer.cancel();
+					return;
+				}
 				
 				index++;
 				if(index >= UserState.getCurrentAlbum().getPhotos().size()) {

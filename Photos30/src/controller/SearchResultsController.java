@@ -66,30 +66,30 @@ public class SearchResultsController implements Initializable {
 	 * Return to login screen
 	 * 
 	 * @param event passed in via button press.
-	 * @throws IOException
+	 * @throws IOException exception thrown if loading class fails
 	 */
 	public void logout(ActionEvent event) throws IOException {
-		Main.changeScene("/view/login.fxml");
+		Main.changeScene("/view/login.fxml", "Log In");
 	}
 	
 	/**
 	 * Return to search criteria screen. 
 	 * 
 	 * @param event passed in via button press.
-	 * @throws IOException
+	 * @throws IOException exception thrown if loading class fails
 	 */
 	public void albums(ActionEvent event) throws IOException{
-		Main.changeScene("/view/search.fxml");
+		Main.changeScene("/view/search.fxml", "Search Criteria");
 	}
 
 	/**
 	 * Return ot user home screen.
 	 * 
 	 * @param event passed in via button press.
-	 * @throws IOException
+	 * @throws IOException exception thrown if loading class fails
 	 */
 	public void home(ActionEvent event) throws IOException{
-		Main.changeScene("/view/userhome.fxml");
+		Main.changeScene("/view/userhome.fxml", "User Home");
 	}
 	
 	/**
@@ -105,7 +105,7 @@ public class SearchResultsController implements Initializable {
 	
 	/**
 	 * Takes new album name, checks to make sure you don't already have an album with this name, then creates 
-	 * album and saved to suer profile.
+	 * album and saved to user profile.
 	 */
 	@FXML 
 	private void saveAlbum() {
@@ -138,7 +138,7 @@ public class SearchResultsController implements Initializable {
 		
 	/**
 	 * If a photo is selcted, open photo with photo screen. 
-	 * @throws IOException
+	 * @throws IOException exception thrown if loading class fails
 	 */
 	public void openPhoto() throws IOException {
 		if(table.getSelectionModel().getSelectedIndex() == -1) {
@@ -147,7 +147,7 @@ public class SearchResultsController implements Initializable {
 		}
 		else {
 			UserState.setCurrentPhoto(table.getSelectionModel().getSelectedItem());
-			Main.changeScene("/view/photo.fxml");
+			Main.changeScene("/view/photo.fxml", "Photo Display");
 		}
 	}
 	
