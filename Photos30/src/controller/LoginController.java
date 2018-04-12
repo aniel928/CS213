@@ -58,7 +58,6 @@ public class LoginController {
 			stock.addAlbum(album);
 
 			album = new Album("Flowers");
-			album.addPhoto(new Photo (new File("resources/stock/flowers/dahilia.jpg")));
 			album.addPhoto(new Photo (new File("resources/stock/flowers/prettyFlower.jpg")));
 			album.addPhoto(new Photo (new File("resources/stock/flowers/rainbowFlowers.jpg")));
 			album.addPhoto(new Photo (new File("resources/stock/flowers/sunflower.jpg")));
