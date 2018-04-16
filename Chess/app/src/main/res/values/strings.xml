@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Chess</string>
+    <string name="square_for_chessboard">Square for chessboard.</string>
+</resources>

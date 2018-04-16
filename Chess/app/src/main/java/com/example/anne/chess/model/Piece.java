@@ -1,0 +1,122 @@
+package com.example.anne.chess.model;
+
+import com.example.anne.chess.R;
+
+import java.util.List;
+
+public abstract class Piece {
+    private int imageId = 0;
+    private Player color;
+    private PieceName piece;
+    private boolean moved;
+
+    /*
+        CONSTRUCTOR
+     */
+    public Piece(Player color, PieceName piece){
+        this.color = color;
+        this.piece = piece;
+
+        setImageId(findImage(color, piece));
+    }
+
+    /*
+        GETTERS / SETTERS
+     */
+
+    public int getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(int imageId) {
+        this.imageId = imageId;
+    }
+
+    public Player getColor() {
+        return color;
+    }
+
+    public void setColor(Player color) {
+        this.color = color;
+    }
+
+    public PieceName getPiece() {
+        return piece;
+    }
+
+    public void setPiece(PieceName piece) {
+        this.piece = piece;
+    }
+
+    public boolean isMoved() {
+        return moved;
+    }
+
+    public void setMoved(boolean moved) {
+        this.moved = moved;
+    }
+
+
+    /*
+        HELPER METHODS
+     */
+
+    protected abstract List<int[]> allLegalMoves(int row, int col, ChessBoard board);
+
+    protected abstract boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board);
+
+    protected abstract boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board);
+
+
+
+    private int findImage(Player color, PieceName piece) {
+        int image = 0;
+        switch (piece) {
+            case KING:
+                if (color == Player.BLACK) {
+                    image = R.drawable.ic_bk;
+                } else {
+                    image = R.drawable.ic_wk;
+                }
+                break;
+            case QUEEN:
+                if (color == Player.BLACK) {
+                    image = R.drawable.ic_bq;
+                } else {
+                    image = R.drawable.ic_wq;
+                }
+                break;
+            case BISHOP:
+                if (color == Player.BLACK) {
+                    image = R.drawable.ic_bb;
+                } else {
+                    image = R.drawable.ic_wb;
+                }
+                break;
+            case KNIGHT:
+                if (color == Player.BLACK) {
+                    image = R.drawable.ic_bn;
+                } else {
+                    image = R.drawable.ic_wn;
+                }
+                break;
+            case ROOK:
+                if (color == Player.BLACK) {
+                    image = R.drawable.ic_br;
+                } else {
+                    image = R.drawable.ic_wr;
+                }
+                break;
+            case PAWN:
+                if (color == Player.BLACK) {
+                    image = R.drawable.ic_bp;
+                } else {
+                    image = R.drawable.ic_wp;
+                }
+                break;
+            default:
+                image = 0;
+        }
+        return image;
+    }
+}
