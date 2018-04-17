@@ -1,5 +1,10 @@
 package com.example.anne.chess.model;
 
+import android.widget.ImageView;
+
+import com.example.anne.chess.R;
+import com.example.anne.chess.controller.GameActivity;
+
 /**
  * Created by Anne on 4/16/18.
  */
