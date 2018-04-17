@@ -1,3 +1,3 @@
 package com.example.anne.chess.model;
 
-enum Player { WHITE, BLACK;}
+public enum Player { WHITE, BLACK;}
