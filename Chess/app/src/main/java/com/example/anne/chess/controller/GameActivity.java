@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.anne.chess.R;
 import com.example.anne.chess.model.Bishop;
 import com.example.anne.chess.model.Chess;
@@ -20,7 +23,7 @@ import com.example.anne.chess.model.Queen;
 import com.example.anne.chess.model.Rook;
 
 public class GameActivity extends AppCompatActivity {
-
+    private TextView textView;
     private ImageView[][] pieces = new ImageView[8][8];
     private Piece[][] positions = new Piece[8][8];
     private Chess game;
@@ -34,6 +37,9 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        textView = findViewById(R.id.textView);
+
         game = new Chess();
 
         board = new ChessBoard();
@@ -70,7 +76,20 @@ public class GameActivity extends AppCompatActivity {
 
                             Log.d("GameActivity: ","Move from (" + startRow + ", " + startCol + ") to (" + endRow + ", " + endCol + ")");
 
-                            game.move(startRow, startCol, endRow, endCol);
+                            int status = game.move(startRow, endRow, startCol, endCol);
+
+                            if(status == -1){
+                                Toast.makeText(GameActivity.this,"Invalid Move!", Toast.LENGTH_LONG).show();
+
+                            }else{
+                                game.newTurn();
+                                if(game.getTurn() == Player.WHITE) {
+                                    textView.setText("White's move");
+                                }else{
+                                    textView.setText("Black's move");
+                                }
+                                drawBoard();
+                            }
 
                             Log.d("GameActivity: ", "Ok just do it.");
 
