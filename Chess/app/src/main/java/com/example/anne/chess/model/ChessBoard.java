@@ -13,9 +13,63 @@ public class ChessBoard {
     final static int ROWS = 8;
     final static int COLS = 8;
     private Piece[][] positions = new Piece[ROWS][COLS];
+    private int[] WhiteKing, BlackKing;
+
+    public int[] getWhiteKing() {
+        return WhiteKing;
+    }
+
+    public void setWhiteKing(int[] whiteKing) {
+        WhiteKing = whiteKing;
+    }
+
+    public int[] getBlackKing() {
+        return BlackKing;
+    }
+
+    public void setBlackKing(int[] blackKing) {
+        BlackKing = blackKing;
+    }
+
+    public void setWhiteKingCol(int col){
+        WhiteKing[1] = col;
+    }
+
+    public void setBlackKingCol(int col){
+        BlackKing[1] = col;
+    }
+
+    public int getWhiteKingCol(){
+        return WhiteKing[1];
+    }
+
+    public int getBlackKingCol(){
+        return WhiteKing[1];
+    }
+
+    public int getWhiteKingRow(){
+        return WhiteKing[0];
+    }
+
+    public int getBlackKingRow(){
+        return WhiteKing[0];
+    }
+
+    public void setWhiteKingRow(int row){
+        WhiteKing[0] = row;
+    }
+
+    public void setBlackKingRow(int row){
+        BlackKing[0] = row;
+    }
+
+
+
 
     public ChessBoard(){
         initialize();
+        WhiteKing = new int[2];
+        BlackKing = new int[2];
     }
 
     /*
@@ -37,11 +91,39 @@ public class ChessBoard {
         this.positions = positions;
     }
 
+    protected Piece getPiece(int row, int col) {
+        return positions[row][col];
+    }
+
+    /**
+     * Sets the piece given on the square indicated
+     * @param row an integer representing an index in the array for rank
+     * @param col an integer representing an index in the array for file
+     * @param piece a {@link Piece} object to put onto the square
+     */
+    protected void setPiece(int row, int col, Piece piece) {
+        positions[row][col] = piece;
+    }
+
+    /**
+     * Makes a copy of this board and returns that copy.
+     * @return a new instance of ChessBoard.
+     */
+    protected ChessBoard makeCopy() {
+        ChessBoard newBoard = new ChessBoard();
+        for(int i = 0; i < ROWS; i++) {
+            for(int j = 0; j < COLS; j++) {
+                newBoard.positions[i][j] = this.positions[i][j];
+            }
+        }
+        return newBoard;
+    }
+
     /*
         HELPER METHODS
      */
 
-    private void initialize() {
+    public void initialize() {
         positions[0][0] = new Rook(Player.BLACK);
         positions[0][1] = new Knight(Player.BLACK);
         positions[0][2] = new Bishop(Player.BLACK);

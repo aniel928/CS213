@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.ImageView;
 import com.example.anne.chess.R;
 import com.example.anne.chess.model.Bishop;
+import com.example.anne.chess.model.Chess;
+import com.example.anne.chess.model.ChessBoard;
 import com.example.anne.chess.model.King;
 import com.example.anne.chess.model.Knight;
 import com.example.anne.chess.model.Pawn;
@@ -21,15 +23,24 @@ public class GameActivity extends AppCompatActivity {
 
     private ImageView[][] pieces = new ImageView[8][8];
     private Piece[][] positions = new Piece[8][8];
+    private Chess game;
+    private ChessBoard board;
+    private int startRow = -1;
+    private int startCol = -1;
+    private int endRow = -1;
+    private int endCol = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        game = new Chess();
+
+        board = new ChessBoard();
+
+        game.startGame(board);
 
         getAllImageViews();
-
-        initializeBoard();
 
         drawBoard();
 
@@ -47,7 +58,25 @@ public class GameActivity extends AppCompatActivity {
                 pieces[i][j].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.d("GameActivity: ", "HOLY CRAP IT WORKED "+ finalI + " " + finalJ +" !!!!!!!!");
+                        if(startRow == -1 || startCol == -1){
+                            //Set the starting coordinates
+                            startRow = finalI;
+                            startCol = finalJ;
+                        }
+                        else{
+                            //starting coordinates already set, so this click must be ending coordinates
+                            endRow = finalI;
+                            endCol = finalJ;
+
+                            Log.d("GameActivity: ","Move from (" + startRow + ", " + startCol + ") to (" + endRow + ", " + endCol + ")");
+
+                            game.move(startRow, startCol, endRow, endCol);
+
+                            Log.d("GameActivity: ", "Ok just do it.");
+
+                            startRow = startCol = endRow = endCol = -1;
+
+                        }
                     }
                 });
 
@@ -57,6 +86,7 @@ public class GameActivity extends AppCompatActivity {
 
     private void drawBoard() {
         int image;
+        positions = board.getPositions();
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){
                 if(positions[i][j] == null){
@@ -144,44 +174,6 @@ public class GameActivity extends AppCompatActivity {
         pieces[7][5] = findViewById(R.id.f1);
         pieces[7][6] = findViewById(R.id.g1);
         pieces[7][7] = findViewById(R.id.h1);
-    }
-
-    private void initializeBoard() {
-        positions[0][0] = new Rook(Player.BLACK);
-        positions[0][1] = new Knight(Player.BLACK);
-        positions[0][2] = new Bishop(Player.BLACK);
-        positions[0][3] = new Queen(Player.BLACK);
-        positions[0][4] = new King(Player.BLACK);
-        positions[0][5] = new Bishop(Player.BLACK);
-        positions[0][6] = new Knight(Player.BLACK);
-        positions[0][7] = new Rook(Player.BLACK);
-
-        positions[1][0] = new Pawn(Player.BLACK);
-        positions[1][1] = new Pawn(Player.BLACK);
-        positions[1][2] = new Pawn(Player.BLACK);
-        positions[1][3] = new Pawn(Player.BLACK);
-        positions[1][4] = new Pawn(Player.BLACK);
-        positions[1][5] = new Pawn(Player.BLACK);
-        positions[1][6] = new Pawn(Player.BLACK);
-        positions[1][7] = new Pawn(Player.BLACK);
-
-        positions[6][0] = new Pawn(Player.WHITE);
-        positions[6][1] = new Pawn(Player.WHITE);
-        positions[6][2] = new Pawn(Player.WHITE);
-        positions[6][3] = new Pawn(Player.WHITE);
-        positions[6][4] = new Pawn(Player.WHITE);
-        positions[6][5] = new Pawn(Player.WHITE);
-        positions[6][6] = new Pawn(Player.WHITE);
-        positions[6][7] = new Pawn(Player.WHITE);
-
-        positions[7][0] = new Rook(Player.WHITE);
-        positions[7][1] = new Knight(Player.WHITE);
-        positions[7][2] = new Bishop(Player.WHITE);
-        positions[7][3] = new Queen(Player.WHITE);
-        positions[7][4] = new King(Player.WHITE);
-        positions[7][5] = new Bishop(Player.WHITE);
-        positions[7][6] = new Knight(Player.WHITE);
-        positions[7][7] = new Rook(Player.WHITE);
     }
 
     @Override

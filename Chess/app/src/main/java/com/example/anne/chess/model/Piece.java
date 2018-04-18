@@ -7,17 +7,17 @@ import java.util.List;
 public abstract class Piece {
     private int imageId = 0;
     private Player color;
-    private PieceName piece;
+    private PieceName name;
     private boolean moved;
 
     /*
         CONSTRUCTOR
      */
-    public Piece(Player color, PieceName piece){
+    public Piece(Player color, PieceName name){
         this.color = color;
-        this.piece = piece;
+        this.name = name;
 
-        setImageId(findImage(color, piece));
+        setImageId(findImage(color, name));
     }
 
     /*
@@ -40,12 +40,12 @@ public abstract class Piece {
         this.color = color;
     }
 
-    public PieceName getPiece() {
-        return piece;
+    public PieceName getName() {
+        return name;
     }
 
-    public void setPiece(PieceName piece) {
-        this.piece = piece;
+    public void setName(PieceName name) {
+        this.name = name;
     }
 
     public boolean isMoved() {
