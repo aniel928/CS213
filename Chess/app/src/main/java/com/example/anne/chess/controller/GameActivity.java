@@ -12,8 +12,8 @@ import android.widget.Toast;
 
 import com.example.anne.chess.R;
 import com.example.anne.chess.model.Bishop;
-import com.example.anne.chess.model.Chess;
 import com.example.anne.chess.model.ChessBoard;
+import com.example.anne.chess.model.Chess;
 import com.example.anne.chess.model.King;
 import com.example.anne.chess.model.Knight;
 import com.example.anne.chess.model.Pawn;
