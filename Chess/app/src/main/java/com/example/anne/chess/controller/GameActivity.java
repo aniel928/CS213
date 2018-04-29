@@ -1,7 +1,11 @@
 package com.example.anne.chess.controller;
 
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.ImageViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +25,8 @@ import com.example.anne.chess.model.Piece;
 import com.example.anne.chess.model.Player;
 import com.example.anne.chess.model.Queen;
 import com.example.anne.chess.model.Rook;
+
+import static android.graphics.PorterDuff.Mode.SRC_ATOP;
 
 public class GameActivity extends AppCompatActivity {
     private TextView textView;
@@ -68,8 +74,13 @@ public class GameActivity extends AppCompatActivity {
                             //Set the starting coordinates
                             startRow = finalI;
                             startCol = finalJ;
+
+                            pieces[startRow][startCol].setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+
+
                         }
                         else{
+                            pieces[startRow][startCol].setBackgroundTintList(null);
                             //starting coordinates already set, so this click must be ending coordinates
                             endRow = finalI;
                             endCol = finalJ;
@@ -82,13 +93,39 @@ public class GameActivity extends AppCompatActivity {
                                 Toast.makeText(GameActivity.this,"Invalid Move!", Toast.LENGTH_LONG).show();
 
                             }else{
-                                game.newTurn();
+                                if(game.checkForPromotion(startRow, startCol)){
+                                    //pop up window to ask what to promote to.
+                                    //handle promotion.
+                                }
+
+                                game.completeTheMove(startRow, endRow, startCol, endCol);
+
+                                status = game.newTurn();
                                 if(game.getTurn() == Player.WHITE) {
-                                    textView.setText("White's move");
+                                    if(status == 1){
+                                        textView.setText("White's move -- Check!");
+                                    }else if(status == 2){
+                                        //TODO: remove this code and change screens.
+                                        textView.setText("Checkmate! Black Wins!");
+                                    }else if(status ==3){
+                                        textView.setText("Stalemate, Draw!");
+                                    }else {
+                                        textView.setText("White's move");
+                                    }
                                 }else{
-                                    textView.setText("Black's move");
+                                    if(status == 1){
+                                        textView.setText("Black's move -- Check!");
+                                    }else if(status == 2){
+                                        //TODO: remove this code and change screens.
+                                        textView.setText("Checkmate! White Wins!");
+                                    }else if(status ==3){
+                                        textView.setText("Stalemate, Draw!");
+                                    }else {
+                                        textView.setText("Black's move");
+                                    }
                                 }
                                 drawBoard();
+
                             }
 
                             Log.d("GameActivity: ", "Ok just do it.");

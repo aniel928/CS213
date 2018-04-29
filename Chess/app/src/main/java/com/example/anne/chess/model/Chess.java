@@ -1,5 +1,7 @@
 package com.example.anne.chess.model;
 
+import android.util.Log;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,8 +17,6 @@ public class Chess{
     private boolean promote = false;
 
     private ChessBoard board;
-
-    private int[] WhiteKing, BlackKing;
 
     private void removeEnpassant() {
         int i = 0;
@@ -43,69 +43,69 @@ public class Chess{
         }
     }
 
-    private boolean checkMoves(String[] moves) {
-
-        //should have at most 3 parameters
-        if(moves.length > 3) {
-            return false;
-        }
-
-        //if there are three, it's either offering draw or a request to promote
-        else if(moves.length == 3) {
-            //offer to draw sets variable so on the next turn we know the user offered a draw.
-            if(moves[2].equals("draw?")) {
-                draw = true;
-            }
-            //request to promote flags a variable for when we're ready to promote. (Does not guarantee validity since we don't know piece yet)
-            else if(moves[2].equals("N") || moves[2].equals("R") || moves[2].equals("B") || moves[2].equals("Q")){
-                promote = true;
-            }
-            //otherwise, invalid input
-            else {
-                return false;
-            }
-        }
-        //if there is only one parameter it should either be resign, or draw (in response to draw offer of other player)
-        else if(moves.length == 1) {
-            //if resign then announce winner
-            if(moves[0].equals("resign")) {
-                gameOver = true;
-                if(turn == Player.WHITE) {
-                    System.out.println("Black wins");
-                }else {
-                    System.out.println("White wins");
-                }
-                return true;
-            }
-            //if draw, make sure variable is set then announce draw.
-            if(draw == true && moves[0].equals("draw")){
-                gameOver = true;
-                System.out.println("Draw");
-                return true;
-            }
-            //otherwise bad format
-            else {
-                return false;
-            }
-        }
-        //if it's not a case above then there should only be two parameters, the starting and ending positions
-        else if(moves.length != 2) {
-            return false;
-        }
-
-        //If we're here, then user didn't accept draw. Change draw back to false. (Unless of course this user just requested a draw)
-        if(!(moves.length == 3 && moves[2].equals("draw?"))) {
-            draw = false;
-        }
-
-        //Finally, validate that the first two parameters of input are only two characters long each (rank and file)
-        if(moves[0].length() != 2 || moves[1].length() != 2) {
-            return false;
-        }
-
-        //if we passed all of that, then input is good.
-        return true;
-    }
+//    private boolean checkMoves(String[] moves) {
+//
+//        //should have at most 3 parameters
+//        if(moves.length > 3) {
+//            return false;
+//        }
+//
+//        //if there are three, it's either offering draw or a request to promote
+//        else if(moves.length == 3) {
+//            //offer to draw sets variable so on the next turn we know the user offered a draw.
+//            if(moves[2].equals("draw?")) {
+//                draw = true;
+//            }
+//            //request to promote flags a variable for when we're ready to promote. (Does not guarantee validity since we don't know piece yet)
+//            else if(moves[2].equals("N") || moves[2].equals("R") || moves[2].equals("B") || moves[2].equals("Q")){
+//                promote = true;
+//            }
+//            //otherwise, invalid input
+//            else {
+//                return false;
+//            }
+//        }
+//        //if there is only one parameter it should either be resign, or draw (in response to draw offer of other player)
+//        else if(moves.length == 1) {
+//            //if resign then announce winner
+//            if(moves[0].equals("resign")) {
+//                gameOver = true;
+//                if(turn == Player.WHITE) {
+//                    System.out.println("Black wins");
+//                }else {
+//                    System.out.println("White wins");
+//                }
+//                return true;
+//            }
+//            //if draw, make sure variable is set then announce draw.
+//            if(draw == true && moves[0].equals("draw")){
+//                gameOver = true;
+//                System.out.println("Draw");
+//                return true;
+//            }
+//            //otherwise bad format
+//            else {
+//                return false;
+//            }
+//        }
+//        //if it's not a case above then there should only be two parameters, the starting and ending positions
+//        else if(moves.length != 2) {
+//            return false;
+//        }
+//
+//        //If we're here, then user didn't accept draw. Change draw back to false. (Unless of course this user just requested a draw)
+//        if(!(moves.length == 3 && moves[2].equals("draw?"))) {
+//            draw = false;
+//        }
+//
+//        //Finally, validate that the first two parameters of input are only two characters long each (rank and file)
+//        if(moves[0].length() != 2 || moves[1].length() != 2) {
+//            return false;
+//        }
+//
+//        //if we passed all of that, then input is good.
+//        return true;
+//    }
 
     private void illegalMove() {
         System.out.println("Illegal move, try again.");
@@ -171,16 +171,6 @@ public class Chess{
             return false;
         }
 
-        //if promotion got flagged and this piece is not a pawn, illegal move
-        if(promote && piece.getName() != PieceName.PAWN){
-            promote = false;
-            return false;
-        }
-        //if promotion got flagged and pawn is not moving to last row, illegal move.
-        if(promote && ((piece.getColor() == Player.WHITE && endRow != 0) || (piece.getColor() == Player.BLACK && endRow != 7))) {
-            promote = false;
-            return false;
-        }
         //check if move is legal.
         if(!(piece.isLegalMove(startRow, startCol, endRow, endCol, board))) {
             return false;
@@ -198,25 +188,27 @@ public class Chess{
         return true;
     }
 
-    private Piece checkForPromotion(Piece piece, int row, String[] moves) {
+    public boolean checkForPromotion(int startRow, int startCol) {
+        Piece piece = board.getPiece(startRow, startCol);
         if(piece.getName() == PieceName.PAWN) {
-            if((turn == Player.WHITE && row == 1) || (turn == Player.BLACK && row == 6)) {
-                promote = true;
+            if((turn == Player.WHITE && startRow == 1) || (turn == Player.BLACK && startRow == 6)) {
+               return true;
             }
         }
-        //handle promotion
-        if(promote) {
-            String promoteTo = "";
-            if(moves.length < 3) {
-                promoteTo = "Q";
-            }
-            else {
-                promoteTo = moves[2];
-            }
-            piece = promote(promoteTo);
-            promote = false;
-        }
-        return piece;
+        return false;
+//        //handle promotion
+//        if(promote) {
+//            String promoteTo = "";
+//            if(moves.length < 3) {
+//                promoteTo = "Q";
+//            }
+//            else {
+//                promoteTo = moves[2];
+//            }
+//            piece = promote(promoteTo);
+//            promote = false;
+//        }
+//        return piece;
     }
 
     private Piece promote(String strPiece) {
@@ -256,16 +248,20 @@ public class Chess{
                     ChessBoard tempBoard = board.makeCopy();
                     tempBoard.setPiece(startRow,  startCol - 1, piece);
                     if(turn == Player.WHITE){
-                        WhiteKing[1]--;
+                        int oldCol = board.getWhiteKingCol();
+                        board.setWhiteKingCol(--oldCol);
                     }else{
-                        BlackKing[1]--;
+                        int oldCol = board.getBlackKingCol();
+                        board.setBlackKingCol(--oldCol);
                     }
-                    if(turn == Player.WHITE && blackCheck(tempBoard)){
-                        BlackKing[1]++;
+                    if(turn == Player.BLACK && blackCheck(tempBoard)){
+                        int oldCol = board.getBlackKingCol();
+                        board.setBlackKingCol(++oldCol);
                         return -1;
                     }
                     if(turn == Player.WHITE && whiteCheck(tempBoard)) {
-                        WhiteKing[1]++;
+                        int oldCol = board.getWhiteKingCol();
+                        board.setWhiteKingCol(++oldCol);
                         return -1;
                     }
                 }
@@ -274,16 +270,20 @@ public class Chess{
                     ChessBoard tempBoard = board.makeCopy();
                     tempBoard.setPiece(startRow,  startCol + 1, piece);
                     if(turn == Player.WHITE){
-                        WhiteKing[1]++;
+                        int oldCol = board.getWhiteKingCol();
+                        board.setWhiteKingCol(++oldCol);
                     }else{
-                        BlackKing[1]++;
+                        int oldCol = board.getBlackKingCol();
+                        board.setBlackKingCol(++oldCol);
                     }
                     if(turn == Player.BLACK && blackCheck(tempBoard)){
-                        BlackKing[1]--;
+                        int oldCol = board.getBlackKingCol();
+                        board.setBlackKingCol(--oldCol);
                         return -1;
                     }
                     if(turn == Player.WHITE && whiteCheck(tempBoard)) {
-                        WhiteKing[1]--;
+                        int oldCol = board.getWhiteKingCol();
+                        board.setWhiteKingCol(--oldCol);
                         return -1;
                     }
                 }
@@ -336,7 +336,7 @@ public class Chess{
             for(int j = 0; j < board.COLS; j++) {
                 Piece piece = board.getPiece(i, j);
                 if(piece != null && piece.getColor() == Player.BLACK) {
-                    if(piece.isLegalMove(i, j, WhiteKing[0], WhiteKing[1], board) && piece.coastClear(i, j, WhiteKing[0], WhiteKing[1], board)) {
+                    if(piece.isLegalMove(i, j, board.getWhiteKingRow(), board.getWhiteKingCol(), board) && piece.coastClear(i, j, board.getWhiteKingRow(), board.getWhiteKingCol(), board)) {
                         return true;
                     }
                 }
@@ -350,7 +350,8 @@ public class Chess{
             for(int j = 0; j < board.COLS; j++) {
                 Piece piece = board.getPiece(i, j);
                 if(piece != null && piece.getColor() == Player.WHITE) {
-                    if(piece.isLegalMove(i, j, BlackKing[0], BlackKing[1], board) && piece.coastClear(i, j, BlackKing[0], BlackKing[1], board)) {
+                    Log.d("Chess.java: ", "Black row: " + board.getBlackKingRow() + " --- Black Col:" + board.getBlackKingCol());
+                    if(piece.isLegalMove(i, j, board.getBlackKingRow(), board.getBlackKingCol(), board) && piece.coastClear(i, j, board.getBlackKingRow(), board.getBlackKingCol(), board)) {
                         return true;
                     }
                 }
@@ -377,9 +378,9 @@ public class Chess{
                                 tempBoard.setPiece(i,  j,  null);
                                 if(tempPiece.getName() == PieceName.KING) {
                                     if(turn == Player.WHITE) {
-                                        BlackKing = move;
+                                        board.setBlackKing(move);
                                     }else {
-                                        WhiteKing = move;
+                                        board.setWhiteKing(move);
                                     }
                                 }
                                 //now check to see if there's still check
@@ -387,15 +388,15 @@ public class Chess{
                                 if(turn == Player.WHITE) {
                                     check = blackCheck(tempBoard);
                                     if(tempPiece.getName() == PieceName.KING) {
-                                        BlackKing[0] = i;
-                                        BlackKing[1] = j;
+                                        board.setBlackKingRow(i);
+                                        board.setBlackKingCol(j);
                                     }
                                 }
                                 else{
                                     check = whiteCheck(tempBoard);
                                     if(tempPiece.getName() == PieceName.KING) {
-                                        WhiteKing[0] = i;
-                                        WhiteKing[1] = j;
+                                        board.setWhiteKingRow(i);
+                                        board.setWhiteKingCol(j);
                                     }
                                 }
                                 //if no longer in check, not checkmate
@@ -427,85 +428,79 @@ public class Chess{
     }
 
     public int move(int startRow, int endRow, int startCol, int endCol){
-        return -1;
+        Piece piece = board.getPiece(startRow, startCol);
+
+        boolean validMove = validMoveForPiece(piece, startRow, endRow, startCol, endCol);
+
+        if(!validMove) {
+            return -1;
+        }else{
+            return 0;
+        }
+    }
+
+    public int completeTheMove(int startRow, int endRow, int startCol, int endCol){
+        Piece piece = board.getPiece(startRow, startCol);
+        Piece oldPiece = board.getPiece(endRow, endCol);
+        ChessBoard oldBoard = board.makeCopy();
+
+
+        board.setPiece(endRow, endCol, piece);
+        board.setPiece(startRow, startCol, null);
+        return 0;
     }
 
     public int newTurn(){
-        //change players
+        removeEnpassant();
+
+        boolean check;
+        boolean checkmate = false;
+        boolean stalemate = false;
+
+        //change player
+        changeTurns();
         //check for check and mate
-        return -1;
+        if(turn == Player.WHITE){
+            check = whiteCheck(board);
+        }else{
+            check = blackCheck(board);
+        }
+
+        boolean mate = checkForMate();
+
+        if(check){
+            //check for mate
+            checkmate = mate;
+        }
+        else{
+            stalemate = mate;  //why is this true????
+        }
+
+        if(stalemate){
+            return 3;
+        }else if(checkmate){
+            return 2;
+        }else if(check){
+            return 1;
+        }else {
+            return 0;
+        }
     }
 
+    public void startGame(ChessBoard board){
+        this.board = board;
+
+        this.board.setWhiteKingCol(4);
+        this.board.setWhiteKingRow(7);
+        this.board.setBlackKingCol(4);
+        this.board.setBlackKingRow(0);
+
+        turn = Player.WHITE;
+    }
 
     private void playGame(Scanner scanner) {
-        while(!gameOver) {
 
-            //in case pawn double moved last time, remove en passant.
-            removeEnpassant();
-            if(turn == Player.WHITE) {
-                System.out.print("White's move: ");
-            }else {
-                System.out.print("Black's move: ");
-            }
-
-            //Get the user input and split it out into portions
-            String move = scanner.nextLine();
-            String moves[] = move.split(" ");
-
-            boolean validInput = checkMoves(moves);
-            if(!validInput) {
-                illegalMove();
-                continue;
-            }
-
-            //check if someone resigned or agreed to draw
-            if(gameOver) {
-                continue;
-            }
-
-            //get positions of starting spot
-            int[] pos = getArrayVals(moves[0]);
-            int startRow = pos[0];
-            int startCol = pos[1];
-
-            //get position of ending spot
-            pos = getArrayVals(moves[1]);
-            int endRow = pos[0];
-            int endCol = pos[1];
-
-            //check to see if something went wrong when getting positions
-            if(startRow == -1 || startCol == -1 || endRow == -1 || endCol == -1) {
-                illegalMove();
-                continue;
-            }
-
-            //Get the piece from the starting position and store it in a variable
-            Piece piece = board.getPiece(startRow,  startCol);
-
-            //make sure wherever this piece is trying to go, it's a legal move
-            boolean validMove = validMoveForPiece(piece, startRow, endRow, startCol, endCol);
-            if(!validMove) {
-                illegalMove();
-                continue;
-            }
-
-            //store piece we're eviciting/capturing to check en passant
-            Piece oldPiece = board.getPiece(endRow, endCol);
-
-            //Before we start moving pieces, take a copy of the board so we can revert easily.
-            ChessBoard oldBoard = board.makeCopy();
-
-            //check for promotion
-            if(piece.getName() == PieceName.PAWN) {
-                piece = checkForPromotion(piece, startRow, moves);
-            }
-
-            //if promotion wasn't valid, then it's illegal
-            if(piece == null) {
-                illegalMove();
-                continue;
-            }
-
+/*
             //see if castling is valid and then perform castle
             int status = checkForCastle(piece, startRow, endRow, startCol, endCol);
 
@@ -530,12 +525,12 @@ public class Chess{
             //update King's location so that we can check for Check
             if(piece.getName() == PieceName.KING) {
                 if(turn == Player.WHITE) {
-                    WhiteKing[0] = endRow;
-                    WhiteKing[1] = endCol;
+                    board.setWhiteKingRow(endRow);
+                    board.setWhiteKingCol(endCol);
                 }
                 else {
-                    BlackKing[0] = endRow;
-                    BlackKing[1] = endCol;
+                    board.setBlackKingRow(endRow);
+                    board.setBlackKingCol(endCol);
                 }
             }
 
@@ -553,53 +548,24 @@ public class Chess{
                 //if King was moved, change locations back.
                 if(piece.getName() == PieceName.KING) {
                     if(turn == Player.WHITE) {
-                        WhiteKing[0] = startRow;
-                        WhiteKing[1] = startCol;
+                        board.setWhiteKingRow(startRow);
+                        board.setWhiteKingCol(startCol);
                     }
                     else {
-                        BlackKing[0] = startRow;
-                        BlackKing[1] = startCol;
+                        board.setBlackKingRow(startRow);
+                        board.setBlackKingCol(startCol);
                     }
                 }
                 continue;
             }
-            //if other color in check, check for checkmate, then return either "Check" or "Checkmate"
-            else if((turn == Player.WHITE && blackCheck) || (turn == Player.BLACK && whiteCheck)) {
-                //check for checkmate
-                boolean checkMate = checkForMate();
-                if(checkMate) {
-//                    System.out.println(board.getBoard());
 
-                    if(turn == Player.WHITE) {
-                        System.out.println("Checkmate\nWhite wins");
-                    }else {
-                        System.out.println("Checkmate\nBlack wins");
-                    }
-                    gameOver = true;
-                }else {
-//                    System.out.println(board.getBoard());
-                    System.out.println("Check");
-                }
 
             }
-            //Stalemate here
-            else if(checkForMate()) {
-//                System.out.println(board.getBoard());
-                System.out.println("Stalemate");
-                System.out.println("Draw");
-                gameOver = true;
-            }
-            else {
-//                System.out.println(board.getBoard());
-            }
-
-            changeTurns();
+*/
         }
-    }
 
-    public void startGame(ChessBoard board){
-        this.board = board;
-    }
+
+
 
     public void main(String[] args){
 //		//set up scanner

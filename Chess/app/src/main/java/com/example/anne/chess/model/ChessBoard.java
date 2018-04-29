@@ -44,7 +44,7 @@ public class ChessBoard {
     }
 
     public int getBlackKingCol(){
-        return WhiteKing[1];
+        return BlackKing[1];
     }
 
     public int getWhiteKingRow(){
@@ -52,7 +52,7 @@ public class ChessBoard {
     }
 
     public int getBlackKingRow(){
-        return WhiteKing[0];
+        return BlackKing[0];
     }
 
     public void setWhiteKingRow(int row){
