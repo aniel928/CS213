@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--<RadioGroup-->
+
+        <!--android:id="@+id/radio_group"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+
+
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:orientation="vertical">-->
+
+
+    <!--</RadioGroup>-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="What piece would you like to promote to?"
+        android:textAlignment="center"
+        android:textSize="30sp" />
+    <Button
+        android:id="@+id/rook"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Rook" />
+
+    <Button
+        android:id="@+id/knight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Knight" />
+
+    <Button
+        android:id="@+id/bishop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Bishop" />
+
+    <Button
+        android:id="@+id/queen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Queen" />
+
+</LinearLayout>
