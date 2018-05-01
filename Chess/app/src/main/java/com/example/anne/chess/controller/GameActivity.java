@@ -1,15 +1,17 @@
 package com.example.anne.chess.controller;
 
 
+import android.app.Dialog;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.ImageViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,17 +20,18 @@ import com.example.anne.chess.R;
 import com.example.anne.chess.model.Bishop;
 import com.example.anne.chess.model.ChessBoard;
 import com.example.anne.chess.model.Chess;
-import com.example.anne.chess.model.King;
 import com.example.anne.chess.model.Knight;
-import com.example.anne.chess.model.Pawn;
 import com.example.anne.chess.model.Piece;
 import com.example.anne.chess.model.Player;
 import com.example.anne.chess.model.Queen;
 import com.example.anne.chess.model.Rook;
 
-import static android.graphics.PorterDuff.Mode.SRC_ATOP;
-
 public class GameActivity extends AppCompatActivity {
+    private Button undoButton;
+    private Button resignButton;
+    private Button AIbutton;
+    private Button drawButton;
+
     private TextView textView;
     private ImageView[][] pieces = new ImageView[8][8];
     private Piece[][] positions = new Piece[8][8];
@@ -43,6 +46,11 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        undoButton = findViewById(R.id.undoButton);
+        resignButton = findViewById(R.id.resignButton);
+        AIbutton = findViewById(R.id.AIButton);
+        drawButton = findViewById(R.id.drawButton);
 
         textView = findViewById(R.id.textView);
 
@@ -60,6 +68,54 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void setListeners() {
+
+
+        undoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO: logic
+                Toast.makeText(GameActivity.this,"Undo", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        resignButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO: logic for new screen to announce winner and ask to save game
+                Toast.makeText(GameActivity.this,"Resign", Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(GameActivity.this, GameOverActivity.class);
+                if(game.getTurn() == Player.WHITE){
+                    intent.putExtra("gameOver", "\nWhite Resigns!");
+                    intent.putExtra("winner", "Black Wins!");
+                }
+                else {
+                    intent.putExtra("gameOver", "\nBlack Resigns!!");
+                    intent.putExtra("winner", "White Wins!");
+
+                }
+                startActivity(intent);
+
+            }
+        });
+
+        drawButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO: logic for new screen to announce winner and ask to save game
+                Toast.makeText(GameActivity.this,"Draw", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        AIbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO: logic
+                Toast.makeText(GameActivity.this,"AI", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){
                 final int finalI = i;
@@ -91,52 +147,63 @@ public class GameActivity extends AppCompatActivity {
 
                             if(status == -1){
                                 Toast.makeText(GameActivity.this,"Invalid Move!", Toast.LENGTH_LONG).show();
+                                startRow = startCol = endRow = endCol = -1;
 
                             }else{
+                                //TODO: figure out how to add callbacks
                                 if(game.checkForPromotion(startRow, startCol)){
-                                    //pop up window to ask what to promote to.
-                                    //handle promotion.
+                                    //pop up window to ask what to promote to and handle promotion.
+                                    showButtonDialog(startRow, startCol, game);
+                                }else {
+                                    doStuff();
                                 }
-
-                                game.completeTheMove(startRow, endRow, startCol, endCol);
-
-                                status = game.newTurn();
-                                if(game.getTurn() == Player.WHITE) {
-                                    if(status == 1){
-                                        textView.setText("White's move -- Check!");
-                                    }else if(status == 2){
-                                        //TODO: remove this code and change screens.
-                                        textView.setText("Checkmate! Black Wins!");
-                                    }else if(status ==3){
-                                        textView.setText("Stalemate, Draw!");
-                                    }else {
-                                        textView.setText("White's move");
-                                    }
-                                }else{
-                                    if(status == 1){
-                                        textView.setText("Black's move -- Check!");
-                                    }else if(status == 2){
-                                        //TODO: remove this code and change screens.
-                                        textView.setText("Checkmate! White Wins!");
-                                    }else if(status ==3){
-                                        textView.setText("Stalemate, Draw!");
-                                    }else {
-                                        textView.setText("Black's move");
-                                    }
-                                }
-                                drawBoard();
-
                             }
-
-                            Log.d("GameActivity: ", "Ok just do it.");
-
-                            startRow = startCol = endRow = endCol = -1;
-
                         }
                     }
                 });
 
             }
+        }
+    }
+
+    private void doStuff() {
+        int status;
+        status = game.completeTheMove(startRow, endRow, startCol, endCol);
+
+        if(status == -1){
+            Toast.makeText(GameActivity.this,"Invalid Move!", Toast.LENGTH_LONG).show();
+        }
+        else{
+            status = game.newTurn();
+            if(game.getTurn() == Player.WHITE) {
+                if(status == 1){
+                    textView.setText("White's move -- Check!");
+                }else if(status == 2){
+                    Intent intent = new Intent(this, GameOverActivity.class);
+                    intent.putExtra("gameOver", "\nCheckMate!");
+                    intent.putExtra("winner", "Black Wins!");
+                    startActivity(intent);
+                    textView.setText("Checkmate! Black Wins!");
+                }else {
+                    textView.setText("White's move");
+                }
+            }else {
+                if (status == 1) {
+                    textView.setText("Black's move -- Check!");
+                } else if (status == 2) {
+                    //TODO: remove this code and change screens.
+                    Intent intent = new Intent(this, GameOverActivity.class);
+                    intent.putExtra("gameOver", "\nCheckMate!");
+                    intent.putExtra("winner", "White Wins!");
+                    startActivity(intent);
+                    textView.setText("Checkmate! White Wins!");
+                } else {
+                    textView.setText("Black's move");
+                }
+            }
+            drawBoard();
+            startRow = startCol = endRow = endCol = -1;
+
         }
     }
 
@@ -236,4 +303,64 @@ public class GameActivity extends AppCompatActivity {
     public void onBackPressed(){
         super.onBackPressed();
     }
+
+    private void showButtonDialog(final int row, final int col, final Chess game) {
+
+        final Piece[] piece = new Piece[1];
+        // custom dialog
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.button_dialog);
+
+        Button rook = dialog.findViewById(R.id.rook);
+        Button knight = dialog.findViewById(R.id.knight);
+        Button bishop = dialog.findViewById(R.id.bishop);
+        Button queen = dialog.findViewById(R.id.queen);
+
+        dialog.show();
+
+        rook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                piece[0] = new Rook(game.getTurn());
+                board.setPiece(row, col, piece[0]);
+                dialog.dismiss();
+                doStuff();
+
+            }
+        });
+
+        knight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                piece[0] = new Knight(game.getTurn());
+                board.setPiece(row, col, piece[0]);
+                dialog.dismiss();
+                doStuff();
+
+            }
+        });
+
+        bishop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                piece[0] = new Bishop(game.getTurn());
+                board.setPiece(row, col, piece[0]);
+                doStuff();
+                dialog.dismiss();
+            }
+        });
+
+        queen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                piece[0] = new Queen(game.getTurn());
+                board.setPiece(row, col, piece[0]);
+                dialog.dismiss();
+                doStuff();
+
+            }
+        });
+    }
+
 }

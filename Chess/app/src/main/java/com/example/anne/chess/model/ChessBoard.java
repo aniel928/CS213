@@ -101,7 +101,7 @@ public class ChessBoard {
      * @param col an integer representing an index in the array for file
      * @param piece a {@link Piece} object to put onto the square
      */
-    protected void setPiece(int row, int col, Piece piece) {
+    public void setPiece(int row, int col, Piece piece) {
         positions[row][col] = piece;
     }
 
