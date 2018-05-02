@@ -13,7 +13,7 @@ public class Queen extends Piece {
     }
 
     @Override
-    protected List<int[]> allLegalMoves(int row, int col, ChessBoard board){
+    public List<int[]> allLegalMoves(int row, int col, ChessBoard board){
         List<int[]> moves = new ArrayList<int[]>();
 
         //all of this column
@@ -75,7 +75,7 @@ public class Queen extends Piece {
      * {@inheritDoc}
      */
     @Override
-    protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
+    public boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
         return (Math.abs(startRow - endRow) == Math.abs(startCol - endCol)) || ((startRow == endRow) || (startCol == endCol));
     }
 
@@ -83,7 +83,7 @@ public class Queen extends Piece {
      * {@inheritDoc}
      */
     @Override
-    protected boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
+    public boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
         boolean properOrder = true;
 
         if(startRow == endRow) {

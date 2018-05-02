@@ -13,7 +13,7 @@ public class Knight extends Piece {
     }
 
     @Override
-    protected List<int[]> allLegalMoves(int row, int col, ChessBoard board){
+    public List<int[]> allLegalMoves(int row, int col, ChessBoard board){
         List<int[]> moves = new ArrayList<int[]>();
         //top
         if(row > 1) {
@@ -63,12 +63,12 @@ public class Knight extends Piece {
     }
 
     @Override
-    protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
+    public boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
         return (Math.abs(startRow - endRow) == 1 && Math.abs(startCol - endCol) == 2) || (Math.abs(startRow - endRow) == 2 && Math.abs(startCol - endCol) == 1);
     }
 
     @Override
-    protected boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
+    public boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
         // TODO Auto-generated method stub
         return true;
     }

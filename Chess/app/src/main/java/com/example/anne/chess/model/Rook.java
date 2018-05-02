@@ -13,7 +13,7 @@ public class Rook extends Piece {
     }
 
     @Override
-    protected List<int[]> allLegalMoves(int row, int col, ChessBoard board){
+    public List<int[]> allLegalMoves(int row, int col, ChessBoard board){
         List<int[]> moves = new ArrayList<int[]>();
 
         //all of this column
@@ -35,12 +35,12 @@ public class Rook extends Piece {
     }
 
     @Override
-    protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
+    public boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
         return ((startRow == endRow) || (startCol == endCol));
     }
 
     @Override
-    protected boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
+    public boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
         if(startRow == endRow) {
             if(startCol > endCol) {
                 int temp = --startCol;

@@ -13,7 +13,7 @@ public class King extends Piece {
     }
 
     @Override
-    protected List<int[]> allLegalMoves(int row, int col, ChessBoard board){
+    public List<int[]> allLegalMoves(int row, int col, ChessBoard board){
         List<int[]> moves = new ArrayList<int[]>();
         if(!this.isMoved()) {
             if(this.getColor() == Player.WHITE) {
@@ -65,7 +65,7 @@ public class King extends Piece {
     }
 
     @Override
-    protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
+    public boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
         //if piece hasn't moved and king is trying to move two spaces to the left or right, then look for castle
         if(!this.isMoved() && startRow == endRow) {
             //right side of board
@@ -89,7 +89,7 @@ public class King extends Piece {
     }
 
     @Override
-    protected boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
+    public boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
         if(startCol - endCol == 2) {
             //Queen Side Castling
             if(board.getPiece(startRow, startCol-1) != null || board.getPiece(startRow, startCol-2) != null || board.getPiece(startRow, startCol-3) != null) {

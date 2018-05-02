@@ -91,7 +91,7 @@ public class ChessBoard {
         this.positions = positions;
     }
 
-    protected Piece getPiece(int row, int col) {
+    public Piece getPiece(int row, int col) {
         return positions[row][col];
     }
 

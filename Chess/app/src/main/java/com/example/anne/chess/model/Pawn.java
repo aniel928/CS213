@@ -13,7 +13,7 @@ public class Pawn extends Piece {
     }
 
     @Override
-    protected List<int[]> allLegalMoves(int row, int col, ChessBoard board){
+    public List<int[]> allLegalMoves(int row, int col, ChessBoard board){
         List<int[]> moves = new ArrayList<int[]>();
         if(this.getColor() == Player.WHITE) {
             //first move
@@ -69,7 +69,7 @@ public class Pawn extends Piece {
     }
 
     @Override
-    protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
+    public boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
         //if White pawn
         if(this.getColor() == Player.WHITE) {
             //cover first move - white
@@ -121,7 +121,7 @@ public class Pawn extends Piece {
     }
 
     @Override
-    protected boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
+    public boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
         if(this.getColor() == Player.WHITE){
             if(startRow == 6 && endRow == 4) {
                 if(board.getPiece(5, startCol) != null) {

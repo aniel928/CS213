@@ -3,6 +3,7 @@ package com.example.anne.chess.model;
 import com.example.anne.chess.R;
 
 import java.util.List;
+import java.util.Random;
 
 public abstract class Piece {
     private int imageId = 0;
@@ -61,13 +62,11 @@ public abstract class Piece {
         HELPER METHODS
      */
 
-    protected abstract List<int[]> allLegalMoves(int row, int col, ChessBoard board);
+    public abstract List<int[]> allLegalMoves(int row, int col, ChessBoard board);
 
-    protected abstract boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board);
+    public abstract boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board);
 
-    protected abstract boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board);
-
-
+    public abstract boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board);
 
     private int findImage(Player color, PieceName piece) {
         int image = 0;
@@ -119,4 +118,5 @@ public abstract class Piece {
         }
         return image;
     }
+
 }

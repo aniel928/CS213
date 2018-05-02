@@ -7,9 +7,13 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.anne.chess.R;
+import com.example.anne.chess.model.Chess;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
+    public static List<Chess> chessGames = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

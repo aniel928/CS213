@@ -1,20 +1,63 @@
 package com.example.anne.chess.model;
 
 import android.util.Log;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
-public class Chess{
-
-    private boolean gameOver = false;
-
+public class Chess implements Serializable{
+    private String name;
+    private LocalDateTime timeOfSave;
     private Player turn = Player.WHITE;
+    private ChessBoard board, oldBoard;
+    public List<int[]> moves = new ArrayList<>();
 
-    private boolean draw = false;
+    public String getName() {
+        return name;
+    }
 
-    private boolean promote = false;
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    private ChessBoard board;
+    public LocalDateTime getTimeOfSave() {
+        return timeOfSave;
+    }
+
+    public void setTimeOfSave(LocalDateTime timeOfSave) {
+        this.timeOfSave = timeOfSave;
+    }
+
+    public List<int[]> getMoves() {
+        return moves;
+    }
+
+    public void setMoves(List<int[]> moves) {
+        this.moves = moves;
+    }
+
+    private void addOneMove(int[] move, Piece piece){ //one move is {start row, start col, end row, end col}
+        this.oldBoard = board.makeCopy();
+        board.setPiece(move[2], move[3], piece);
+        piece.setMoved(true);
+        board.setPiece(move[0], move[1], null);
+        this.moves.add(move);
+    }
+
+    public ChessBoard removeLastMove(){
+        this.moves.remove(moves.size() - 1);
+        this.board = oldBoard;
+
+        this.board.setWhiteKingCol(4);
+        this.board.setWhiteKingRow(7);
+        this.board.setBlackKingCol(4);
+        this.board.setBlackKingRow(0);
+
+        return this.board;
+    }
 
     private void removeEnpassant() {
         int i = 0;
@@ -77,19 +120,6 @@ public class Chess{
             }
         }
         return false;
-//        //handle promotion
-//        if(promote) {
-//            String promoteTo = "";
-//            if(moves.length < 3) {
-//                promoteTo = "Q";
-//            }
-//            else {
-//                promoteTo = moves[2];
-//            }
-//            piece = promote(promoteTo);
-//            promote = false;
-//        }
-//        return piece;
     }
 
     private int checkForCastle(Piece piece, int startRow, int endRow, int startCol, int endCol) {
@@ -102,6 +132,8 @@ public class Chess{
                     //Queen Side Castle
                     ChessBoard tempBoard = board.makeCopy();
                     tempBoard.setPiece(startRow,  startCol - 1, piece);
+                    tempBoard.setWhiteKing(board.getWhiteKing());
+                    tempBoard.setBlackKing(board.getBlackKing());
                     if(turn == Player.WHITE){
                         int oldCol = board.getWhiteKingCol();
                         board.setWhiteKingCol(--oldCol);
@@ -124,6 +156,8 @@ public class Chess{
                     //King Side Castle
                     ChessBoard tempBoard = board.makeCopy();
                     tempBoard.setPiece(startRow,  startCol + 1, piece);
+                    tempBoard.setWhiteKing(board.getWhiteKing());
+                    tempBoard.setBlackKing(board.getBlackKing());
                     if(turn == Player.WHITE){
                         int oldCol = board.getWhiteKingCol();
                         board.setWhiteKingCol(++oldCol);
@@ -191,6 +225,8 @@ public class Chess{
             for(int j = 0; j < board.COLS; j++) {
                 Piece piece = board.getPiece(i, j);
                 if(piece != null && piece.getColor() == Player.BLACK) {
+
+                    int[] temp = board.getWhiteKing();
                     if(piece.isLegalMove(i, j, board.getWhiteKingRow(), board.getWhiteKingCol(), board) && piece.coastClear(i, j, board.getWhiteKingRow(), board.getWhiteKingCol(), board)) {
                         return true;
                     }
@@ -298,7 +334,7 @@ public class Chess{
         //store some important stuff
         Piece piece = board.getPiece(startRow, startCol);
         Piece oldPiece = board.getPiece(endRow, endCol);
-        ChessBoard oldBoard = board.makeCopy();
+//        oldBoard = board.makeCopy();
 
         //see if castling is valid and then perform castle
         int status = checkForCastle(piece, startRow, endRow, startCol, endCol);
@@ -310,9 +346,8 @@ public class Chess{
         //if we didn't castle, then it's a normal move.
         if(status != 0) {
             //move current to new and remove current position
-            board.setPiece(endRow, endCol, piece);
-            piece.setMoved(true);
-            board.setPiece(startRow, startCol, null);
+
+            this.addOneMove((new int[]{startRow, startCol, endRow, endCol}), piece);
 
             //if captured en passant, then enforce.
             if(piece.getName() == PieceName.PAWN && oldPiece != null && oldPiece.getName() == PieceName.GHOST) {
@@ -336,7 +371,7 @@ public class Chess{
         if((turn == Player.WHITE && whiteCheck(board)) || (turn == Player.BLACK && blackCheck(board))) {
 
             //put board back to the one we saved earlier
-            board = oldBoard.makeCopy();
+            this.removeLastMove();
 
             //if King was moved, change locations back.
             if(piece.getName() == PieceName.KING) {
@@ -356,13 +391,13 @@ public class Chess{
     }
 
     public int newTurn(){
+        //change player
+        changeTurns();
+
         removeEnpassant();
 
         boolean check;
         boolean checkmate = false;
-
-        //change player
-        changeTurns();
 
         //check for check and mate
         if(turn == Player.WHITE){
@@ -397,26 +432,10 @@ public class Chess{
         turn = Player.WHITE;
     }
 
-    public void main(String[] args){
-//		//set up scanner
-//		board = new ChessBoard();
-//		//initialize chessboard - put all pieces in starting positions
-//		board.initializeBoard();
-//		WhiteKing = new int[2];
-//		WhiteKing[0] = 7;
-//		WhiteKing[1] = 4;
-//		BlackKing = new int[2];
-//		BlackKing[0] = 0;
-//		BlackKing[1] = 4;
-//
-//		System.out.println(board.getBoard());
-//
-//		//play the game!
-//		playGame(scanner);
 
-        //game is over, so close up shop.
-//		scanner.close();
-
+    @Override
+    public String toString(){
+        return this.name + " - " + this.timeOfSave;
     }
 
 }

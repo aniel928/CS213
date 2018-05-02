@@ -18,7 +18,8 @@
         </activity>
         <activity android:name=".controller.GameActivity" />
         <activity android:name=".controller.ListGamesActivity" />
-        <activity android:name=".controller.GameOverActivity"></activity>
+        <activity android:name=".controller.GameOverActivity" />
+        <activity android:name=".controller.ReplayActivity"></activity>
     </application>
 
 </manifest>

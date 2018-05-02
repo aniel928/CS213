@@ -15,7 +15,7 @@ public class Bishop extends Piece {
     }
 
     @Override
-    protected List<int[]> allLegalMoves(int row, int col, ChessBoard board){
+    public List<int[]> allLegalMoves(int row, int col, ChessBoard board){
         List<int[]> moves = new ArrayList<int[]>();
         //up and left
         int i = Math.min(row, col);
@@ -57,13 +57,13 @@ public class Bishop extends Piece {
     }
 
     @Override
-    protected boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
+    public boolean isLegalMove(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
         return Math.abs(startRow - endRow) == Math.abs(startCol - endCol);
     }
 
 
     @Override
-    protected boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
+    public boolean coastClear(int startRow, int startCol, int endRow, int endCol, ChessBoard board) {
         boolean properOrder = true;
 
         //move is up/left, make it the same as down/right (eliminate endpoints)
