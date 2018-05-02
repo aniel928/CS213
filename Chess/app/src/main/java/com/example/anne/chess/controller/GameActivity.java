@@ -47,6 +47,7 @@ public class GameActivity extends AppCompatActivity {
     private int startCol = -1;
     private int endRow = -1;
     private int endCol = -1;
+    private Random r = new Random();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,10 +99,12 @@ public class GameActivity extends AppCompatActivity {
                 if(game.getTurn() == Player.WHITE){
                     intent.putExtra("gameOver", "\nWhite Resigns!");
                     intent.putExtra("winner", "Black Wins!");
+                    intent.putExtra("replay", false);
                 }
                 else {
                     intent.putExtra("gameOver", "\nBlack Resigns!!");
                     intent.putExtra("winner", "White Wins!");
+                    intent.putExtra("replay", false);
 
                 }
                 startActivity(intent);
@@ -125,6 +128,7 @@ public class GameActivity extends AppCompatActivity {
                         Intent intent = new Intent(GameActivity.this, GameOverActivity.class);
                         intent.putExtra("gameOver", "\nGame Over!");
                         intent.putExtra("winner", "Draw");
+                        intent.putExtra("replay", false);
                         startActivity(intent);
                     }
                 });
@@ -143,35 +147,31 @@ public class GameActivity extends AppCompatActivity {
         AIbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Random r = new Random();
+
                 //Toast.makeText(GameActivity.this, r1.nextInt(8) + " " + r1.nextInt(8), Toast.LENGTH_SHORT).show();
                 Piece piece = null;
-                int r1, r2, r3, r4;
                 while(true){
-                    r1 = r.nextInt(8);
-                    r2 = r.nextInt(8);
-                    piece = board.getPiece(r1, r2);
+                    startRow = r.nextInt(8);
+                    startCol = r.nextInt(8);
+                    piece = board.getPiece(startRow, startCol);
                     if(piece != null) {
                         Log.d("looper", piece.toString());
                     }
                     if(piece != null && piece.getColor() == game.getTurn()){
                         Log.d("looper", "first if");
-                        r3 = r.nextInt(8);
-                        r4 = r.nextInt(8);
-                        if(game.move(r1, r3, r2, r4) == 0){
+                        endRow = r.nextInt(8);
+                        endCol = r.nextInt(8);
+                        if(game.move(startRow, endRow, startCol, endCol) == 0){
                             Log.d("looper", "second if");
-                            startRow = r1;
-                            startCol = r2;
-                            endRow = r3;
-                            endCol = r4;
+
                             break;
                         }
                     }
                 }
 
-                if(game.checkForPromotion(r1, r2)){
+                if(game.checkForPromotion(startRow, startCol)){
                     //pop up window to ask what to promote to and handle promotion.
-                    showButtonDialog(r1, r2, game);
+                    showButtonDialog(startRow, startCol, game);
                 }else {
                     doStuff();
                 }
@@ -256,7 +256,7 @@ public class GameActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, GameOverActivity.class);
                 intent.putExtra("gameOver", "\nCheckMate!");
                 intent.putExtra("winner", "Black Wins!");
-                intent.putExtra("game", game);
+                intent.putExtra("replay", false);
                 startActivity(intent);
                 textView.setText("Checkmate! Black Wins!");
             }else {
@@ -271,6 +271,7 @@ public class GameActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, GameOverActivity.class);
                 intent.putExtra("gameOver", "\nCheckMate!");
                 intent.putExtra("winner", "White Wins!");
+                intent.putExtra("replay", false);
                 startActivity(intent);
                 textView.setText("Checkmate! White Wins!");
             } else {

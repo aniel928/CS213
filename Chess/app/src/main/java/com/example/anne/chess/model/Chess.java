@@ -11,6 +11,25 @@ import java.util.List;
 public class Chess implements Serializable{
     private String name;
     private LocalDateTime timeOfSave;
+    private String winner;
+
+    public String getWinner() {
+        return winner;
+    }
+
+    public void setWinner(String winner) {
+        this.winner = winner;
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
+    private String method = "";
     private Player turn = Player.WHITE;
     private ChessBoard board, oldBoard;
     public List<int[]> moves = new ArrayList<>();
@@ -220,14 +239,14 @@ public class Chess implements Serializable{
         }
     }
 
-    private boolean whiteCheck(ChessBoard board) {
-        for(int i = 0; i < board.ROWS; i++) {
-            for(int j = 0; j < board.COLS; j++) {
-                Piece piece = board.getPiece(i, j);
+    private boolean whiteCheck(ChessBoard myboard) {
+        for(int i = 0; i < myboard.ROWS; i++) {
+            for(int j = 0; j < myboard.COLS; j++) {
+                Piece piece = myboard.getPiece(i, j);
                 if(piece != null && piece.getColor() == Player.BLACK) {
 
-                    int[] temp = board.getWhiteKing();
-                    if(piece.isLegalMove(i, j, board.getWhiteKingRow(), board.getWhiteKingCol(), board) && piece.coastClear(i, j, board.getWhiteKingRow(), board.getWhiteKingCol(), board)) {
+                    int[] temp = myboard.getWhiteKing();
+                    if(piece.isLegalMove(i, j, myboard.getWhiteKingRow(), myboard.getWhiteKingCol(), myboard) && piece.coastClear(i, j, myboard.getWhiteKingRow(), myboard.getWhiteKingCol(), myboard)) {
                         return true;
                     }
                 }
@@ -236,13 +255,13 @@ public class Chess implements Serializable{
         return false;
     }
 
-    private boolean blackCheck(ChessBoard board) {
-        for(int i = 0; i < board.ROWS; i++) {
-            for(int j = 0; j < board.COLS; j++) {
-                Piece piece = board.getPiece(i, j);
+    private boolean blackCheck(ChessBoard myboard) {
+        for(int i = 0; i < myboard.ROWS; i++) {
+            for(int j = 0; j < myboard.COLS; j++) {
+                Piece piece = myboard.getPiece(i, j);
                 if(piece != null && piece.getColor() == Player.WHITE) {
-                    Log.d("Chess.java: ", "Black row: " + board.getBlackKingRow() + " --- Black Col:" + board.getBlackKingCol());
-                    if(piece.isLegalMove(i, j, board.getBlackKingRow(), board.getBlackKingCol(), board) && piece.coastClear(i, j, board.getBlackKingRow(), board.getBlackKingCol(), board)) {
+                    Log.d("Chess.java: ", "Black row: " + myboard.getBlackKingRow() + " --- Black Col:" + myboard.getBlackKingCol());
+                    if(piece.isLegalMove(i, j, myboard.getBlackKingRow(), myboard.getBlackKingCol(), myboard) && piece.coastClear(i, j, myboard.getBlackKingRow(), myboard.getBlackKingCol(), myboard)) {
                         return true;
                     }
                 }
@@ -264,7 +283,7 @@ public class Chess implements Serializable{
                     if(moves != null) {
                         for(int[] move : moves) {
                             ChessBoard tempBoard = board.makeCopy();
-                            if((tempBoard.getPiece(move[0], move[1]) == null || tempBoard.getPiece(move[0], move[1]).getColor() == turn) && tempPiece.isLegalMove(i,  j,  move[0],  move[1],  tempBoard) && tempPiece.coastClear(i,  j,  move[0],  move[1],  tempBoard)) {
+                            if((tempBoard.getPiece(move[0], move[1]) == null || tempBoard.getPiece(move[0], move[1]).getColor() != turn) && tempPiece.isLegalMove(i,  j,  move[0],  move[1],  tempBoard) && tempPiece.coastClear(i,  j,  move[0],  move[1],  tempBoard)) {
                                 tempBoard.setPiece(move[0],  move[1],  tempPiece);
                                 tempBoard.setPiece(i,  j,  null);
                                 if(tempPiece.getName() == PieceName.KING) {
@@ -334,7 +353,7 @@ public class Chess implements Serializable{
         //store some important stuff
         Piece piece = board.getPiece(startRow, startCol);
         Piece oldPiece = board.getPiece(endRow, endCol);
-//        oldBoard = board.makeCopy();
+        oldBoard = board.makeCopy();
 
         //see if castling is valid and then perform castle
         int status = checkForCastle(piece, startRow, endRow, startCol, endCol);

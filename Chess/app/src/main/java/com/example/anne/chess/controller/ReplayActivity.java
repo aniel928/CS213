@@ -68,6 +68,9 @@ public class ReplayActivity extends AppCompatActivity {
                     drawBoard();
                 }else{
                     Intent intent = new Intent(ReplayActivity.this, GameOverActivity.class);
+                    intent.putExtra("winner", game.getWinner());
+                    intent.putExtra("gameOver", game.getMethod());
+                    intent.putExtra("replay", true);
                     startActivity(intent);
                 }
             }
